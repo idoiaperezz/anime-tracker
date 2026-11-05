@@ -51,7 +51,65 @@ body {
 
 /* ===== Cabecera ===== */
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-header { display: grid; gap: 10px; animation: rise .6s cubic-bezier(.2, .8, .2, 1) both; }
+header { position: relative; z-index: 10; display: grid; gap: 10px; animation: rise .6s cubic-bezier(.2, .8, .2, 1) both; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* ===== Cuenta: botón arriba a la derecha + desplegable ===== */
+.acct { position: relative; z-index: 30; margin-left: auto; }
+.acct-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 36px; padding: 4px 14px 4px 4px; border-radius: 99px;
+  border: 1px solid var(--line); background: rgba(18, 18, 40, .75); backdrop-filter: blur(8px);
+  color: var(--ink); font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .15s ease;
+}
+.acct-chip:hover, .acct-chip[aria-expanded="true"] {
+  border-color: rgba(var(--accent-rgb), .8);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18), 0 8px 24px -10px rgba(var(--accent-rgb), .7);
+}
+.acct-chip:active { transform: scale(.97); }
+.acct-chip span { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.acct-av {
+  width: 28px; height: 28px; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-style: normal; font-size: .78rem; text-transform: uppercase; color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), .6);
+}
+.acct-av svg { width: 15px; height: 15px; }
+@keyframes acct-in { from { opacity: 0; transform: translateY(-6px) scale(.98); } to { opacity: 1; transform: none; } }
+.acct-pop {
+  position: absolute; top: calc(100% + 10px); right: 0;
+  width: min(280px, calc(100vw - 32px)); padding: 14px; border-radius: 14px;
+  display: grid; gap: 10px;
+  background: linear-gradient(160deg, rgba(var(--accent-rgb), .1), transparent 60%), #0e0e20;
+  border: 1px solid rgba(var(--accent-rgb), .35);
+  box-shadow: 0 24px 50px -18px rgba(0, 0, 0, .9), 0 0 30px -10px rgba(var(--accent-rgb), .5);
+  transform-origin: top right; animation: acct-in .18s ease-out;
+}
+.acct-pop h3 { margin: 0; font-family: var(--font-mono); font-size: .7rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.acct-pop form, .acct-inbox { display: grid; gap: 8px; }
+.acct-pop input {
+  font: inherit; min-width: 0; min-height: 38px; padding: 7px 12px; border-radius: 9px;
+  border: 1px solid var(--line); background: rgba(255, 255, 255, .04); color: var(--ink);
+}
+.acct-pop input::placeholder { color: rgba(156, 155, 194, .7); }
+.acct-pop input:focus { outline: none; border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(var(--accent-2-rgb), .2); }
+.acct-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.abtn {
+  font: inherit; font-size: .82rem; font-weight: 700; min-height: 38px; padding: 7px 10px; border-radius: 9px;
+  border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, transform .15s ease;
+}
+.abtn:hover { border-color: var(--accent-2); background: rgba(var(--accent-2-rgb), .08); }
+.abtn:active { transform: scale(.97); }
+.abtn.primary { border-color: transparent; color: #fff; background: linear-gradient(120deg, var(--accent-deep), var(--accent)); box-shadow: 0 8px 20px -10px rgba(var(--accent-rgb), .9); }
+.abtn.primary:hover { filter: brightness(1.12); }
+.abtn:disabled { opacity: .5; cursor: default; }
+.acct-link { justify-self: start; background: none; border: 0; padding: 0; font: inherit; font-size: .76rem; color: var(--muted); text-decoration: underline; cursor: pointer; }
+.acct-link:hover { color: var(--accent-2); }
+.acct-who { font-size: .82rem; color: var(--muted); overflow-wrap: anywhere; }
+.acct-who b { color: var(--ink); }
+.acct-msg { margin: 0; font-size: .76rem; line-height: 1.45; color: #c4b5fd; }
 .eyebrow {
   font-family: var(--font-mono); font-size: .75rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted);
   display: inline-flex; align-items: center; gap: 10px;
@@ -188,7 +246,39 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
 
 <div class="wrap">
   <header>
-    <span class="eyebrow">Anime · Manga · Progreso</span>
+    <div class="topbar">
+      <span class="eyebrow">Anime · Manga · Progreso</span>
+      <div class="acct" id="account" hidden>
+        <button type="button" class="acct-chip" id="achip" aria-expanded="false" aria-controls="apop">
+          <i class="acct-av" id="aav" aria-hidden="true"></i><span id="alabel">Iniciar sesión</span>
+        </button>
+        <div class="acct-pop" id="apop" hidden>
+          <h3>Mi cuenta</h3>
+          <form id="aout" hidden>
+            <input id="aemail" type="email" placeholder="Correo electrónico" autocomplete="email" aria-label="Correo electrónico">
+            <input id="apass" type="password" placeholder="Contraseña (mín. 6)" autocomplete="current-password" aria-label="Contraseña">
+            <div class="acct-row">
+              <button class="abtn primary" id="alogin" type="submit">Entrar</button>
+              <button class="abtn" id="asignup" type="button">Crear cuenta</button>
+            </div>
+            <button type="button" class="acct-link" id="aforgot">¿Has olvidado la contraseña?</button>
+          </form>
+          <form id="areset" hidden>
+            <input id="acode" type="text" inputmode="numeric" maxlength="10" placeholder="Código del correo" autocomplete="one-time-code" aria-label="Código del correo">
+            <input id="anewpass" type="password" placeholder="Nueva contraseña (mín. 6)" autocomplete="new-password" aria-label="Nueva contraseña">
+            <div class="acct-row">
+              <button class="abtn primary" id="aresetok" type="submit">Cambiar</button>
+              <button class="abtn" id="aresetback" type="button">Volver</button>
+            </div>
+          </form>
+          <div class="acct-inbox" id="ain" hidden>
+            <span class="acct-who" id="awho"></span>
+            <button class="abtn" id="alogout" type="button">Cerrar sesión</button>
+          </div>
+          <p class="acct-msg" id="atext" hidden></p>
+        </div>
+      </div>
+    </div>
     <h1>Mis rastreadores</h1>
     <p class="sub">Elige una serie y sigue por dónde vas, en el anime o en el manga.</p>
   </header>
@@ -230,17 +320,21 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
     </div>
   </main>
 
-  <footer>Tu progreso se guarda en este navegador o en tu cuenta</footer>
+  <footer id="foot">Tu progreso se guarda en este navegador · Inicia sesión para guardarlo en tu cuenta</footer>
 </div>
 
+<!-- Supabase: si la librería no carga, la portada sigue funcionando sin cuenta -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
-// Lee el progreso de Bleach que guarda bleach.html en este navegador
-(function () {
-  var d = null;
-  try { d = JSON.parse(localStorage.getItem("bleach-tracker-v2") || "null"); } catch (e) {}
-  var anime = d ? Math.max(0, Math.min(406, Number(d.anime) || 0)) : 0;
-  var manga = d ? Math.max(0, Math.min(686, Number(d.manga) || 0)) : 0;
-  var isManga = !!(d && d.mode === "manga");
+// Progreso de Bleach: lo que guarda bleach.html en este navegador y, con sesión iniciada, lo de tu cuenta
+function readLocalBleach() {
+  try { return JSON.parse(localStorage.getItem("bleach-tracker-v2") || "null"); } catch (e) { return null; }
+}
+function renderBleach(cloud) {
+  var d = readLocalBleach() || {}, c = cloud || {};
+  var anime = Math.max(0, Math.min(406, Math.max(Number(d.anime) || 0, Number(c.anime) || 0)));
+  var manga = Math.max(0, Math.min(686, Math.max(Number(d.manga) || 0, Number(c.manga) || 0)));
+  var isManga = (c.mode || d.mode) === "manga";
   var cur = isManga ? manga : anime, max = isManga ? 686 : 406;
 
   document.getElementById("sEps").textContent = anime;
@@ -255,6 +349,177 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
     : isManga ? "Empezar a leer" : "Empezar a ver";
 
   setTimeout(function () { document.getElementById("bFill").style.width = (cur / max * 100) + "%"; }, 300);
+}
+renderBleach(null);
+
+// =====================================================================
+//  CUENTA CON SUPABASE — la sesión se comparte con bleach.html
+// =====================================================================
+(function () {
+  var SUPABASE_URL = "https://ujsilpoaayexftxfngmv.supabase.co";
+  var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
+  if (!window.supabase || !window.supabase.createClient) return; // sin librería, la portada funciona sin cuenta
+  var sb;
+  try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch (e) { return; }
+
+  function $(id) { return document.getElementById(id); }
+  var account = null, amsg = "", abusy = false;
+  // 0: nada · 1: con el código del correo · 2: desde el enlace del correo (ya hay sesión)
+  var resetMode = 0;
+  var USER_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>';
+
+  function isRealUser(u) { return !!(u && !u.is_anonymous && u.email); }
+  function cloudOf(u) { return u && u.user_metadata && u.user_metadata.bleach; }
+
+  function authError(err) {
+    var m = String(err && err.message || "");
+    if (/invalid login credentials/i.test(m)) return "Correo o contraseña incorrectos.";
+    if (/email not confirmed/i.test(m)) return "Todavía no has confirmado tu correo. Busca el email de Supabase y pulsa el enlace.";
+    if (/already registered/i.test(m)) return "Ya existe una cuenta con ese correo. Pulsa Entrar.";
+    if (/token|otp/i.test(m)) return "El código no es válido o ha caducado. Pide otro.";
+    if (/rate limit/i.test(m)) return "Supabase ha bloqueado el envío de correos por ahora (límite del plan gratuito). Espera una hora o desactiva «Confirm email» en Supabase.";
+    if (/error sending/i.test(m)) return "Supabase no pudo enviar el correo. Desactiva «Confirm email» en Supabase.";
+    if (/password/i.test(m)) return "La contraseña no es válida: " + m;
+    return "No se pudo completar: " + (m || "revisa la conexión.");
+  }
+
+  // Si estabas en un grupo de Bleach sin cuenta, quita esa fila antes de cambiar de usuario
+  // para no salir repetido; bleach.html vuelve a añadirte con tu cuenta al abrirlo.
+  async function dropAnonGroupRow() {
+    try {
+      var d = readLocalBleach();
+      if (!d || !d.group) return;
+      var r = await sb.auth.getSession();
+      var u = r.data && r.data.session && r.data.session.user;
+      if (u) await sb.from("progreso").delete().eq("user_id", u.id);
+    } catch (e) {}
+  }
+
+  function signedIn(u) {
+    account = u; resetMode = 0;
+    $("apass").value = $("acode").value = $("anewpass").value = "";
+    renderBleach(cloudOf(u));
+    openPop(false);
+  }
+
+  async function doAuth(kind) {
+    if (abusy) return;
+    var email = $("aemail").value.trim(), pass = $("apass").value;
+    if (!email || pass.length < 6) { amsg = "Escribe tu correo y una contraseña de al menos 6 caracteres."; render(); return; }
+    abusy = true; amsg = ""; render();
+    await dropAnonGroupRow();
+    try {
+      var r = kind === "signup"
+        ? await sb.auth.signUp({ email: email, password: pass })
+        : await sb.auth.signInWithPassword({ email: email, password: pass });
+      if (r.error) amsg = authError(r.error);
+      else if (!r.data.session) amsg = "Cuenta creada. Te hemos enviado un correo: confirma la cuenta y después pulsa Entrar.";
+      else signedIn(r.data.user);
+    } catch (e) { amsg = authError(e); }
+    abusy = false; render();
+  }
+
+  async function doLogout() {
+    if (abusy) return;
+    abusy = true; render();
+    await dropAnonGroupRow();
+    try { await sb.auth.signOut(); } catch (e) {}
+    account = null; amsg = ""; abusy = false;
+    renderBleach(null); openPop(false); render();
+  }
+
+  async function sendReset() {
+    if (abusy) return;
+    var email = $("aemail").value.trim();
+    if (!email) { amsg = "Escribe tu correo arriba y vuelve a pulsar «¿Has olvidado la contraseña?»."; render(); $("aemail").focus(); return; }
+    abusy = true; amsg = ""; render();
+    try {
+      var opts = /^https?:$/.test(location.protocol) ? { redirectTo: location.href.split(/[?#]/)[0] } : {};
+      var r = await sb.auth.resetPasswordForEmail(email, opts);
+      if (r.error) amsg = authError(r.error);
+      else { resetMode = 1; amsg = "Te hemos enviado un correo. Si trae un código, escríbelo aquí con tu nueva contraseña; si trae un enlace, ábrelo."; }
+    } catch (e) { amsg = authError(e); }
+    abusy = false; render();
+    if (resetMode) $("acode").focus();
+  }
+
+  async function finishReset() {
+    if (abusy) return;
+    var email = $("aemail").value.trim(), code = $("acode").value.trim(), pass = $("anewpass").value;
+    if (resetMode === 1 && !code) { amsg = "Escribe el código que te ha llegado por correo."; render(); return; }
+    if (pass.length < 6) { amsg = "La nueva contraseña necesita al menos 6 caracteres."; render(); return; }
+    abusy = true; amsg = ""; render();
+    try {
+      if (resetMode === 1) {
+        var v = await sb.auth.verifyOtp({ email: email, token: code, type: "recovery" });
+        if (v.error) throw v.error;
+      }
+      var r = await sb.auth.updateUser({ password: pass });
+      if (r.error) throw r.error;
+      signedIn(r.data.user);
+    } catch (e) { amsg = authError(e); }
+    abusy = false; render();
+  }
+
+  function openPop(open) {
+    $("apop").hidden = !open;
+    $("achip").setAttribute("aria-expanded", String(open));
+  }
+
+  function render() {
+    $("account").hidden = false;
+    $("aout").hidden = !!account || resetMode > 0;
+    $("ain").hidden = !account || resetMode > 0;
+    $("areset").hidden = !resetMode;
+    $("acode").hidden = resetMode !== 1;
+    $("alogin").disabled = $("asignup").disabled = $("alogout").disabled = $("aforgot").disabled = $("aresetok").disabled = abusy;
+    $("awho").innerHTML = "";
+    if (account) { $("awho").append("Sesión iniciada como "); var b = document.createElement("b"); b.textContent = account.email; $("awho").append(b); }
+    $("atext").hidden = !amsg;
+    $("atext").textContent = amsg;
+    if (account) $("aav").textContent = account.email.charAt(0);
+    else $("aav").innerHTML = USER_ICON;
+    $("alabel").textContent = account ? account.email.split("@")[0] : "Iniciar sesión";
+    $("foot").textContent = account
+      ? "Sesión iniciada · tu progreso se guarda en tu cuenta"
+      : "Tu progreso se guarda en este navegador · Inicia sesión para guardarlo en tu cuenta";
+    if (amsg) openPop(true);
+  }
+
+  $("aout").addEventListener("submit", function (e) { e.preventDefault(); doAuth("login"); });
+  $("asignup").addEventListener("click", function () { doAuth("signup"); });
+  $("alogout").addEventListener("click", doLogout);
+  $("aforgot").addEventListener("click", sendReset);
+  $("areset").addEventListener("submit", function (e) { e.preventDefault(); finishReset(); });
+  $("aresetback").addEventListener("click", function () { resetMode = 0; amsg = ""; render(); });
+  $("achip").addEventListener("click", function () {
+    var open = $("apop").hidden;
+    openPop(open);
+    if (open && !account && !resetMode) $("aemail").focus();
+  });
+  document.addEventListener("click", function (e) {
+    if (!$("apop").hidden && !$("account").contains(e.target)) openPop(false);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !$("apop").hidden) { openPop(false); $("achip").focus(); }
+  });
+  sb.auth.onAuthStateChange(function (ev) {
+    if (ev === "PASSWORD_RECOVERY") { resetMode = 2; amsg = "Escribe tu nueva contraseña."; render(); }
+  });
+
+  render();
+  (async function () {
+    try {
+      var r = await sb.auth.getSession();
+      var u = r.data && r.data.session && r.data.session.user;
+      if (isRealUser(u)) {
+        var f = await sb.auth.getUser(); // datos frescos por si guardaste desde otro dispositivo
+        account = (f.data && f.data.user) || u;
+        renderBleach(cloudOf(account));
+      }
+    } catch (e) {}
+    render();
+  })();
 })();
 
 // Partículas de neón flotando de fondo (decorativo)
