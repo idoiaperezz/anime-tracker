@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mis Rastreadores de Anime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DM+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #070713;
+  --surface: #121228;
+  --ink: #f2f1ff;
+  --muted: #9c9bc2;
+  --line: #2a2a4a;
+  --accent: #9b5cff;
+  --accent-rgb: 155, 92, 255;
+  --accent-deep: #5b21b6;
+  --accent-2: #22d3ee;
+  --accent-2-rgb: 34, 211, 238;
+  --on-accent: #ffffff;
+  --font-display: "Dela Gothic One", "Arial Black", Impact, sans-serif;
+  --font-body: "Zen Kaku Gothic New", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+@keyframes ambient-shift {
+  0%, 100% { background-position: 0% 0%, 100% 100%, 0 0; }
+  50% { background-position: 100% 30%, 0% 70%, 0 0; }
+}
+body {
+  margin: 0; min-height: 100vh;
+  background:
+    radial-gradient(1100px 560px at 15% -10%, rgba(var(--accent-rgb), .22), transparent 60%),
+    radial-gradient(900px 480px at 100% 10%, rgba(var(--accent-2-rgb), .14), transparent 55%),
+    repeating-linear-gradient(135deg, rgba(var(--accent-rgb), .045) 0 1px, transparent 1px 36px),
+    var(--bg);
+  background-attachment: fixed;
+  background-size: 200% 200%, 200% 200%, auto, auto;
+  animation: ambient-shift 24s ease-in-out infinite;
+  color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  padding-block: max(40px, env(safe-area-inset-top, 0px)) 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; display: grid; gap: 34px; }
+
+/* ===== Cabecera ===== */
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+header { display: grid; gap: 10px; animation: rise .6s cubic-bezier(.2, .8, .2, 1) both; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: .75rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted);
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.eyebrow::before {
+  content: ""; width: 8px; height: 8px; background: var(--accent); transform: rotate(45deg);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), .8);
+  animation: spin 5s linear infinite;
+}
+@keyframes spin { to { transform: rotate(405deg); } }
+h1 {
+  margin: 0; font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(2rem, 7vw, 3.8rem); line-height: 1.02; letter-spacing: .01em; text-transform: uppercase;
+  background: linear-gradient(95deg, #fff 5%, var(--accent-2) 45%, var(--accent) 85%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 22px rgba(var(--accent-rgb), .25));
+}
+.sub { margin: 0; color: var(--muted); max-width: 52ch; }
+
+/* ===== Resumen ===== */
+.stats { display: flex; gap: 12px; flex-wrap: wrap; animation: rise .6s .08s cubic-bezier(.2, .8, .2, 1) both; }
+.stat {
+  flex: 1 1 160px; padding: 14px 16px; border-radius: 12px;
+  background: linear-gradient(160deg, rgba(var(--accent-rgb), .12), rgba(var(--accent-2-rgb), .04)), rgba(18, 18, 40, .75);
+  border: 1px solid var(--line); backdrop-filter: blur(6px);
+  display: grid; gap: 2px;
+}
+.stat:nth-child(2) b { color: var(--accent-2); }
+.stat:nth-child(3) b { color: #c4a5ff; }
+.stat b { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat span { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+/* ===== Tarjetas ===== */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+.card {
+  position: relative; display: flex; flex-direction: column; justify-content: flex-end;
+  min-height: 340px; border-radius: 16px; overflow: hidden; isolation: isolate;
+  color: #fff; text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, .08);
+  box-shadow: 0 24px 50px -26px rgba(0, 0, 0, .9);
+  animation: rise .6s calc(.16s + var(--i, 0) * .08s) cubic-bezier(.2, .8, .2, 1) both;
+  transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s ease, border-color .35s ease;
+}
+.card.feature { grid-column: 1 / -1; min-height: 0; justify-content: flex-start; }
+.card:hover, .card:focus-visible {
+  transform: translateY(-6px);
+  border-color: rgba(var(--accent-rgb), .7);
+  box-shadow: 0 30px 60px -24px rgba(var(--accent-rgb), .45), 0 0 0 1px rgba(var(--accent-rgb), .4);
+}
+.card:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.card-fill { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* imagen entera y centrada, arriba de la tarjeta y con el texto debajo */
+.card-bg {
+  display: block; width: 100%; height: auto; aspect-ratio: 1024 / 205; object-fit: contain;
+  transition: transform 1.2s cubic-bezier(.2, .8, .2, 1), filter .6s ease;
+  filter: saturate(1.05);
+}
+.card:hover .card-bg { transform: scale(1.04); filter: saturate(1.2); }
+/* copia difuminada que rellena el resto de la tarjeta */
+.card-fill { z-index: -3; object-fit: cover; object-position: center; filter: blur(24px) brightness(.5) saturate(1.3); transform: scale(1.3); }
+.card::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(0deg, rgba(7, 7, 19, .9) 0%, rgba(7, 7, 19, .55) 60%, rgba(7, 7, 19, 0) 100%);
+}
+/* brillo que cruza la tarjeta al pasar el ratón */
+.card::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, .14) 50%, transparent 65%);
+  transform: translateX(-120%); transition: transform .9s ease;
+}
+.card:hover::after { transform: translateX(120%); }
+
+.card-body { position: relative; z-index: 1; padding: 22px; display: grid; gap: 12px; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  font-family: var(--font-mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 99px;
+  background: rgba(10, 10, 12, .55); border: 1px solid rgba(255, 255, 255, .18); backdrop-filter: blur(6px);
+}
+.tag.hot { background: var(--accent); color: var(--on-accent); border-color: transparent; font-weight: 500; }
+.card h2 {
+  margin: 0; font-family: var(--font-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(1.7rem, 5vw, 2.8rem); line-height: 1; letter-spacing: .02em;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, .6);
+}
+.card p.desc { margin: 0; color: rgba(255, 255, 255, .78); max-width: 46ch; font-size: .92rem; }
+
+.prog { display: grid; gap: 6px; max-width: 520px; }
+.prog-row { display: flex; justify-content: space-between; gap: 10px; font-family: var(--font-mono); font-size: .76rem; color: rgba(255, 255, 255, .85); font-variant-numeric: tabular-nums; }
+.bar { height: 8px; border-radius: 99px; background: rgba(255, 255, 255, .12); overflow: hidden; }
+.bar i {
+  display: block; height: 100%; width: 0; border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-deep), var(--accent), var(--accent-2));
+  box-shadow: 0 0 14px rgba(var(--accent-rgb), .7);
+  transition: width 1.1s cubic-bezier(.22, .9, .3, 1);
+}
+
+.cta {
+  justify-self: start; display: inline-flex; align-items: center; gap: 10px;
+  padding: 11px 18px; border-radius: 10px; font-weight: 700;
+  background: linear-gradient(120deg, var(--accent-deep), var(--accent), #7c3aed, var(--accent));
+  background-size: 300% 100%; animation: shift 5s ease-in-out infinite;
+  color: var(--on-accent);
+  box-shadow: 0 12px 28px -12px rgba(var(--accent-rgb), .8);
+}
+@keyframes shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.cta svg { width: 16px; height: 16px; transition: transform .25s ease; }
+.card:hover .cta svg { transform: translateX(4px); }
+
+/* Tarjeta "próximamente" */
+.card.soon {
+  justify-content: center; align-items: center; text-align: center; min-height: 220px;
+  background: repeating-linear-gradient(135deg, rgba(var(--accent-rgb), .06) 0 6px, transparent 6px 14px), rgba(18, 18, 40, .6);
+  border: 2px dashed var(--line); color: var(--muted); cursor: default;
+}
+.card.soon::before, .card.soon::after { display: none; }
+.card.soon:hover { transform: none; box-shadow: none; border-color: rgba(var(--accent-rgb), .5); }
+.soon .plus {
+  width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 10px;
+  border: 2px dashed rgba(var(--accent-2-rgb), .6); color: var(--accent-2); font-size: 1.6rem; line-height: 1;
+}
+.soon strong { display: block; color: var(--ink); font-size: 1rem; }
+.soon span { font-size: .85rem; }
+
+footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Anime · Manga · Progreso</span>
+    <h1>Mis rastreadores</h1>
+    <p class="sub">Elige una serie y sigue por dónde vas, en el anime o en el manga.</p>
+  </header>
+
+  <div class="stats" aria-label="Resumen">
+    <div class="stat"><b id="sSeries">1</b><span>Series</span></div>
+    <div class="stat"><b id="sEps">0</b><span>Capítulos vistos</span></div>
+    <div class="stat"><b id="sChs">0</b><span>Capítulos leídos</span></div>
+  </div>
+
+  <main class="grid">
+    <a class="card feature" href="bleach.html" style="--i:0" aria-label="Abrir el rastreador de Bleach">
+      <img class="card-fill" src="bleach-banner.png" alt="">
+      <img class="card-bg" src="bleach-banner.png" alt="">
+      <div class="card-body">
+        <div class="tags">
+          <span class="tag hot" id="bState">Empezar</span>
+          <span class="tag">406 caps. anime</span>
+          <span class="tag">686 caps. manga</span>
+        </div>
+        <h2>Bleach</h2>
+        <p class="desc">Ichigo Kurosaki, el Shinigami sustituto. Desde Agent of the Shinigami hasta La Guerra Sangrienta de los Mil Años.</p>
+        <div class="prog">
+          <div class="prog-row"><span id="bLabel">Anime</span><span id="bCount">0 / 406</span></div>
+          <div class="bar"><i id="bFill"></i></div>
+        </div>
+        <span class="cta"><span id="bCta">Empezar a ver</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <div class="card soon" style="--i:1">
+      <div>
+        <div class="plus" aria-hidden="true">+</div>
+        <strong>Próximamente</strong>
+        <span>Aquí aparecerán más series</span>
+      </div>
+    </div>
+  </main>
+
+  <footer>Tu progreso se guarda en este navegador o en tu cuenta</footer>
+</div>
+
+<script>
+// Lee el progreso de Bleach que guarda bleach.html en este navegador
+(function () {
+  var d = null;
+  try { d = JSON.parse(localStorage.getItem("bleach-tracker-v2") || "null"); } catch (e) {}
+  var anime = d ? Math.max(0, Math.min(406, Number(d.anime) || 0)) : 0;
+  var manga = d ? Math.max(0, Math.min(686, Number(d.manga) || 0)) : 0;
+  var isManga = !!(d && d.mode === "manga");
+  var cur = isManga ? manga : anime, max = isManga ? 686 : 406;
+
+  document.getElementById("sEps").textContent = anime;
+  document.getElementById("sChs").textContent = manga;
+  document.getElementById("bLabel").textContent = isManga ? "Manga" : "Anime";
+  document.getElementById("bCount").textContent = cur + " / " + max;
+
+  var started = anime > 0 || manga > 0, done = cur >= max;
+  document.getElementById("bState").textContent = done ? "Completado" : started ? "En curso" : "Empezar";
+  document.getElementById("bCta").textContent = done ? "Volver a verlo"
+    : started ? "Continuar por el " + (cur + 1)
+    : isManga ? "Empezar a leer" : "Empezar a ver";
+
+  setTimeout(function () { document.getElementById("bFill").style.width = (cur / max * 100) + "%"; }, 300);
+})();
+
+// Partículas de neón flotando de fondo (decorativo)
+(function () {
+  try {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var c = document.createElement("canvas");
+    c.setAttribute("aria-hidden", "true");
+    c.style.cssText = "position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.7";
+    document.body.insertBefore(c, document.body.firstChild);
+    var ctx = c.getContext("2d"); if (!ctx) return;
+    var W, H, parts = [];
+    function resize() { W = c.width = innerWidth; H = c.height = innerHeight; }
+    resize(); addEventListener("resize", resize);
+    function spawn(p) {
+      p.x = Math.random() * W; p.y = H + 10; p.r = 1 + Math.random() * 2.2;
+      p.vy = .25 + Math.random() * .6; p.vx = (Math.random() - .5) * .3;
+      p.a = .2 + Math.random() * .45; p.life = 0; p.max = 420 + Math.random() * 420;
+      p.col = Math.random() < .5 ? "155,92,255" : "34,211,238"; // violeta o cian
+      return p;
+    }
+    for (var i = 0; i < 42; i++) { var p = spawn({}); p.y = Math.random() * H; parts.push(p); }
+    (function tick() {
+      if (!document.hidden) {
+        ctx.clearRect(0, 0, W, H);
+        parts.forEach(function (p) {
+          p.y -= p.vy; p.x += p.vx; p.life++;
+          var fade = 1 - p.life / p.max;
+          if (fade <= 0 || p.y < -10) spawn(p);
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(" + p.col + "," + Math.max(0, p.a * fade) + ")";
+          ctx.shadowColor = "rgba(" + p.col + ",.8)"; ctx.shadowBlur = 6;
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+        });
+      }
+      requestAnimationFrame(tick);
+    })();
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
