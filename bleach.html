@@ -322,6 +322,7 @@ button:active { transform: scale(.96); }
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
 .ginvite { padding-left: 12px; border-left: 3px solid var(--accent); }
+a.glogin { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
 
 .section-banner {
@@ -408,6 +409,10 @@ button:active { transform: scale(.96); }
       <span class="kicker" id="gkick"></span>
     </div>
     <p id="gtext"></p>
+
+    <div id="glogin" hidden>
+      <a class="btn primary glogin" id="gloginlink" href="index.html">Crear cuenta o entrar</a>
+    </div>
 
     <div id="gout" hidden>
       <div class="gform">
@@ -827,12 +832,10 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
     return u + "?g=" + encodeURIComponent(code);
   }
 
+  // Para los grupos hace falta cuenta (se crea o se inicia sesión en index.html)
   async function ensureUser() {
-    var r = await sb.auth.getSession();
-    if (r.data && r.data.session) { uid = r.data.session.user.id; return; }
-    var s = await sb.auth.signInAnonymously();
-    if (s.error) throw s.error;
-    uid = s.data.user.id;
+    if (!account) throw new Error("login");
+    uid = account.id;
   }
 
   function myRow() {
@@ -907,8 +910,8 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
       state.group = "";
       try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
       setSync("err");
-      gmsg = /anonymous/i.test(String(err && err.message))
-        ? "No se pudo entrar: activa los inicios de sesión anónimos en Supabase (Authentication → Sign In / Providers → Anonymous)."
+      gmsg = String(err && err.message) === "login"
+        ? ""
         : "No se pudo conectar con el grupo. Revisa la conexión y la configuración de Supabase.";
     }
     busy = false; renderGroup(); renderPeers();
@@ -942,15 +945,32 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
   });
 
   function renderGroup() {
-    var inG = !!(configured && state.group);
-    $("gout").hidden = !configured || inG;
+    var inG = !!(configured && state.group && account);
+    var needLogin = configured && accountChecked && !account;
+    var invited = cleanCode(new URLSearchParams(location.search).get("g"));
+    $("gout").hidden = !configured || inG || !account;
     $("gin").hidden = !inG;
+    $("glogin").hidden = !needLogin;
     $("spoil").checked = state.hideAhead;
     $("gcreate").disabled = $("gjoin").disabled = $("gleave").disabled = busy;
-    if (!$("gname").value && state.name) $("gname").value = state.name;
+    if (!$("gname").value) $("gname").value = state.name || (account ? account.email.split("@")[0] : "");
     if (!configured) {
       $("gkick").textContent = "";
       $("gtext").textContent = "Para compartir tu progreso hay que conectar la página a Supabase (pon la URL y la clave en el código). Mientras tanto, tu progreso se guarda en este navegador.";
+      return;
+    }
+    if (!accountChecked) {
+      $("gkick").textContent = "";
+      $("gtext").textContent = "Comprobando tu cuenta…";
+      return;
+    }
+    if (needLogin) {
+      // Al terminar en la portada, vuelve aquí con el código del grupo
+      $("gloginlink").href = "index.html?next=" + encodeURIComponent("bleach.html" + (invited ? "?g=" + invited : ""));
+      $("gkick").textContent = "Necesitas una cuenta";
+      $("gtext").textContent = invited
+        ? "Te han invitado al grupo " + invited + ". Para unirte, crea una cuenta o entra con la tuya; después volverás aquí automáticamente."
+        : "Para ver el progreso con tus amigos necesitas una cuenta. Créala o entra con la tuya y volverás aquí.";
       return;
     }
     if (inG) {
@@ -959,7 +979,6 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
       $("gtext").textContent = gmsg || "Pásale este código o el enlace a quien quieras. Cada persona ve por dónde va la otra, aunque una siga el anime y otra el manga.";
     } else {
       $("gkick").textContent = "Solo tú ves tu progreso";
-      var invited = cleanCode(new URLSearchParams(location.search).get("g"));
       if (invited && !$("gjoincode").value) $("gjoincode").value = invited;
       $("gtext").textContent = gmsg || (invited
         ? "Te han invitado al grupo " + invited + ". Escribe tu nombre arriba y pulsa Unirme."
@@ -973,7 +992,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
 
   function renderPeers() {
     var ul = $("people");
-    if (!configured || !state.group) { ul.textContent = ""; return; }
+    if (!configured || !state.group || !account) { ul.textContent = ""; return; }
     var myMode = state.mode, unit = myMode === "manga" ? "del manga" : "del anime";
     var mine = state[myMode];
     ul.textContent = "";
@@ -1015,7 +1034,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
   //  CUENTA CON CORREO — se inicia sesión en index.html; aquí se reconoce
   //  la sesión y el progreso se guarda en tu usuario de Supabase
   // =====================================================================
-  var account = null;
+  var account = null, accountChecked = false;
 
   function isRealUser(u) { return !!(u && !u.is_anonymous && u.email); }
 
@@ -1043,7 +1062,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
   }
 
   async function reconnectGroup() {
-    if (!configured || !state.group) return;
+    if (!configured || !state.group || !account) return;
     setSync("wait");
     try {
       await ensureUser();
@@ -1065,7 +1084,9 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
         mergeCloud(u);
       }
     } catch (e) {}
-    if (!state.group) setSync("local");
+    accountChecked = true;
+    renderGroup(); renderPeers();
+    if (!state.group || !account) setSync("local");
     await reconnectGroup();
   }
 

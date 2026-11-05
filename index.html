@@ -368,6 +368,13 @@ renderBleach(null);
   var resetMode = 0;
   var USER_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>';
 
+  // Si vienes de un grupo de Bleach (?next=bleach.html?g=CODIGO), al entrar vuelves allí.
+  // Solo se aceptan páginas de esta misma web.
+  var NEXT = (function () {
+    var n = new URLSearchParams(location.search).get("next") || "";
+    return /^[\w-]+\.html(\?g=[A-Z0-9]{1,6})?$/.test(n) ? n : "";
+  })();
+
   function isRealUser(u) { return !!(u && !u.is_anonymous && u.email); }
   function cloudOf(u) { return u && u.user_metadata && u.user_metadata.bleach; }
 
@@ -400,6 +407,7 @@ renderBleach(null);
     $("apass").value = $("acode").value = $("anewpass").value = "";
     renderBleach(cloudOf(u));
     openPop(false);
+    if (NEXT) location.href = NEXT;
   }
 
   async function doAuth(kind) {
@@ -518,6 +526,8 @@ renderBleach(null);
         renderBleach(cloudOf(account));
       }
     } catch (e) {}
+    if (NEXT && account && !resetMode) { location.href = NEXT; return; }
+    if (NEXT && !account && !amsg) amsg = "Para unirte al grupo de tu amigo, crea una cuenta o entra con la tuya. Después volverás a Bleach.";
     render();
   })();
 })();
