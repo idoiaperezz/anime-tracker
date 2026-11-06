@@ -1007,20 +1007,31 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
 
   function li(cls) { var e = document.createElement("li"); e.className = cls; return e; }
   function span(cls, txt) { var e = document.createElement("span"); e.className = cls; e.textContent = txt; return e; }
-  function posLabel(modo, anime, manga) { return modo === "manga" ? "Manga · cap. " + manga : "Anime · cap. " + anime; }
+  // Muestra anime y manga si la persona lleva los dos
+  function posLabel(anime, manga) {
+    var parts = [];
+    if (anime > 0) parts.push("Anime · cap. " + anime);
+    if (manga > 0) parts.push("Manga · cap. " + manga);
+    return parts.length ? parts.join(" · ") : "Sin empezar";
+  }
+  // Hasta dónde ha llegado alguien, medido en "unit" (anime o manga): lo más avanzado de lo que lleve en cualquiera de los dos
+  function reach(unit, anime, manga) {
+    return unit === "manga" ? Math.max(manga, mangaAt(anime)) : Math.max(anime, animeAt(manga));
+  }
 
   function renderPeers() {
     var ul = $("people");
     if (!configured || !state.group || !account) { ul.textContent = ""; return; }
     var myMode = state.mode, unit = myMode === "manga" ? "del manga" : "del anime";
-    var mine = state[myMode];
+    var mine = reach(myMode, state.anime, state.manga);
     ul.textContent = "";
     var me = li("person");
     me.appendChild(span("pname", "Tú"));
-    me.appendChild(span("pep", posLabel(state.mode, state.anime, state.manga)));
+    me.appendChild(span("pep", posLabel(state.anime, state.manga)));
     ul.appendChild(me);
     var ids = Object.keys(peers).filter(function (id) { return id !== uid; });
-    ids.sort(function (x, y) { return (peers[y][myMode] || 0) - (peers[x][myMode] || 0); });
+    function reachOf(p) { return reach(myMode, clampInt(p.anime, 0, TOTAL), clampInt(p.manga, 0, MANGA_TOTAL)); }
+    ids.sort(function (x, y) { return reachOf(peers[y]) - reachOf(peers[x]); });
     if (!ids.length) {
       var none = li("person");
       none.appendChild(span("pnote", "Todavía no hay nadie más. Pásale el código " + state.group + " a un amigo."));
@@ -1030,16 +1041,20 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
     ids.forEach(function (id) {
       var p = peers[id];
       var pa = clampInt(p.anime, 0, TOTAL), pm = clampInt(p.manga, 0, MANGA_TOTAL);
-      var theirMode = p.modo === "manga" ? "manga" : "anime";
-      var theirs = theirMode === myMode ? (myMode === "manga" ? pm : pa)
-        : (myMode === "manga" ? mangaAt(pa) : animeAt(pm));
-      var arcEp = theirMode === "manga" ? animeAt(pm) : pa;
+      var theirs = reach(myMode, pa, pm);
+      var arcEp = Math.max(pa, animeAt(pm));
       var d = theirs - mine;
       var arc = arcOf(arcEp);
       var row = li("person");
       row.appendChild(span("pname", p.nombre || "Alguien"));
-      row.appendChild(span("pep", posLabel(p.modo, pa, pm)));
-      var conv = theirMode !== myMode ? " Equivale al cap. ≈ " + theirs + " " + unit + "." : "";
+      row.appendChild(span("pep", posLabel(pa, pm)));
+      // Si lo más avanzado viene del otro formato, explica la equivalencia
+      var own = myMode === "manga" ? pm : pa;
+      var conv = theirs > own
+        ? (myMode === "manga"
+          ? " Por el anime (cap. " + pa + ") equivale al cap. ≈ " + theirs + " del manga."
+          : " Por el manga (cap. " + pm + ") equivale al cap. ≈ " + theirs + " del anime.")
+        : "";
       var note;
       if (d === 0) note = "Vais a la par" + (arc ? ", en " + arc[0] : "") + ".";
       else if (d > 0) note = "Te saca " + plural(d, "capítulo", "capítulos") + " " + unit + (state.hideAhead ? ". Arco oculto para no darte spoilers." : (arc ? ", en " + arc[0] + "." : "."));
