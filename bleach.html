@@ -376,7 +376,7 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
       <button type="button" id="mManga" aria-pressed="false">Manga</button>
     </div>
     <div class="score-main">
-      <div class="big"><output id="cur" aria-live="polite">0</output><span id="of">/ 406</span></div>
+      <div class="big"><output id="cur" aria-live="polite">0</output><span id="of">/ 416</span></div>
       <div class="where">
         <span class="kicker" id="kick">Último capítulo visto</span>
         <strong id="arcname">Todavía no has empezado</strong>
@@ -396,7 +396,7 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
     <div class="tools">
       <form class="jump" id="jumpform">
         <label for="jump" id="jumplabel">Voy por el capítulo del anime</label>
-        <input id="jump" type="number" min="0" max="406" inputmode="numeric" placeholder="0">
+        <input id="jump" type="number" min="0" max="416" inputmode="numeric" placeholder="0">
         <button class="btn" type="submit">Guardar</button>
       </form>
       <label class="check" id="skipwrap"><input type="checkbox" id="skip"> Saltar relleno</label>
@@ -452,7 +452,7 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
   <div class="arcs" id="arcs"></div>
   <div class="arcs" id="marcs" hidden></div>
   <p class="skipnote" id="skipnote" hidden></p>
-  <p class="foot">El arco «Pasado: El Evento Visored» del anime adapta el flashback Turn Back the Pendulum, que en el manga tiene numeración propia (−108 a −96) y no aparece en la rejilla del manga. Listado hasta el capítulo 406 del anime (La guerra sangrienta de los mil años – Parte 3: The Conflict) y el manga completo (686 capítulos). Las equivalencias entre anime y manga son aproximadas (unos 2 capítulos de margen): salen de los rangos por arco de OtakusNotes y Beebom, repartidos de forma uniforme dentro de cada arco.</p>
+  <p class="foot">El arco «Pasado: El Evento Visored» del anime adapta el flashback Turn Back the Pendulum, que en el manga tiene numeración propia (−108 a −96) y no aparece en la rejilla del manga. Incluye el anime completo (416 capítulos, hasta La guerra sangrienta de los mil años – Parte 4: The Calamity) y el manga completo (686 capítulos). Las equivalencias entre anime y manga son aproximadas (unos 2 capítulos de margen): salen de los rangos por arco de OtakusNotes y Beebom, repartidos de forma uniforme dentro de cada arco.</p>
 </div>
 
 <!-- Supabase: si la librería no carga, la página sigue funcionando en modo local -->
@@ -467,7 +467,7 @@ var SUPABASE_URL = "https://ujsilpoaayexftxfngmv.supabase.co";
 var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
 
 (function () {
-  var TOTAL = 406;       // capítulos del anime en la lista
+  var TOTAL = 416;       // capítulos del anime en la lista
   var MANGA_TOTAL = 686; // capítulos del manga
   var KEY = "bleach-tracker-v2";
   // [nombre, desde, hasta, relleno, manga desde, manga hasta]
@@ -490,10 +490,11 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
     ["Agente Perdido", 343, 366, 0, 424, 479],
     ["La guerra sangrienta de los mil años – Parte 1: The Blood Warfare", 367, 379, 0, 480, 542],
     ["La guerra sangrienta de los mil años – Parte 2: The Separation", 380, 392, 0, 543, 609],
-    ["La guerra sangrienta de los mil años – Parte 3: The Conflict", 393, 406, 0, 610, null]
+    ["La guerra sangrienta de los mil años – Parte 3: The Conflict", 393, 406, 0, 610, 661],
+    ["La guerra sangrienta de los mil años – Parte 4: The Calamity", 407, 416, 0, 662, 686]
   ];
-  var LAST_EXACT_CH = 609;   // a partir de aquí el anime no tiene equivalencia exacta
-  var LAST_EXACT_EP = 392;
+  var LAST_EXACT_CH = 686;   // a partir de aquí el anime no tiene equivalencia exacta
+  var LAST_EXACT_EP = 416;
 
   var state = { mode: "anime", anime: 0, manga: 0, hideFiller: false, hideAhead: false, group: "", name: "" };
   var fillerSet = {};

@@ -297,13 +297,13 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
       <div class="card-body">
         <div class="tags">
           <span class="tag hot" id="bState">Empezar</span>
-          <span class="tag">406 caps. anime</span>
+          <span class="tag">416 caps. anime</span>
           <span class="tag">686 caps. manga</span>
         </div>
         <h2>Bleach</h2>
         <p class="desc">Ichigo Kurosaki, el Shinigami sustituto. Desde Shinigami Sustituto hasta La guerra sangrienta de los mil años.</p>
         <div class="prog">
-          <div class="prog-row"><span id="bLabel">Anime</span><span id="bCount">0 / 406</span></div>
+          <div class="prog-row"><span id="bLabel">Anime</span><span id="bCount">0 / 416</span></div>
           <div class="bar"><i id="bFill"></i></div>
         </div>
         <span class="cta"><span id="bCta">Empezar a ver</span>
@@ -333,10 +333,10 @@ function readLocalBleach() {
 }
 function renderBleach(cloud) {
   var d = readLocalBleach() || {}, c = cloud || {};
-  var anime = Math.max(0, Math.min(406, Math.max(Number(d.anime) || 0, Number(c.anime) || 0)));
+  var anime = Math.max(0, Math.min(416, Math.max(Number(d.anime) || 0, Number(c.anime) || 0)));
   var manga = Math.max(0, Math.min(686, Math.max(Number(d.manga) || 0, Number(c.manga) || 0)));
   var isManga = (c.mode || d.mode) === "manga";
-  var cur = isManga ? manga : anime, max = isManga ? 686 : 406;
+  var cur = isManga ? manga : anime, max = isManga ? 686 : 416;
 
   document.getElementById("sEps").textContent = anime;
   document.getElementById("sChs").textContent = manga;
