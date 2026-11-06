@@ -452,7 +452,7 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
   <div class="arcs" id="arcs"></div>
   <div class="arcs" id="marcs" hidden></div>
   <p class="skipnote" id="skipnote" hidden></p>
-  <p class="foot">El arco The Past del anime adapta el flashback Turn Back the Pendulum, que en el manga tiene numeración propia (−108 a −96) y no aparece en la rejilla del manga. Listado hasta el capítulo 406 del anime (Thousand-Year Blood War: The Conflict) y el manga completo (686 capítulos). Las equivalencias entre anime y manga son aproximadas (unos 2 capítulos de margen): salen de los rangos por arco de OtakusNotes y Beebom, repartidos de forma uniforme dentro de cada arco.</p>
+  <p class="foot">El arco «Pasado: El Evento Visored» del anime adapta el flashback Turn Back the Pendulum, que en el manga tiene numeración propia (−108 a −96) y no aparece en la rejilla del manga. Listado hasta el capítulo 406 del anime (La guerra sangrienta de los mil años – Parte 3: The Conflict) y el manga completo (686 capítulos). Las equivalencias entre anime y manga son aproximadas (unos 2 capítulos de margen): salen de los rangos por arco de OtakusNotes y Beebom, repartidos de forma uniforme dentro de cada arco.</p>
 </div>
 
 <!-- Supabase: si la librería no carga, la página sigue funcionando en modo local -->
@@ -472,25 +472,25 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
   var KEY = "bleach-tracker-v2";
   // [nombre, desde, hasta, relleno, manga desde, manga hasta]
   var ARCS = [
-    ["Agent of the Shinigami", 1, 20, 0, 1, 70],
-    ["Soul Society: The Sneak Entry", 21, 41, 0, 71, 117],
-    ["Soul Society: The Rescue", 42, 63, 0, 118, 182],
-    ["The Bount", 64, 91, 1],
-    ["The Bount: Assault on Soul Society", 92, 109, 1],
-    ["Arrancar: The Arrival", 110, 131, 0, 183, 229],
-    ["Arrancar: The Hueco Mundo Sneak Entry", 132, 151, 0, 230, 251],
-    ["Arrancar: The Fierce Fight", 152, 167, 0, 252, 286],
-    ["The New Captain Shusuke Amagai", 168, 189, 1],
-    ["Arrancar vs. Shinigami", 190, 205, 0, 287, 315],
-    ["The Past", 206, 212, 0, null, null],
-    ["Arrancar: Decisive Battle of Karakura", 213, 229, 0, 316, 340],
-    ["Zanpakuto Unknown Tales", 230, 265, 1],
-    ["Arrancar: Downfall", 266, 316, 0, 341, 423],
-    ["The Gotei 13 Invasion", 317, 342, 1],
-    ["The Lost Substitute Shinigami", 343, 366, 0, 424, 479],
-    ["Thousand-Year Blood War", 367, 379, 0, 480, 542],
-    ["Thousand-Year Blood War: The Separation", 380, 392, 0, 543, 609],
-    ["Thousand-Year Blood War: The Conflict", 393, 406, 0, 610, null]
+    ["Shinigami Sustituto", 1, 20, 0, 1, 70],
+    ["Sociedad de Almas: La entrada furtiva", 21, 41, 0, 71, 117],
+    ["Sociedad de Almas: El rescate", 42, 63, 0, 118, 182],
+    ["Bount", 64, 91, 1],
+    ["Bount: La invasión a la Sociedad de Almas", 92, 109, 1],
+    ["Arrancar: La llegada", 110, 131, 0, 183, 229],
+    ["Arrancar: Infiltración a Hueco Mundo", 132, 151, 0, 230, 251],
+    ["Arrancar: Fieras batallas", 152, 167, 0, 252, 286],
+    ["El nuevo capitán Shusuke Amagai", 168, 189, 1],
+    ["Arrancar vs Shinigami", 190, 205, 0, 287, 315],
+    ["Pasado: El Evento Visored", 206, 212, 0, null, null],
+    ["Arrancar: Batalla Decisiva de Karakura", 213, 229, 0, 316, 340],
+    ["La historia alterna de las zanpakuto", 230, 265, 1],
+    ["Arrancar: La caída", 266, 316, 0, 341, 423],
+    ["Invasión Armada al Gotei 13", 317, 342, 1],
+    ["Agente Perdido", 343, 366, 0, 424, 479],
+    ["La guerra sangrienta de los mil años – Parte 1: The Blood Warfare", 367, 379, 0, 480, 542],
+    ["La guerra sangrienta de los mil años – Parte 2: The Separation", 380, 392, 0, 543, 609],
+    ["La guerra sangrienta de los mil años – Parte 3: The Conflict", 393, 406, 0, 610, null]
   ];
   var LAST_EXACT_CH = 609;   // a partir de aquí el anime no tiene equivalencia exacta
   var LAST_EXACT_EP = 392;
@@ -570,7 +570,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
     }
     var ch = state.manga;
     if (ch === 0) return "En el anime, el manga empieza en el capítulo 1.";
-    if (ch > LAST_EXACT_CH) return "En el anime equivale a pasar del cap. " + LAST_EXACT_EP + ". Desde el 393 (The Conflict) no hay equivalencia exacta.";
+    if (ch > LAST_EXACT_CH) return "En el anime equivale a pasar del cap. " + LAST_EXACT_EP + ". Desde el 393 (Parte 3: The Conflict) no hay equivalencia exacta.";
     var e = animeAt(ch), r = chapRange(e);
     if (r && ch < r[1]) return "En el anime equivale a la mitad del cap. ≈ " + e + " (que cubre los caps. ≈ " + r[0] + "–" + r[1] + " del manga).";
     return "En el anime equivale a haber visto hasta el cap. ≈ " + e + ".";
@@ -690,7 +690,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
     } else {
       $("kick").textContent = "Último capítulo leído del manga";
       var ma = arcOf(animeAt(state.manga));
-      $("arcname").textContent = state.manga > LAST_EXACT_CH ? "Thousand-Year Blood War: The Conflict" : (ma ? ma[0] : "");
+      $("arcname").textContent = state.manga > LAST_EXACT_CH ? ARCS[ARCS.length - 1][0] : (ma ? ma[0] : "");
     }
 
     if (nx > max) $("nextline").textContent = isA ? "Has llegado al último capítulo de esta lista." : "Has terminado el manga.";
@@ -1082,6 +1082,15 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
         if (f.data && f.data.user) u = f.data.user;
         account = u; uid = u.id;
         mergeCloud(u);
+        // En otro navegador no se sabe tu grupo: se recupera de tu fila en Supabase
+        if (!state.group) {
+          var g = await sb.from("progreso").select("grupo,nombre").eq("user_id", uid).maybeSingle();
+          if (g.data && g.data.grupo) {
+            state.group = g.data.grupo;
+            if (!state.name) state.name = g.data.nombre || "";
+            try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+          }
+        }
       }
     } catch (e) {}
     accountChecked = true;
