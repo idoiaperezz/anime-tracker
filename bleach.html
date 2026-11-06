@@ -432,6 +432,10 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
         <button class="btn" id="gcopy" type="button">Copiar enlace</button>
         <button class="btn" id="gleave" type="button">Salir del grupo</button>
       </div>
+      <div class="conv" id="gswitch" hidden>
+        <span id="gswitchtext"></span>
+        <button class="btn" id="gswitchbtn" type="button">Cambiar de grupo</button>
+      </div>
       <label class="check"><input type="checkbox" id="spoil"> Ocultar el arco de quien va por delante (sin spoilers)</label>
     </div>
     <ul class="people" id="people"></ul>
@@ -857,17 +861,19 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
     var row = myRow();
     var r = await sb.from("progreso").upsert(row);
     pushing = false;
-    if (r.error) setSync("err"); else { setSync("ok"); peers[uid] = row; }
+    if (r.error) groupError("No se pudo guardar tu progreso en el grupo", r.error);
+    else { setSync("ok"); peers[uid] = row; }
     if (pushDirty) pushNow();
   }
 
   async function loadGroup() {
     var r = await sb.from("progreso").select("user_id,nombre,modo,anime,manga").eq("grupo", state.group);
-    if (r.error) { setSync("err"); return; }
+    if (r.error) { groupError("No se pudo cargar el grupo", r.error); return; }
     var next = {};
     (r.data || []).forEach(function (row) { next[row.user_id] = row; });
     peers = next;
     setSync("ok");
+    if (gmsg) { gmsg = ""; renderGroup(); }
     renderPeers();
   }
 
@@ -938,6 +944,10 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
   });
   $("gjoincode").addEventListener("input", function (e) { e.target.value = cleanCode(e.target.value); });
   $("gleave").addEventListener("click", function () { if (!busy) leaveGroup(); });
+  $("gswitchbtn").addEventListener("click", function () {
+    var code = cleanCode(new URLSearchParams(location.search).get("g"));
+    if (!busy && code.length === 6) { peers = {}; enterGroup(code); }
+  });
   $("gcopy").addEventListener("click", function () {
     var link = shareLink(state.group), btn = $("gcopy");
     function done() { btn.textContent = "Enlace copiado"; setTimeout(function () { btn.textContent = "Copiar enlace"; }, 2000); }
@@ -973,6 +983,14 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
         ? "Te han invitado al grupo " + invited + ". Para unirte, crea una cuenta o entra con la tuya; después volverás aquí automáticamente."
         : "Para ver el progreso con tus amigos necesitas una cuenta. Créala o entra con la tuya y volverás aquí.";
       return;
+    }
+    // Te han invitado a otro grupo distinto del tuyo: ofrece cambiarte (solo se puede estar en uno)
+    var other = inG && invited && invited !== state.group;
+    $("gswitch").hidden = !other;
+    if (other) {
+      $("gswitchtext").textContent = "Te han invitado al grupo " + invited + ", pero ahora estás en el " + state.group + ".";
+      $("gswitchbtn").textContent = "Cambiar al grupo " + invited;
+      $("gswitchbtn").disabled = busy;
     }
     if (inG) {
       $("gkick").textContent = "Compartiendo";
@@ -1071,7 +1089,14 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
       if (r.error) throw r.error;
       await loadGroup();
       subscribe();
-    } catch (e) { setSync("err"); }
+    } catch (e) { groupError("No se pudo conectar con el grupo", e); }
+  }
+
+  // Muestra el motivo real del fallo en la sección de amigos (antes solo se veía «Sin conexión»)
+  function groupError(what, err) {
+    setSync("err");
+    gmsg = what + ": " + (err && err.message ? err.message : "revisa la conexión") + ".";
+    renderGroup();
   }
 
   async function startAccount() {
