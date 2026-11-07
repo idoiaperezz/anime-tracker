@@ -474,6 +474,8 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
   var TOTAL = 416;       // capítulos del anime en la lista
   var MANGA_TOTAL = 686; // capítulos del manga
   var KEY = "bleach-tracker-v2";
+  var TABLE = "progreso"; // tabla de grupos, compartida con las demás series
+  var SERIE = "bleach";    // así se distinguen las filas de esta serie en la tabla
   // [nombre, desde, hasta, relleno, manga desde, manga hasta]
   var ARCS = [
     ["Shinigami Sustituto", 1, 20, 0, 1, 70],
@@ -844,7 +846,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
   }
 
   function myRow() {
-    return { user_id: uid, grupo: state.group, nombre: state.name || "Alguien", modo: state.mode, anime: state.anime, manga: state.manga, updated_at: new Date().toISOString() };
+    return { user_id: uid, serie: SERIE, grupo: state.group, nombre: state.name || "Alguien", modo: state.mode, anime: state.anime, manga: state.manga, updated_at: new Date().toISOString() };
   }
 
   // Envío con antirrebote: una escritura cada vez, solo si hay cambios
@@ -859,7 +861,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
     if (pushing || !pushDirty || !state.group || !uid) return;
     pushing = true; pushDirty = false;
     var row = myRow();
-    var r = await sb.from("progreso").upsert(row);
+    var r = await sb.from(TABLE).upsert(row, { onConflict: "user_id,serie" });
     pushing = false;
     if (r.error) groupError("No se pudo guardar tu progreso en el grupo", r.error);
     else { setSync("ok"); peers[uid] = row; }
@@ -867,7 +869,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
   }
 
   async function loadGroup() {
-    var r = await sb.from("progreso").select("user_id,nombre,modo,anime,manga").eq("grupo", state.group);
+    var r = await sb.from(TABLE).select("user_id,nombre,modo,anime,manga").eq("serie", SERIE).eq("grupo", state.group);
     if (r.error) { groupError("No se pudo cargar el grupo", r.error); return; }
     var next = {};
     (r.data || []).forEach(function (row) { next[row.user_id] = row; });
@@ -881,10 +883,11 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
     unsubscribe();
     var code = state.group;
     channel = sb.channel("grupo-" + code)
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "progreso", filter: "grupo=eq." + code }, onRow)
-      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "progreso", filter: "grupo=eq." + code }, onRow)
-      .on("postgres_changes", { event: "DELETE", schema: "public", table: "progreso" }, function (p) {
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: TABLE, filter: "grupo=eq." + code }, onRow)
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: TABLE, filter: "grupo=eq." + code }, onRow)
+      .on("postgres_changes", { event: "DELETE", schema: "public", table: TABLE }, function (p) {
         var id = p.old && p.old.user_id;
+        if (p.old && p.old.serie && p.old.serie !== SERIE) return;
         if (id && peers[id]) { delete peers[id]; renderPeers(); }
       })
       .subscribe();
@@ -892,7 +895,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
     refreshTimer = setInterval(function () { if (!document.hidden) loadGroup(); }, 30000);
   }
   function onRow(p) {
-    var row = p.new; if (!row || row.grupo !== state.group) return;
+    var row = p.new; if (!row || row.grupo !== state.group || row.serie !== SERIE) return;
     peers[row.user_id] = row; renderPeers();
   }
   function unsubscribe() {
@@ -908,7 +911,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
       await ensureUser();
       state.name = name; state.group = code;
       try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
-      var r = await sb.from("progreso").upsert(myRow());
+      var r = await sb.from(TABLE).upsert(myRow(), { onConflict: "user_id,serie" });
       if (r.error) throw r.error;
       history.replaceState(null, "", shareLink(code));
       await loadGroup();
@@ -926,7 +929,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
 
   async function leaveGroup() {
     busy = true; renderGroup();
-    try { if (uid) await sb.from("progreso").delete().eq("user_id", uid); } catch (e) {}
+    try { if (uid) await sb.from(TABLE).delete().eq("user_id", uid).eq("serie", SERIE); } catch (e) {}
     unsubscribe();
     state.group = ""; peers = {};
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
@@ -1100,7 +1103,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
     setSync("wait");
     try {
       await ensureUser();
-      var r = await sb.from("progreso").upsert(myRow());
+      var r = await sb.from(TABLE).upsert(myRow(), { onConflict: "user_id,serie" });
       if (r.error) throw r.error;
       await loadGroup();
       subscribe();
@@ -1125,7 +1128,7 @@ var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
         mergeCloud(u);
         // En otro navegador no se sabe tu grupo: se recupera de tu fila en Supabase
         if (!state.group) {
-          var g = await sb.from("progreso").select("grupo,nombre").eq("user_id", uid).maybeSingle();
+          var g = await sb.from(TABLE).select("grupo,nombre").eq("user_id", uid).eq("serie", SERIE).maybeSingle();
           if (g.data && g.data.grupo) {
             state.group = g.data.grupo;
             if (!state.name) state.name = g.data.nombre || "";

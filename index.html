@@ -285,7 +285,7 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
   </header>
 
   <div class="stats" aria-label="Resumen">
-    <div class="stat"><b id="sSeries">1</b><span>Series</span></div>
+    <div class="stat"><b id="sSeries">2</b><span>Series</span></div>
     <div class="stat"><b id="sEps">0</b><span>Capítulos vistos</span></div>
     <div class="stat"><b id="sChs">0</b><span>Capítulos leídos</span></div>
   </div>
@@ -312,7 +312,28 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
       </div>
     </a>
 
-    <div class="card soon" style="--i:1">
+    <a class="card feature" href="blackclover.html" style="--i:1" aria-label="Abrir el rastreador de Black Clover">
+      <img class="card-fill" src="blackclover-banner.jpg" alt="" style="object-fit: cover">
+      <img class="card-bg" src="blackclover-banner.jpg" alt="" style="object-fit: cover">
+      <div class="card-body">
+        <div class="tags">
+          <span class="tag hot" id="cState">Empezar</span>
+          <span class="tag">176 caps. anime · en emisión</span>
+          <span class="tag">392 caps. manga</span>
+        </div>
+        <h2>Black Clover</h2>
+        <p class="desc">Asta y Yuno, dos huérfanos que sueñan con ser el Rey Mago, del arco «Magic Knights Entrance» hasta «Spade Kingdom Raid».</p>
+        <div class="prog">
+          <div class="prog-row"><span id="cLabel">Anime</span><span id="cCount">0 / 176</span></div>
+          <div class="bar"><i id="cFill"></i></div>
+        </div>
+        <span class="cta"><span id="cCta">Empezar a ver</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <div class="card soon" style="--i:2">
       <div>
         <div class="plus" aria-hidden="true">+</div>
         <strong>Próximamente</strong>
@@ -327,31 +348,40 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
 <!-- Supabase: si la librería no carga, la portada sigue funcionando sin cuenta -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
-// Progreso de Bleach: lo que guarda bleach.html en este navegador y, con sesión iniciada, lo de tu cuenta
-function readLocalBleach() {
-  try { return JSON.parse(localStorage.getItem("bleach-tracker-v2") || "null"); } catch (e) { return null; }
+// Progreso de cada serie: lo que guarda su página en este navegador y, con sesión iniciada, lo de tu cuenta
+// id: prefijo de los elementos de su tarjeta · key: localStorage de su página · cloud: clave dentro de tu cuenta
+var SERIES = [
+  { id: "b", key: "bleach-tracker-v2", cloud: "bleach", animeMax: 416, mangaMax: 686 },
+  { id: "c", key: "blackclover-tracker-v1", cloud: "blackclover", animeMax: 176, mangaMax: 392 }
+];
+function readLocal(key) {
+  try { return JSON.parse(localStorage.getItem(key) || "null"); } catch (e) { return null; }
 }
-function renderBleach(cloud) {
-  var d = readLocalBleach() || {}, c = cloud || {};
-  var anime = Math.max(0, Math.min(416, Math.max(Number(d.anime) || 0, Number(c.anime) || 0)));
-  var manga = Math.max(0, Math.min(686, Math.max(Number(d.manga) || 0, Number(c.manga) || 0)));
-  var isManga = (c.mode || d.mode) === "manga";
-  var cur = isManga ? manga : anime, max = isManga ? 686 : 416;
+// Para el aviso de grupos de bleach.html al cambiar de cuenta
+function readLocalBleach() { return readLocal("bleach-tracker-v2"); }
+function renderSeries(meta) {
+  var totalEps = 0, totalChs = 0;
+  SERIES.forEach(function (s) {
+    var d = readLocal(s.key) || {}, c = (meta && meta[s.cloud]) || {};
+    var anime = Math.max(0, Math.min(s.animeMax, Math.max(Number(d.anime) || 0, Number(c.anime) || 0)));
+    var manga = Math.max(0, Math.min(s.mangaMax, Math.max(Number(d.manga) || 0, Number(c.manga) || 0)));
+    var isManga = (c.mode || d.mode) === "manga";
+    var cur = isManga ? manga : anime, max = isManga ? s.mangaMax : s.animeMax;
+    totalEps += anime; totalChs += manga;
 
-  document.getElementById("sEps").textContent = anime;
-  document.getElementById("sChs").textContent = manga;
-  document.getElementById("bLabel").textContent = isManga ? "Manga" : "Anime";
-  document.getElementById("bCount").textContent = cur + " / " + max;
-
-  var started = anime > 0 || manga > 0, done = cur >= max;
-  document.getElementById("bState").textContent = done ? "Completado" : started ? "En curso" : "Empezar";
-  document.getElementById("bCta").textContent = done ? "Volver a verlo"
-    : started ? "Continuar por el " + (cur + 1)
-    : isManga ? "Empezar a leer" : "Empezar a ver";
-
-  setTimeout(function () { document.getElementById("bFill").style.width = (cur / max * 100) + "%"; }, 300);
+    document.getElementById(s.id + "Label").textContent = isManga ? "Manga" : "Anime";
+    document.getElementById(s.id + "Count").textContent = cur + " / " + max;
+    var started = anime > 0 || manga > 0, done = cur >= max;
+    document.getElementById(s.id + "State").textContent = done ? "Completado" : started ? "En curso" : "Empezar";
+    document.getElementById(s.id + "Cta").textContent = done ? "Volver a verlo"
+      : started ? "Continuar por el " + (cur + 1)
+      : isManga ? "Empezar a leer" : "Empezar a ver";
+    setTimeout(function () { document.getElementById(s.id + "Fill").style.width = (cur / max * 100) + "%"; }, 300);
+  });
+  document.getElementById("sEps").textContent = totalEps;
+  document.getElementById("sChs").textContent = totalChs;
 }
-renderBleach(null);
+renderSeries(null);
 
 // =====================================================================
 //  CUENTA CON SUPABASE — la sesión se comparte con bleach.html
@@ -377,7 +407,7 @@ renderBleach(null);
   })();
 
   function isRealUser(u) { return !!(u && !u.is_anonymous && u.email); }
-  function cloudOf(u) { return u && u.user_metadata && u.user_metadata.bleach; }
+  function cloudOf(u) { return u && u.user_metadata; }
 
   function authError(err) {
     var m = String(err && err.message || "");
@@ -406,7 +436,7 @@ renderBleach(null);
   function signedIn(u) {
     account = u; resetMode = 0;
     $("apass").value = $("acode").value = $("anewpass").value = "";
-    renderBleach(cloudOf(u));
+    renderSeries(cloudOf(u));
     openPop(false);
     if (NEXT) location.href = NEXT;
   }
@@ -434,7 +464,7 @@ renderBleach(null);
     await dropAnonGroupRow();
     try { await sb.auth.signOut(); } catch (e) {}
     account = null; amsg = ""; abusy = false;
-    renderBleach(null); openPop(false); render();
+    renderSeries(null); openPop(false); render();
   }
 
   async function sendReset() {
@@ -524,7 +554,7 @@ renderBleach(null);
       if (isRealUser(u)) {
         var f = await sb.auth.getUser(); // datos frescos por si guardaste desde otro dispositivo
         account = (f.data && f.data.user) || u;
-        renderBleach(cloudOf(account));
+        renderSeries(cloudOf(account));
       }
     } catch (e) {}
     if (NEXT && account && !resetMode) { location.href = NEXT; return; }
