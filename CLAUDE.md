@@ -8,7 +8,9 @@ Web estática (GitHub Pages) para seguir por dónde vas en cada anime y su manga
 - `data/catalogo.js`: series añadidas a mano (Bleach, Black Clover). Lo que hay aquí siempre manda.
 - `data/catalogo-auto.js`: series importadas de AniList con `herramientas/importar.mjs`. Se regenera; no se edita a mano.
 - `data/<id>.js`: ficha de cada serie (arcos, relleno, equivalencia anime↔manga, nota). Las fichas modelo son `bleach.js` y `blackclover.js`.
-- `banners/<id>.jpg`: banner de cada serie (generado con Gemini). Si no existe, se usa un fondo de color.
+- `banners/<id>.jpg`: banner de cada serie (cabecera de su rastreador, generado con Gemini). Si no existe, se usa un fondo de color.
+- `tarjetas/<id>.jpg`: imagen 16:9 de la tarjeta de la portada (Gemini, a partir del banner).
+- `iconos/<id>.png`: icono de la pestaña del navegador (Gemini). Bleach y Black Clover usan `bleach-icon.png` y `blackclover-icon.png`.
 - `bleach.html` y `blackclover.html`: solo redirigen a `serie.html` para que sigan funcionando los enlaces de grupo antiguos.
 - `herramientas/`: `importar.mjs` (AniList + banners), `validar.mjs` (comprueba las fichas). No hace falta publicarla.
 
@@ -24,7 +26,11 @@ Formato de arco: `[nombre, anime desde, hasta, relleno 0/1, manga desde, manga h
 - **Todo automatizado, sin revisión manual.** No propongas pasos en los que tenga que revisar o aprobar (por ejemplo, pull requests).
 - **Doble verificación obligatoria:** cualquier dato dudoso de una ficha se contrasta con al menos otra fuente independiente, distinta de las usadas al investigar. Si las fuentes discrepan, se busca una tercera y gana la mayoría; si no se puede confirmar, se marca como «aproximado» en la `nota`.
 - Las wikis de Fandom bloquean el acceso automático (error 402). No las esquives con espejos o proxies: usa Wikipedia en otros idiomas, MyAnimeList, Crunchyroll, guías y prensa especializada.
-- **Gemini se usa SOLO para generar los banners, para nada más.** Las descripciones de las tarjetas, las fichas, los textos y la investigación los hace Claude.
-- Banners: `node herramientas/importar.mjs --banners-pendientes --banners gemini` (clave en `$env:GEMINI_API_KEY`, nunca en un archivo). Siguen el estilo de `blackclover-banner.jpg` y `bleach-banner.png` (logo en el centro, bandos a los lados) y miden 2048×410 (5:1). Revisa cada banner nuevo y regenera los que tengan el logo mal escrito.
+- **Gemini se usa SOLO para imágenes de cada serie: banner, imagen de tarjeta e icono. Para nada más.** Las descripciones, las fichas, los textos, los colores y la investigación los hace Claude.
+- Imágenes (clave en `$env:GEMINI_API_KEY`, nunca en un archivo; revisa cada imagen nueva y regenera las que tengan el logo mal escrito o un símbolo irreconocible):
+  - Banner (cabecera del rastreador): `node herramientas/importar.mjs --banners-pendientes --banners gemini` → `banners/<id>.jpg`, 2048×410 (5:1), estilo de `blackclover-banner.jpg` y `bleach-banner.png` (logo en el centro, bandos a los lados).
+  - Imagen de tarjeta (portada, 4 por fila): `--tarjetas-pendientes` → `tarjetas/<id>.jpg`, 960×540 (16:9), recompuesta a partir del banner de la serie (mismos personajes, colores y logo).
+  - Icono de la pestaña: `--iconos-pendientes` → `iconos/<id>.png`, 256×256, un emblema reconocible de la serie al estilo de `bleach-icon.png` y `blackclover-icon.png`. Para series nuevas, añade su símbolo en `SIMBOLOS` de `importar.mjs`.
+- **Colores:** cada serie tiene sus colores representativos en `tema` de su ficha `data/<id>.js`, y **solo se aplican dentro de su página**. La portada y el catálogo no cambian de colores.
 - Descripción de la tarjeta (`descripcion` en el catálogo): una frase con el estilo de Bleach y Black Clover, «<protagonista y premisa>, del arco «<primero>» hasta «<último>»».
 - Este proyecto no tiene nada que ver con `lol-esports-predictor-main`: no guardes nada de él allí.

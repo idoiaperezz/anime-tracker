@@ -17,7 +17,8 @@
 //    --nuevas N            añade las N series más populares que aún no estén en el catálogo
 //    --banners-pendientes  solo crea los banners que falten (todas las series del catálogo)
 //    --tarjetas-pendientes crea con Gemini la imagen 16:9 de la portada (tarjetas/<id>.jpg) a partir del banner
-//    --solo <id>           limita --banners-pendientes / --tarjetas-pendientes a esa serie
+//    --iconos-pendientes   crea con Gemini el icono de la pestaña (iconos/<id>.png) de cada serie
+//    --solo <id>           limita --banners/--tarjetas/--iconos-pendientes a esa serie
 //
 //  Clave de Gemini (https://aistudio.google.com/apikey), en PowerShell:
 //    $env:GEMINI_API_KEY = "tu-clave"
@@ -44,7 +45,7 @@ const IMAGE_MODELS = (process.env.GEMINI_IMAGE_MODEL || "gemini-3.1-flash-image,
 
 // ---------- Argumentos ----------
 const args = process.argv.slice(2);
-let top = 0, bannerMode = GEMINI_KEY ? "gemini" : "anilist", redoBanners = false, sync = false, nuevas = 0, pendingBanners = false, pendingCards = false;
+let top = 0, bannerMode = GEMINI_KEY ? "gemini" : "anilist", redoBanners = false, sync = false, nuevas = 0, pendingBanners = false, pendingCards = false, pendingIcons = false;
 const searches = [], removeIds = [], onlyIds = [];
 for (let i = 0; i < args.length; i++) {
   const a = args[i];
@@ -57,6 +58,7 @@ for (let i = 0; i < args.length; i++) {
   else if (a === "--banners-pendientes") pendingBanners = true;
   else if (a === "--solo") onlyIds.push(args[++i]);
   else if (a === "--tarjetas-pendientes") pendingCards = true;
+  else if (a === "--iconos-pendientes") pendingIcons = true;
   else if (a.startsWith("--")) { console.error("Opción desconocida: " + a); process.exit(1); }
   else searches.push(a);
 }
@@ -69,7 +71,7 @@ function detailTotals(id) {
   const out = {};
   if (Number.isInteger(det.animeTotal)) out.animeTotal = det.animeTotal;
   if (Number.isInteger(det.mangaTotal)) out.mangaTotal = det.mangaTotal;
-  if (det.tema) out.tema = det.tema; // colores elegidos a mano para la serie
+  // Los colores de la ficha (det.tema) solo se usan dentro de la página de la serie: el catálogo no se toca
   return out;
 }
 if (sync) {
@@ -86,7 +88,7 @@ if (removeIds.length) {
   console.log("Quitadas del catálogo automático: " + removeIds.join(", "));
   if (!top && !searches.length) process.exit(0);
 }
-if (!top && !searches.length && !nuevas && !pendingBanners && !pendingCards) {
+if (!top && !searches.length && !nuevas && !pendingBanners && !pendingCards && !pendingIcons) {
   console.log('Uso: node herramientas/importar.mjs --top 50   ó   node herramientas/importar.mjs "One Piece" "Naruto"');
   process.exit(1);
 }
@@ -317,6 +319,51 @@ async function tarjetaGemini(id, titulo, bannerFile, m) {
   return "tarjetas/" + file;
 }
 
+// Icono de la pestaña (favicon) con el símbolo más reconocible de la serie, al estilo de los de Bleach y Black Clover
+const ICONO_DIR = path.join(ROOT, "iconos");
+const ICON_STYLE_REFS = ["bleach-icon.png", "blackclover-icon.png"];
+const SIMBOLOS = {
+  naruto: "the Hidden Leaf Village (Konoha) leaf-spiral symbol",
+  onepiece: "the Straw Hat Pirates jolly roger (skull with a straw hat and crossbones)",
+  attackontitan: "the Wings of Freedom emblem of the Survey Corps (one blue and one white wing)",
+  demonslayerkimetsunoyaiba: "Tanjiro's hanafuda earring (rising sun card design)",
+  jujutsukaisen: "Sukuna's face markings / cursed seal",
+  myheroacademia: "the U.A. High School shield emblem",
+  hunterxhunter2011: "the big green × (cross mark) from the Hunter × Hunter logo, with an orange glow — just the × shape, no words",
+  deathnote: "the black Death Note notebook with its title",
+  fullmetalalchemistbrotherhood: "the Flamel cross (serpent on a cross with a crown and wings)",
+  onepunchman: "Saitama's red gloved fist",
+};
+async function iconoGemini(id, titulo) {
+  const parts = [];
+  for (const f of ICON_STYLE_REFS) {
+    const p = path.join(ROOT, f);
+    if (fs.existsSync(p)) parts.push({ inlineData: { mimeType: "image/png", data: fs.readFileSync(p).toString("base64") } });
+  }
+  const simbolo = SIMBOLOS[id] || `the single most iconic emblem or symbol of the anime "${titulo}"`;
+  const prompt =
+    `Create a square app icon / browser favicon for the anime "${titulo}" showing ${simbolo}.\n` +
+    `STYLE: match the attached icons (the Bleach hollow-skull emblem and the glowing Black Clover four-leaf clover): ` +
+    `one single bold, simple, instantly recognizable emblem, centered, filling about 80% of the canvas, thick clean shapes, strong contrast, ` +
+    `subtle glow in the series' signature colors, on a dark rounded-square tile. It must still be readable at 16×16 pixels. ` +
+    `No text, no letters, no characters' faces, no watermark.`;
+  const r = await gemini(IMAGE_MODELS, {
+    contents: [{ role: "user", parts: [{ text: prompt }, ...parts] }],
+    generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "1:1" } },
+  });
+  const part = (r.candidates?.[0]?.content?.parts || []).find((p) => p.inlineData || p.inline_data);
+  if (!part) throw new Error("Gemini no devolvió imagen" + (r.candidates?.[0]?.finishReason ? " (" + r.candidates[0].finishReason + ")" : ""));
+  const d = part.inlineData || part.inline_data;
+  const raw = Buffer.from(d.data, "base64");
+  fs.mkdirSync(ICONO_DIR, { recursive: true });
+  const file = id + ".png";
+  let sharp = null;
+  try { sharp = (await import("sharp")).default; } catch {}
+  if (sharp) await sharp(raw).resize(256, 256, { fit: "cover" }).png({ compressionLevel: 9 }).toFile(path.join(ICONO_DIR, file));
+  else fs.writeFileSync(path.join(ICONO_DIR, file), raw);
+  return "iconos/" + file;
+}
+
 async function bannerAnilist(id, m) {
   if (!m.bannerImage) return null;
   const img = await download(m.bannerImage);
@@ -334,7 +381,12 @@ function readManual() {
   try { return vm.runInNewContext(fs.readFileSync(MANUAL_FILE, "utf8") + "\n;CATALOGO", {}); } catch { return []; }
 }
 function readAuto() {
-  try { const m = fs.readFileSync(AUTO_FILE, "utf8").match(/\/\/ @@datos\n([\s\S]*?)\n\/\/ @@fin/); return m ? JSON.parse(m[1]) : []; } catch { return []; }
+  // Acepta saltos de línea de Windows (CRLF) y de Linux (LF): Git puede cambiarlos al descargar
+  if (!fs.existsSync(AUTO_FILE)) return [];
+  const m = fs.readFileSync(AUTO_FILE, "utf8").match(/\/\/ @@datos\r?\n([\s\S]*?)\r?\n\/\/ @@fin/);
+  // Si el archivo existe pero no se puede leer, mejor parar que sobrescribirlo y perder las series
+  if (!m) throw new Error("no se puede leer data/catalogo-auto.js (marcas @@datos/@@fin); no se toca nada");
+  return JSON.parse(m[1]);
 }
 function writeAuto(list) {
   const out = `// =====================================================================
@@ -365,6 +417,20 @@ async function main() {
   const byId = new Map(auto.map((s) => [s.id, s]));
 
   const popularPage = async (page) => (await anilist(`query ($page: Int) { Page(page: $page, perPage: 50) { media(type: ANIME, sort: POPULARITY_DESC, format_in: [TV], isAdult: false) { ${FIELDS} } } }`, { page })).Page.media;
+
+  // --iconos-pendientes: crea con Gemini el icono de la pestaña de las series que no lo tengan
+  if (pendingIcons) {
+    if (!GEMINI_KEY) { console.error('Falta la clave: $env:GEMINI_API_KEY = "tu-clave"'); process.exit(1); }
+    let made = 0;
+    for (const s of readManual().concat(auto)) {
+      if (onlyIds.length && !onlyIds.includes(s.id)) continue;
+      if (s.icono || fs.existsSync(path.join(ROOT, "iconos", s.id + ".png"))) continue; // Bleach y Black Clover ya tienen el suyo
+      try { const f = await iconoGemini(s.id, s.titulo); made++; console.log(`✓ icono de ${s.titulo} → ${f}`); }
+      catch (e) { console.log(`✗ ${s.titulo}: ${e.message}`); if (/plan gratuito/.test(e.message)) break; }
+    }
+    console.log(`\nListo: ${made} iconos nuevos.`);
+    return;
+  }
 
   // --tarjetas-pendientes: crea con Gemini la imagen 16:9 de la portada de las series que tengan banner y no tarjeta
   if (pendingCards) {

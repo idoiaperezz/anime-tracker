@@ -1,0 +1,4 @@
+# Saltos de línea siempre LF en los archivos de texto (evita problemas entre Windows y la tarea automática)
+* text=auto eol=lf
+*.jpg binary
+*.png binary

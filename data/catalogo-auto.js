@@ -18,18 +18,18 @@
     "banner": "banners/naruto.jpg",
     "tema": {
       "claro": {
-        "accent": "#e8590c",
-        "accentRgb": "232, 89, 12",
-        "accentDeep": "#8a3300",
-        "accent2": "#1971c2",
+        "accent": "#9b5237",
+        "accentRgb": "155, 82, 55",
+        "accentDeep": "#552d1e",
+        "accent2": "#cd8d1b",
         "onAccent": "#ffffff"
       },
       "oscuro": {
-        "accent": "#ff922b",
-        "accentRgb": "255, 146, 43",
-        "accentDeep": "#d9480f",
-        "accent2": "#4dabf7",
-        "onAccent": "#1a0d00"
+        "accent": "#e47850",
+        "accentRgb": "228, 120, 80",
+        "accentDeep": "#723c28",
+        "accent2": "#f2af64",
+        "onAccent": "#0b0b10"
       }
     }
   },
@@ -45,18 +45,18 @@
     "banner": "banners/onepiece.jpg",
     "tema": {
       "claro": {
-        "accent": "#c92a2a",
-        "accentRgb": "201, 42, 42",
-        "accentDeep": "#7a1212",
-        "accent2": "#e0a800",
+        "accent": "#895820",
+        "accentRgb": "137, 88, 32",
+        "accentDeep": "#4b3011",
+        "accent2": "#c49010",
         "onAccent": "#ffffff"
       },
       "oscuro": {
-        "accent": "#ff6b6b",
-        "accentRgb": "255, 107, 107",
-        "accentDeep": "#c92a2a",
-        "accent2": "#ffd43b",
-        "onAccent": "#1a0505"
+        "accent": "#e49335",
+        "accentRgb": "228, 147, 53",
+        "accentDeep": "#724a1b",
+        "accent2": "#f2bd57",
+        "onAccent": "#0b0b10"
       }
     }
   },
@@ -71,18 +71,18 @@
     "banner": "banners/attackontitan.jpg",
     "tema": {
       "claro": {
-        "accent": "#4d6b2f",
-        "accentRgb": "77, 107, 47",
-        "accentDeep": "#2a3d18",
-        "accent2": "#a8742a",
+        "accent": "#7f5523",
+        "accentRgb": "127, 85, 35",
+        "accentDeep": "#462f13",
+        "accent2": "#bf8e12",
         "onAccent": "#ffffff"
       },
       "oscuro": {
-        "accent": "#9ab86a",
-        "accentRgb": "154, 184, 106",
-        "accentDeep": "#4d6b2f",
-        "accent2": "#e0b36a",
-        "onAccent": "#0d1406"
+        "accent": "#f1a143",
+        "accentRgb": "241, 161, 67",
+        "accentDeep": "#795122",
+        "accent2": "#f8c45e",
+        "onAccent": "#0b0b10"
       }
     }
   },
@@ -97,18 +97,18 @@
     "banner": "banners/jujutsukaisen.jpg",
     "tema": {
       "claro": {
-        "accent": "#3b4cca",
-        "accentRgb": "59, 76, 202",
-        "accentDeep": "#1e2670",
-        "accent2": "#c2255c",
+        "accent": "#b14848",
+        "accentRgb": "177, 72, 72",
+        "accentDeep": "#612828",
+        "accent2": "#d88824",
         "onAccent": "#ffffff"
       },
       "oscuro": {
-        "accent": "#748ffc",
-        "accentRgb": "116, 143, 252",
-        "accentDeep": "#3b4cca",
-        "accent2": "#ff6b8a",
-        "onAccent": "#070a1f"
+        "accent": "#e45d5d",
+        "accentRgb": "228, 93, 93",
+        "accentDeep": "#722f2f",
+        "accent2": "#f2a26b",
+        "onAccent": "#0b0b10"
       }
     }
   },
@@ -123,18 +123,18 @@
     "banner": "banners/myheroacademia.jpg",
     "tema": {
       "claro": {
-        "accent": "#12855a",
-        "accentRgb": "18, 133, 90",
-        "accentDeep": "#0a4d34",
-        "accent2": "#e03131",
+        "accent": "#62571b",
+        "accentRgb": "98, 87, 27",
+        "accentDeep": "#36300f",
+        "accent2": "#b1900e",
         "onAccent": "#ffffff"
       },
       "oscuro": {
-        "accent": "#3ddc97",
-        "accentRgb": "61, 220, 151",
-        "accentDeep": "#12855a",
-        "accent2": "#ff8787",
-        "onAccent": "#04140d"
+        "accent": "#f1d643",
+        "accentRgb": "241, 214, 67",
+        "accentDeep": "#796b22",
+        "accent2": "#f8de5e",
+        "onAccent": "#0b0b10"
       }
     }
   },
@@ -149,18 +149,18 @@
     "banner": "banners/hunterxhunter2011.jpg",
     "tema": {
       "claro": {
-        "accent": "#2f9e44",
-        "accentRgb": "47, 158, 68",
-        "accentDeep": "#1b5e2a",
-        "accent2": "#1c7ed6",
+        "accent": "#625726",
+        "accentRgb": "98, 87, 38",
+        "accentDeep": "#363015",
+        "accent2": "#b19013",
         "onAccent": "#ffffff"
       },
       "oscuro": {
-        "accent": "#69db7c",
-        "accentRgb": "105, 219, 124",
-        "accentDeep": "#2f9e44",
-        "accent2": "#74c0fc",
-        "onAccent": "#05140a"
+        "accent": "#f1d65d",
+        "accentRgb": "241, 214, 93",
+        "accentDeep": "#796b2f",
+        "accent2": "#f8de6b",
+        "onAccent": "#0b0b10"
       }
     }
   },
@@ -172,23 +172,7 @@
     "mangaTotal": 108,
     "temporadas": 1,
     "anilistId": 1535,
-    "banner": "banners/deathnote.jpg",
-    "tema": {
-      "claro": {
-        "accent": "#a51d2d",
-        "accentRgb": "165, 29, 45",
-        "accentDeep": "#4d0b14",
-        "accent2": "#495057",
-        "onAccent": "#ffffff"
-      },
-      "oscuro": {
-        "accent": "#ff4d5e",
-        "accentRgb": "255, 77, 94",
-        "accentDeep": "#a51d2d",
-        "accent2": "#ced4da",
-        "onAccent": "#1a0306"
-      }
-    }
+    "banner": "banners/deathnote.jpg"
   },
   {
     "id": "fullmetalalchemistbrotherhood",
@@ -201,18 +185,18 @@
     "banner": "banners/fullmetalalchemistbrotherhood.jpg",
     "tema": {
       "claro": {
-        "accent": "#b02a1e",
-        "accentRgb": "176, 42, 30",
-        "accentDeep": "#5e130c",
-        "accent2": "#c99a1c",
+        "accent": "#6a5d44",
+        "accentRgb": "106, 93, 68",
+        "accentDeep": "#3a3326",
+        "accent2": "#b49322",
         "onAccent": "#ffffff"
       },
       "oscuro": {
-        "accent": "#ff6b57",
-        "accentRgb": "255, 107, 87",
-        "accentDeep": "#b02a1e",
-        "accent2": "#ffd257",
-        "onAccent": "#1a0604"
+        "accent": "#e4c993",
+        "accentRgb": "228, 201, 147",
+        "accentDeep": "#72654a",
+        "accent2": "#f2d886",
+        "onAccent": "#0b0b10"
       }
     }
   },
@@ -227,18 +211,18 @@
     "banner": "banners/onepunchman.jpg",
     "tema": {
       "claro": {
-        "accent": "#b88400",
-        "accentRgb": "184, 132, 0",
-        "accentDeep": "#5c4200",
-        "accent2": "#e03131",
+        "accent": "#785c31",
+        "accentRgb": "120, 92, 49",
+        "accentDeep": "#42331b",
+        "accent2": "#bc9219",
         "onAccent": "#ffffff"
       },
       "oscuro": {
-        "accent": "#ffd43b",
-        "accentRgb": "255, 212, 59",
-        "accentDeep": "#e0a800",
-        "accent2": "#ff6b6b",
-        "onAccent": "#1a1400"
+        "accent": "#e4ae5d",
+        "accentRgb": "228, 174, 93",
+        "accentDeep": "#72572f",
+        "accent2": "#f2ca6b",
+        "onAccent": "#0b0b10"
       }
     }
   },
@@ -253,18 +237,18 @@
     "banner": "banners/demonslayerkimetsunoyaiba.jpg",
     "tema": {
       "claro": {
-        "accent": "#0b7a5c",
-        "accentRgb": "11, 122, 92",
-        "accentDeep": "#064734",
-        "accent2": "#d6336c",
+        "accent": "#705d51",
+        "accentRgb": "112, 93, 81",
+        "accentDeep": "#3e332c",
+        "accent2": "#b79328",
         "onAccent": "#ffffff"
       },
       "oscuro": {
-        "accent": "#38d9a9",
-        "accentRgb": "56, 217, 169",
-        "accentDeep": "#0b7a5c",
-        "accent2": "#f783ac",
-        "onAccent": "#03140f"
+        "accent": "#f1c9ae",
+        "accentRgb": "241, 201, 174",
+        "accentDeep": "#796557",
+        "accent2": "#f8d893",
+        "onAccent": "#0b0b10"
       }
     }
   }

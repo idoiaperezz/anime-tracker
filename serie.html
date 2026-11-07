@@ -551,7 +551,8 @@ function iniciarSerie(D) {
   // ---------- Textos, imágenes y colores de la serie ----------
   document.title = D.titulo + " · Rastreador";
   $("titulo").textContent = "Rastreador de " + D.titulo;
-  if (D.icono) $("favicon").href = D.icono; // el icono solo se usa en la pestaña del navegador
+  // Icono de la pestaña: el del catálogo o iconos/<id>.png
+  $("favicon").href = D.icono || ("iconos/" + D.id + ".png");
   // Banner: el indicado en el catálogo o banners/<id>.png; si no existe, se queda el fondo de color
   var BANNER = D.banner || ("banners/" + D.id + ".png");
   $("hero").onerror = function () {
