@@ -1,0 +1,3 @@
+# Copias de seguridad y caché local: no se publican
+*.bak
+herramientas/.cache-anilist.json
