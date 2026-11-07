@@ -439,6 +439,13 @@ function readAuto() {
   if (!m) throw new Error("no se puede leer data/catalogo-auto.js (marcas @@datos/@@fin); no se toca nada");
   return JSON.parse(m[1]);
 }
+// Versión de las imágenes: cambia cada vez que se genera alguna, para que los navegadores
+// descarguen la nueva en vez de usar la que tenían guardada (las páginas añaden ?v=<versión>)
+function readImgVersion() {
+  try { const m = fs.readFileSync(AUTO_FILE, "utf8").match(/VERSION_IMAGENES = "([^"]*)"/); return m ? m[1] : ""; } catch { return ""; }
+}
+function bumpImgVersion() { globalThis.__imgVersion = Date.now().toString(36); writeAuto(readAuto()); }
+
 function writeAuto(list) {
   const out = `// =====================================================================
 //  GENERADO POR herramientas/importar.mjs — se sobrescribe al importar.
@@ -456,6 +463,7 @@ ${JSON.stringify(list, null, 2)}
   window.CATALOGO.forEach(function (s) { ya[s.id] = true; });
   auto.forEach(function (s) { if (!ya[s.id]) window.CATALOGO.push(s); });
 })();
+window.VERSION_IMAGENES = "${globalThis.__imgVersion || readImgVersion() || Date.now().toString(36)}";
 `;
   fs.writeFileSync(AUTO_FILE, out);
 }
@@ -479,6 +487,7 @@ async function main() {
       try { const f = await iconoGemini(s.id, s.titulo); made++; console.log(`✓ icono de ${s.titulo} → ${f}`); }
       catch (e) { console.log(`✗ ${s.titulo}: ${e.message}`); if (/plan gratuito/.test(e.message)) break; }
     }
+    if (made) bumpImgVersion();
     console.log(`\nListo: ${made} iconos nuevos.`);
     return;
   }
@@ -507,6 +516,7 @@ async function main() {
         if (/plan gratuito/.test(e.message)) break;
       }
     }
+    if (made) bumpImgVersion();
     console.log(`\nListo: ${made} tarjetas nuevas.`);
     return;
   }
@@ -540,6 +550,7 @@ async function main() {
         if (/plan gratuito/.test(e.message)) break; // el resto fallaría igual
       }
     }
+    if (made) bumpImgVersion();
     console.log(`\nListo: ${made} banners nuevos.`);
     return;
   }

@@ -385,7 +385,9 @@ var SERIES = (window.CATALOGO || []).map(function (s) {
 
     // Imagen de la tarjeta (16:9): tarjetas/<id>.jpg; si no existe, el centro del banner (donde está el logo);
     // si tampoco hay banner, un fondo con el color de la serie.
-    var fuentes = [s.tarjeta || ("tarjetas/" + s.id + ".jpg"), s.banner || ("banners/" + s.id + ".jpg")];
+    // ?v=<versión>: al regenerar imágenes cambia la versión y el navegador descarga la nueva
+    var ver = window.VERSION_IMAGENES ? "?v=" + encodeURIComponent(window.VERSION_IMAGENES) : "";
+    var fuentes = [(s.tarjeta || ("tarjetas/" + s.id + ".jpg")) + ver, (s.banner || ("banners/" + s.id + ".jpg")) + ver];
     var fill = el("img", "card-fill"), bg = el("img", "card-bg");
     fill.alt = bg.alt = "";
     bg.onerror = function () {

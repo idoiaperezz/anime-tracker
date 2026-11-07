@@ -552,9 +552,11 @@ function iniciarSerie(D) {
   document.title = D.titulo + " · Rastreador";
   $("titulo").textContent = "Rastreador de " + D.titulo;
   // Icono de la pestaña: el del catálogo o iconos/<id>.png
-  $("favicon").href = D.icono || ("iconos/" + D.id + ".png");
+  // ?v=<versión>: al regenerar imágenes cambia la versión y el navegador descarga la nueva
+  var VER = window.VERSION_IMAGENES ? "?v=" + encodeURIComponent(window.VERSION_IMAGENES) : "";
+  $("favicon").href = (D.icono || ("iconos/" + D.id + ".png")) + VER;
   // Banner: el indicado en el catálogo o banners/<id>.png; si no existe, se queda el fondo de color
-  var BANNER = D.banner || ("banners/" + D.id + ".png");
+  var BANNER = (D.banner || ("banners/" + D.id + ".jpg")) + VER;
   $("hero").onerror = function () {
     $("hero").hidden = true;
     var hf = document.querySelector(".hero-fill"); if (hf) hf.hidden = true;
