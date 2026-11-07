@@ -1,6 +1,11 @@
 // Detalles de My Hero Academia (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "myheroacademia",
+  // Colores de la serie en su rastreador (claro / oscuro)
+  tema: {
+    claro:  { accent: "#12855a", accentRgb: "18, 133, 90", accentDeep: "#0a4d34", accent2: "#e03131", onAccent: "#ffffff" },
+    oscuro: { accent: "#3ddc97", accentRgb: "61, 220, 151", accentDeep: "#12855a", accent2: "#ff8787", onAccent: "#04140d" }
+  },
   animeTotal: 170, // 8 temporadas de TV: 13 + 25 + 25 + 25 + 25 + 25 + 21 + 11 (sin el especial «More» 170+1)
   mangaTotal: 431, // 430 capítulos en Weekly Shōnen Jump + el capítulo 431 añadido en el tomo 42
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]

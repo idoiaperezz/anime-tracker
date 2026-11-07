@@ -1,6 +1,11 @@
 // Detalles de Death Note (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "deathnote",
+  // Colores de la serie en su rastreador (claro / oscuro)
+  tema: {
+    claro:  { accent: "#a51d2d", accentRgb: "165, 29, 45", accentDeep: "#4d0b14", accent2: "#495057", onAccent: "#ffffff" },
+    oscuro: { accent: "#ff4d5e", accentRgb: "255, 77, 94", accentDeep: "#a51d2d", accent2: "#ced4da", onAccent: "#1a0306" }
+  },
   animeTotal: 37,
   mangaTotal: 108,
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]

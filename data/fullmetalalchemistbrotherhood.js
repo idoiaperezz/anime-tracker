@@ -1,6 +1,11 @@
 // Detalles de Fullmetal Alchemist: Brotherhood (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "fullmetalalchemistbrotherhood",
+  // Colores de la serie en su rastreador (claro / oscuro)
+  tema: {
+    claro:  { accent: "#b02a1e", accentRgb: "176, 42, 30", accentDeep: "#5e130c", accent2: "#c99a1c", onAccent: "#ffffff" },
+    oscuro: { accent: "#ff6b57", accentRgb: "255, 107, 87", accentDeep: "#b02a1e", accent2: "#ffd257", onAccent: "#1a0604" }
+  },
   animeTotal: 64,
   // El manga tiene 108 capítulos numerados; AniList cuenta 116 porque suma los 8 extras (gaiden y especiales)
   mangaTotal: 108,

@@ -1,6 +1,11 @@
 // Detalles de Attack on Titan / Shingeki no Kyojin (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "attackontitan",
+  // Colores de la serie en su rastreador (claro / oscuro)
+  tema: {
+    claro:  { accent: "#4d6b2f", accentRgb: "77, 107, 47", accentDeep: "#2a3d18", accent2: "#a8742a", onAccent: "#ffffff" },
+    oscuro: { accent: "#9ab86a", accentRgb: "154, 184, 106", accentDeep: "#4d6b2f", accent2: "#e0b36a", onAccent: "#0d1406" }
+  },
   animeTotal: 89,   // 87 capítulos de TV + los 2 especiales The Final Chapters (88 y 89, como en Anime Filler List)
   mangaTotal: 139,  // 139 capítulos en 34 tomos (AniList dice 141)
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]

@@ -2,6 +2,11 @@
 // Numeración del anime seguida: Naruto = 1–220, Naruto Shippuden = 221–720 (cap. N de Shippuden = N + 220).
 registrarSerie({
   id: "naruto",
+  // Colores de la serie en su rastreador (claro / oscuro)
+  tema: {
+    claro:  { accent: "#e8590c", accentRgb: "232, 89, 12", accentDeep: "#8a3300", accent2: "#1971c2", onAccent: "#ffffff" },
+    oscuro: { accent: "#ff922b", accentRgb: "255, 146, 43", accentDeep: "#d9480f", accent2: "#4dabf7", onAccent: "#1a0d00" }
+  },
   animeTotal: 720,   // 220 (Naruto) + 500 (Shippuden), ambos terminados
   mangaTotal: 700,   // manga completo (1999–2014)
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]

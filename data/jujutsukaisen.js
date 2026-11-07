@@ -1,6 +1,11 @@
 // Detalles de Jujutsu Kaisen (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "jujutsukaisen",
+  // Colores de la serie en su rastreador (claro / oscuro)
+  tema: {
+    claro:  { accent: "#3b4cca", accentRgb: "59, 76, 202", accentDeep: "#1e2670", accent2: "#c2255c", onAccent: "#ffffff" },
+    oscuro: { accent: "#748ffc", accentRgb: "116, 143, 252", accentDeep: "#3b4cca", accent2: "#ff6b8a", onAccent: "#070a1f" }
+  },
   animeTotal: 59,   // T1 (1–24) + T2 (25–47) + T3 «Culling Game, parte 1» (48–59); la T4 aún no tiene fecha
   mangaTotal: 271,  // el tomo 30 añade un epílogo sin número (AniList lo cuenta como 272)
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]

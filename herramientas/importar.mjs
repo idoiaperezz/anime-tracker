@@ -16,6 +16,8 @@
 //    --sincronizar         copia al catálogo los totales verificados en data/<id>.js
 //    --nuevas N            añade las N series más populares que aún no estén en el catálogo
 //    --banners-pendientes  solo crea los banners que falten (todas las series del catálogo)
+//    --tarjetas-pendientes crea con Gemini la imagen 16:9 de la portada (tarjetas/<id>.jpg) a partir del banner
+//    --solo <id>           limita --banners-pendientes / --tarjetas-pendientes a esa serie
 //
 //  Clave de Gemini (https://aistudio.google.com/apikey), en PowerShell:
 //    $env:GEMINI_API_KEY = "tu-clave"
@@ -42,7 +44,7 @@ const IMAGE_MODELS = (process.env.GEMINI_IMAGE_MODEL || "gemini-3.1-flash-image,
 
 // ---------- Argumentos ----------
 const args = process.argv.slice(2);
-let top = 0, bannerMode = GEMINI_KEY ? "gemini" : "anilist", redoBanners = false, sync = false, nuevas = 0, pendingBanners = false;
+let top = 0, bannerMode = GEMINI_KEY ? "gemini" : "anilist", redoBanners = false, sync = false, nuevas = 0, pendingBanners = false, pendingCards = false;
 const searches = [], removeIds = [], onlyIds = [];
 for (let i = 0; i < args.length; i++) {
   const a = args[i];
@@ -54,6 +56,7 @@ for (let i = 0; i < args.length; i++) {
   else if (a === "--nuevas") nuevas = parseInt(args[++i], 10) || 0;
   else if (a === "--banners-pendientes") pendingBanners = true;
   else if (a === "--solo") onlyIds.push(args[++i]);
+  else if (a === "--tarjetas-pendientes") pendingCards = true;
   else if (a.startsWith("--")) { console.error("Opción desconocida: " + a); process.exit(1); }
   else searches.push(a);
 }
@@ -66,6 +69,7 @@ function detailTotals(id) {
   const out = {};
   if (Number.isInteger(det.animeTotal)) out.animeTotal = det.animeTotal;
   if (Number.isInteger(det.mangaTotal)) out.mangaTotal = det.mangaTotal;
+  if (det.tema) out.tema = det.tema; // colores elegidos a mano para la serie
   return out;
 }
 if (sync) {
@@ -82,7 +86,7 @@ if (removeIds.length) {
   console.log("Quitadas del catálogo automático: " + removeIds.join(", "));
   if (!top && !searches.length) process.exit(0);
 }
-if (!top && !searches.length && !nuevas && !pendingBanners) {
+if (!top && !searches.length && !nuevas && !pendingBanners && !pendingCards) {
   console.log('Uso: node herramientas/importar.mjs --top 50   ó   node herramientas/importar.mjs "One Piece" "Naruto"');
   process.exit(1);
 }
@@ -277,6 +281,42 @@ async function bannerGemini(id, titulo, m) {
   return "banners/" + file;
 }
 
+// Imagen de tarjeta para la portada (16:9), recompuesta a partir del banner de la serie
+const TARJETA_DIR = path.join(ROOT, "tarjetas");
+const TARJETA_W = 960, TARJETA_H = 540;
+async function tarjetaGemini(id, titulo, bannerFile, m) {
+  const parts = [];
+  const bp = path.join(ROOT, bannerFile);
+  if (!fs.existsSync(bp)) throw new Error("no tiene banner del que partir (" + bannerFile + ")");
+  parts.push({ inlineData: { mimeType: /\.png$/i.test(bp) ? "image/png" : "image/jpeg", data: fs.readFileSync(bp).toString("base64") } });
+  if (m && m.coverImage?.extraLarge) {
+    try { const img = await download(m.coverImage.extraLarge); parts.push({ inlineData: { mimeType: img.mime.split(";")[0], data: img.data.toString("base64") } }); } catch {}
+  }
+  const prompt =
+    `The first attached image is the ultra-wide banner of the anime "${titulo}". Recompose it into a 16:9 card illustration ` +
+    `that will be shown small (about 320 px wide) on a website grid.\n` +
+    `Keep EXACTLY the same art style, colors, lighting, energy effects and characters as the banner. ` +
+    `Composition: the series title logo, same lettering as in the banner, centered in the lower third; the protagonist large on the left half and the rival / second lead large on the right half, ` +
+    `facing each other, faces clearly visible and big enough to read at small size; fewer secondary characters than the banner. ` +
+    (parts.length > 1 ? `Use the second image only to check what the characters look like. ` : "") +
+    `The only text allowed is the title "${titulo}" as the logo. No watermark, no borders, no extra text.`;
+  const r = await gemini(IMAGE_MODELS, {
+    contents: [{ role: "user", parts: [{ text: prompt }, ...parts] }],
+    generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "16:9" } },
+  });
+  const part = (r.candidates?.[0]?.content?.parts || []).find((p) => p.inlineData || p.inline_data);
+  if (!part) throw new Error("Gemini no devolvió imagen" + (r.candidates?.[0]?.finishReason ? " (" + r.candidates[0].finishReason + ")" : ""));
+  const d = part.inlineData || part.inline_data;
+  const raw = Buffer.from(d.data, "base64");
+  fs.mkdirSync(TARJETA_DIR, { recursive: true });
+  const file = id + ".jpg";
+  let sharp = null;
+  try { sharp = (await import("sharp")).default; } catch {}
+  if (sharp) await sharp(raw).resize(TARJETA_W, TARJETA_H, { fit: "cover", position: "centre" }).jpeg({ quality: 86, mozjpeg: true }).toFile(path.join(TARJETA_DIR, file));
+  else fs.writeFileSync(path.join(TARJETA_DIR, file), raw);
+  return "tarjetas/" + file;
+}
+
 async function bannerAnilist(id, m) {
   if (!m.bannerImage) return null;
   const img = await download(m.bannerImage);
@@ -325,6 +365,29 @@ async function main() {
   const byId = new Map(auto.map((s) => [s.id, s]));
 
   const popularPage = async (page) => (await anilist(`query ($page: Int) { Page(page: $page, perPage: 50) { media(type: ANIME, sort: POPULARITY_DESC, format_in: [TV], isAdult: false) { ${FIELDS} } } }`, { page })).Page.media;
+
+  // --tarjetas-pendientes: crea con Gemini la imagen 16:9 de la portada de las series que tengan banner y no tarjeta
+  if (pendingCards) {
+    if (!GEMINI_KEY) { console.error('Falta la clave: $env:GEMINI_API_KEY = "tu-clave"'); process.exit(1); }
+    const all = readManual().concat(auto);
+    let made = 0;
+    for (const s of all) {
+      if (onlyIds.length && !onlyIds.includes(s.id)) continue;
+      if (fs.existsSync(path.join(ROOT, "tarjetas", s.id + ".jpg"))) continue;
+      const bannerFile = s.banner || existingBanner(s.id);
+      if (!bannerFile) { console.log(`- ${s.titulo}: sin banner todavía (primero --banners-pendientes)`); continue; }
+      try {
+        const m = s.anilistId ? await getMedia(s.anilistId) : null;
+        const t = await tarjetaGemini(s.id, s.titulo, bannerFile, m);
+        made++; console.log(`✓ tarjeta de ${s.titulo} → ${t}`);
+      } catch (e) {
+        console.log(`✗ ${s.titulo}: ${e.message}`);
+        if (/plan gratuito/.test(e.message)) break;
+      }
+    }
+    console.log(`\nListo: ${made} tarjetas nuevas.`);
+    return;
+  }
 
   // --banners-pendientes: solo crea los banners que falten, sin tocar nada más
   if (pendingBanners) {

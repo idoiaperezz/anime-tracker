@@ -1,6 +1,11 @@
 // Detalles de Hunter x Hunter (2011) (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "hunterxhunter2011",
+  // Colores de la serie en su rastreador (claro / oscuro)
+  tema: {
+    claro:  { accent: "#2f9e44", accentRgb: "47, 158, 68", accentDeep: "#1b5e2a", accent2: "#1c7ed6", onAccent: "#ffffff" },
+    oscuro: { accent: "#69db7c", accentRgb: "105, 219, 124", accentDeep: "#2f9e44", accent2: "#74c0fc", onAccent: "#05140a" }
+  },
   animeTotal: 148,  // anime completo (2011-2014)
   mangaTotal: 420,  // cap. 420 publicado el 6-9-2026; en pausa desde entonces (noviembre de 2026)
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]

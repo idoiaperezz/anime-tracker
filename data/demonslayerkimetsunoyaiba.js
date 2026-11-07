@@ -1,6 +1,11 @@
 // Detalles de Demon Slayer: Kimetsu no Yaiba (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "demonslayerkimetsunoyaiba",
+  // Colores de la serie en su rastreador (claro / oscuro)
+  tema: {
+    claro:  { accent: "#0b7a5c", accentRgb: "11, 122, 92", accentDeep: "#064734", accent2: "#d6336c", onAccent: "#ffffff" },
+    oscuro: { accent: "#38d9a9", accentRgb: "56, 217, 169", accentDeep: "#0b7a5c", accent2: "#f783ac", onAccent: "#03140f" }
+  },
   animeTotal: 63,   // 26 (T1) + 7 (Tren Infinito TV) + 11 (Distrito Rojo) + 11 (Aldea de los Herreros) + 8 (Entrenamiento de los Pilares)
   mangaTotal: 205,  // 205 capítulos oficiales (AniList cuenta 207, probablemente con extras)
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]

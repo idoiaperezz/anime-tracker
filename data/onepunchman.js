@@ -1,6 +1,11 @@
 // Detalles de One-Punch Man (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "onepunchman",
+  // Colores de la serie en su rastreador (claro / oscuro)
+  tema: {
+    claro:  { accent: "#b88400", accentRgb: "184, 132, 0", accentDeep: "#5c4200", accent2: "#e03131", onAccent: "#ffffff" },
+    oscuro: { accent: "#ffd43b", accentRgb: "255, 212, 59", accentDeep: "#e0a800", accent2: "#ff6b6b", onAccent: "#1a1400" }
+  },
   animeTotal: 36,   // T1 (12) + T2 (12) + T3 parte 1 (12, oct-dic 2025); la parte 2 de la T3 se estrena en 2027
   mangaTotal: 243,  // numeración de VIZ/Shonen Jump (= número de entrega de Tonari no Young Jump − 45): cap. 243 = entrega 288 del 5-11-2026
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]

@@ -367,7 +367,6 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
     <div class="masthead-scrim" aria-hidden="true"></div>
     <div class="masthead-content">
       <div class="brand">
-        <img class="app-logo" id="logo" alt="">
         <div class="top-text">
           <h1 id="titulo">Cargando…</h1>
           <p class="tagline">Anime · Manga · Progreso compartido</p>
@@ -552,8 +551,7 @@ function iniciarSerie(D) {
   // ---------- Textos, imágenes y colores de la serie ----------
   document.title = D.titulo + " · Rastreador";
   $("titulo").textContent = "Rastreador de " + D.titulo;
-  if (D.icono) { $("favicon").href = D.icono; $("logo").src = D.icono; } else $("logo").hidden = true;
-  $("logo").onerror = function () { $("logo").hidden = true; };
+  if (D.icono) $("favicon").href = D.icono; // el icono solo se usa en la pestaña del navegador
   // Banner: el indicado en el catálogo o banners/<id>.png; si no existe, se queda el fondo de color
   var BANNER = D.banner || ("banners/" + D.id + ".png");
   $("hero").onerror = function () {
