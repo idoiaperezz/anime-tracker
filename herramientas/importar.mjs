@@ -19,7 +19,8 @@
 //
 //  Clave de Gemini (https://aistudio.google.com/apikey), en PowerShell:
 //    $env:GEMINI_API_KEY = "tu-clave"
-//  Modelos (opcional): $env:GEMINI_IMAGE_MODEL, $env:GEMINI_TEXT_MODEL
+//  Modelo de imagen (opcional): $env:GEMINI_IMAGE_MODEL
+//  Gemini se usa SOLO para generar los banners, para nada más.
 //
 //  Lo que pongas a mano en data/catalogo.js siempre manda: las series que
 //  ya estén allí (Bleach, Black Clover…) no se tocan.
@@ -38,12 +39,11 @@ const CACHE_FILE = path.join(ROOT, "herramientas", ".cache-anilist.json");
 const GEMINI_KEY = process.env.GEMINI_API_KEY || "";
 // Modelos en orden de preferencia: si uno ya no existe (Google los retira), se prueba el siguiente
 const IMAGE_MODELS = (process.env.GEMINI_IMAGE_MODEL || "gemini-3.1-flash-image,gemini-3-pro-image,gemini-2.5-flash-image").split(",");
-const TEXT_MODELS = (process.env.GEMINI_TEXT_MODEL || "gemini-3.5-flash,gemini-flash-latest,gemini-2.5-flash").split(",");
 
 // ---------- Argumentos ----------
 const args = process.argv.slice(2);
 let top = 0, bannerMode = GEMINI_KEY ? "gemini" : "anilist", redoBanners = false, sync = false, nuevas = 0, pendingBanners = false;
-const searches = [], removeIds = [];
+const searches = [], removeIds = [], onlyIds = [];
 for (let i = 0; i < args.length; i++) {
   const a = args[i];
   if (a === "--top") top = parseInt(args[++i], 10) || 0;
@@ -53,6 +53,7 @@ for (let i = 0; i < args.length; i++) {
   else if (a === "--sincronizar") sync = true;
   else if (a === "--nuevas") nuevas = parseInt(args[++i], 10) || 0;
   else if (a === "--banners-pendientes") pendingBanners = true;
+  else if (a === "--solo") onlyIds.push(args[++i]);
   else if (a.startsWith("--")) { console.error("Opción desconocida: " + a); process.exit(1); }
   else searches.push(a);
 }
@@ -166,7 +167,6 @@ function sourceManga(m) {
 
 // ---------- Utilidades ----------
 const slug = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0, 40);
-const stripHtml = (s) => String(s || "").replace(/<br\s*\/?>/gi, " ").replace(/<[^>]+>/g, "").replace(/\(Source:[^)]*\)/gi, "").replace(/\s+/g, " ").trim();
 
 function hexToRgb(h) { const n = parseInt(h.replace("#", ""), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
 const rgbToHex = (c) => "#" + c.map((v) => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, "0")).join("");
@@ -217,15 +217,8 @@ async function gemini(models, body) {
   throw lastErr || new Error("Gemini no responde");
 }
 
-async function describeEs(titulo, desc) {
-  if (!GEMINI_KEY || !desc) return "";
-  const prompt = `Escribe en español de España UNA sola frase (máximo 170 caracteres) que presente el anime «${titulo}» para la tarjeta de una web de seguimiento. Sin spoilers, sin comillas, sin mencionar temporadas. Sinopsis original:\n${desc.slice(0, 1500)}`;
-  try {
-    const r = await gemini(TEXT_MODELS, { contents: [{ parts: [{ text: prompt }] }] });
-    const txt = (r.candidates?.[0]?.content?.parts || []).map((p) => p.text || "").join("").trim();
-    return txt.replace(/^["«]|["»]$/g, "").split("\n")[0].trim();
-  } catch (e) { console.log("  (sin descripción: " + e.message + ")"); return ""; }
-}
+// Gemini se usa SOLO para los banners. Las descripciones no se generan aquí:
+// se escriben a mano (o las escribe Claude) al crear la ficha de la serie.
 
 async function download(url) {
   const res = await fetch(url);
@@ -234,24 +227,53 @@ async function download(url) {
 }
 const extOf = (mime) => (/png/.test(mime) ? ".png" : /webp/.test(mime) ? ".webp" : ".jpg");
 
+// Banners modelo (estilo que deben seguir los nuevos): están en la raíz del proyecto
+const STYLE_REFS = ["blackclover-banner.jpg", "bleach-banner.png"];
+// Tamaño final de todos los banners: 5:1, como el de Bleach (1024×205) a doble resolución
+const BANNER_W = 2048, BANNER_H = 410;
+
 async function bannerGemini(id, titulo, m) {
-  const refs = [];
-  for (const u of [m.coverImage?.extraLarge, m.bannerImage].filter(Boolean)) {
-    try { const img = await download(u); refs.push({ inlineData: { mimeType: img.mime.split(";")[0], data: img.data.toString("base64") } }); } catch {}
+  const parts = [];
+  // 1) Referencias de estilo: los banners de Black Clover y Bleach
+  for (const f of STYLE_REFS) {
+    const p = path.join(ROOT, f);
+    if (fs.existsSync(p)) parts.push({ inlineData: { mimeType: f.endsWith(".png") ? "image/png" : "image/jpeg", data: fs.readFileSync(p).toString("base64") } });
   }
-  const prompt = `Create an ultra-wide cinematic banner illustration for the anime "${titulo}", in the anime's own art style, using the attached official artwork as the reference for what the main characters look like (hair, outfits, colors). ` +
-    `Show the main characters in dynamic action poses, spread toward the left and right sides, with a dramatic background from the series world, vivid lighting, particles and energy effects. ` +
-    `IMPORTANT: the image will be cropped to a very thin horizontal strip (5:1), so keep every face and the key action inside the middle horizontal band; top and bottom will be cut. ` +
-    `Leave the exact center a little clearer for a logo. No text, no letters, no watermark, no borders.`;
+  const nStyle = parts.length;
+  // 2) Referencias de personajes: portada y banner oficiales de AniList
+  for (const u of [m.coverImage?.extraLarge, m.bannerImage].filter(Boolean)) {
+    try { const img = await download(u); parts.push({ inlineData: { mimeType: img.mime.split(";")[0], data: img.data.toString("base64") } }); } catch {}
+  }
+  const prompt =
+    `Create an ultra-wide banner for the anime "${titulo}".\n` +
+    `STYLE: copy exactly the composition and look of the first ${nStyle} attached banners (Black Clover and Bleach): ` +
+    `the series title logo in its official lettering style, big and glowing, in the exact center; ` +
+    `the protagonist and allies in dynamic action poses on the LEFT side and the rival / second lead and their allies on the RIGHT side, facing the center; ` +
+    `a dark, dramatic sky and a landmark of the series world as a silhouette behind the logo; strong contrasting energy effects on each side ` +
+    `(fire, lightning, magic, particles) in the series' signature colors; polished anime key-visual illustration, high detail.\n` +
+    `CHARACTERS: use the remaining attached official artwork of "${titulo}" as the reference for who appears and what they look like (faces, hair, outfits, colors). Draw them in the series' own art style.\n` +
+    `FRAMING: the image will be cropped to a thin 5:1 strip, so keep the logo and every face inside the middle 80% of the height. ` +
+    `The only text allowed is the title "${titulo}" as the logo. No watermark, no borders, no extra text.`;
   const r = await gemini(IMAGE_MODELS, {
-    contents: [{ parts: [{ text: prompt }, ...refs] }],
-    generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "21:9" } },
+    contents: [{ role: "user", parts: [{ text: prompt }, ...parts] }],
+    generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "4:1" } },
   });
   const part = (r.candidates?.[0]?.content?.parts || []).find((p) => p.inlineData || p.inline_data);
   if (!part) throw new Error("Gemini no devolvió imagen" + (r.candidates?.[0]?.finishReason ? " (" + r.candidates[0].finishReason + ")" : ""));
   const d = part.inlineData || part.inline_data;
+  const raw = Buffer.from(d.data, "base64");
+
+  // 3) Recorte al centro a 5:1 y tamaño fijo (si sharp está instalado; si no, se guarda tal cual)
+  let sharp = null;
+  try { sharp = (await import("sharp")).default; } catch {}
+  if (sharp) {
+    const file = id + ".jpg";
+    await sharp(raw).resize(BANNER_W, BANNER_H, { fit: "cover", position: "centre" }).jpeg({ quality: 88, mozjpeg: true }).toFile(path.join(BANNER_DIR, file));
+    return "banners/" + file;
+  }
+  console.log("  (sin sharp: el banner se guarda sin recortar; instala con: cd herramientas; npm install)");
   const file = id + extOf(d.mimeType || d.mime_type || "image/png");
-  fs.writeFileSync(path.join(BANNER_DIR, file), Buffer.from(d.data, "base64"));
+  fs.writeFileSync(path.join(BANNER_DIR, file), raw);
   return "banners/" + file;
 }
 
@@ -310,6 +332,7 @@ async function main() {
     const all = readManual().map((s) => ({ s, manual: true })).concat(auto.map((s) => ({ s, manual: false })));
     let made = 0;
     for (const { s, manual } of all) {
+      if (onlyIds.length && !onlyIds.includes(s.id)) continue;
       if (manual && s.banner) continue;          // las de catalogo.js con banner propio no se tocan
       if (existingBanner(s.id)) continue;
       let m = null;
@@ -390,7 +413,7 @@ async function main() {
     const prev = byId.get(id) || {};
     const entry = {
       id, titulo,
-      descripcion: prev.descripcion || (await describeEs(titulo, stripHtml(root.description))),
+      descripcion: prev.descripcion || "",
       animeTotal, mangaTotal,
       enEmision: enEmision || undefined,
       temporadas: chain.length,

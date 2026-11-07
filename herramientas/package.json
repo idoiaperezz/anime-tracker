@@ -1,0 +1,9 @@
+{
+  "name": "anime-tracker-herramientas",
+  "private": true,
+  "type": "module",
+  "description": "Herramientas locales del rastreador (no se publican en la web)",
+  "dependencies": {
+    "sharp": "^0.34.4"
+  }
+}
