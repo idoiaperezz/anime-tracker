@@ -283,24 +283,44 @@ async function bannerGemini(id, titulo, m) {
   return "banners/" + file;
 }
 
-// Imagen de tarjeta para la portada (16:9), recompuesta a partir del banner de la serie
+// Imagen de tarjeta para la portada (16:9), con el estilo del banner de la serie pero SIN SPOILERS:
+// solo los personajes del principio de la historia, con su aspecto inicial.
 const TARJETA_DIR = path.join(ROOT, "tarjetas");
 const TARJETA_W = 960, TARJETA_H = 540;
+// Reparto permitido en la tarjeta (todos aparecen en los primeros capítulos)
+const REPARTO_SIN_SPOILERS = {
+  bleach: "Ichigo Kurosaki in his black Soul Reaper robe with the big Zangetsu cleaver sword (NO hollow mask, no bankai) on the left, and Rukia Kuchiki on the right; optionally Orihime, Chad and Uryu small in the back",
+  blackclover: "Asta in his normal human form with his black anti-magic sword (NO devil wings, no black/demon form) on the left, and Yuno with his grimoire and wind magic on the right; optionally Noelle small in the back",
+  naruto: "kid Naruto Uzumaki (Part 1, orange jumpsuit, rasengan not needed) on the left and kid Sasuke Uchiha (Part 1, blue shirt, Sharingan allowed) on the right, with kid Sakura and Kakashi small in the back — Team 7 at the start of the series",
+  onepiece: "Monkey D. Luffy (straw hat, red vest) on the left and Roronoa Zoro (three swords) on the right; optionally Nami, Usopp and Sanji small in the back — the East Blue crew only",
+  attackontitan: "Eren Yeager in his Survey Corps / cadet uniform with ODM gear on the left and Mikasa Ackerman with her blades on the right; optionally Armin small in the back; the huge skinless Colossal Titan face peeking over the wall in the background (as in episode 1). NO other titans, no titan shifters, no human-titan reveals",
+  demonslayerkimetsunoyaiba: "Tanjiro Kamado (green-black checkered haori, sword) on the left and Nezuko Kamado (pink kimono, bamboo muzzle) on the right; optionally Zenitsu and Inosuke small in the back",
+  jujutsukaisen: "Yuji Itadori on the left and Megumi Fushiguro with a shadow divine dog on the right, both in their Jujutsu High uniforms; optionally Nobara and Satoru Gojo (blindfolded) small in the back",
+  myheroacademia: "Izuku 'Deku' Midoriya in his first hero costume on the left and Katsuki Bakugo on the right; optionally All Might and Ochaco Uraraka small in the back",
+  hunterxhunter2011: "Gon Freecss with his fishing rod on the left and Killua Zoldyck on the right; optionally Kurapika and Leorio small in the back — Hunter Exam era",
+  deathnote: "Light Yagami in his school uniform holding the Death Note on the left and L crouching on a chair on the right; the shinigami Ryuk looming in the background",
+  fullmetalalchemistbrotherhood: "Edward Elric (red coat, automail arm) on the left and his brother Alphonse Elric (the big suit of armor) on the right; optionally Winry small in the back",
+  onepunchman: "Saitama (bald, yellow suit, white cape, red gloves) on the left and Genos (blond cyborg) on the right",
+};
 async function tarjetaGemini(id, titulo, bannerFile, m) {
   const parts = [];
   const bp = path.join(ROOT, bannerFile);
   if (!fs.existsSync(bp)) throw new Error("no tiene banner del que partir (" + bannerFile + ")");
   parts.push({ inlineData: { mimeType: /\.png$/i.test(bp) ? "image/png" : "image/jpeg", data: fs.readFileSync(bp).toString("base64") } });
+  // Referencia de personajes: la portada de la PRIMERA temporada (aspecto inicial, sin spoilers)
   if (m && m.coverImage?.extraLarge) {
     try { const img = await download(m.coverImage.extraLarge); parts.push({ inlineData: { mimeType: img.mime.split(";")[0], data: img.data.toString("base64") } }); } catch {}
   }
+  const reparto = REPARTO_SIN_SPOILERS[id] ||
+    `only the protagonist on the left and the main ally or rival on the right, exactly as they look in the FIRST episodes of the series`;
   const prompt =
-    `The first attached image is the ultra-wide banner of the anime "${titulo}". Recompose it into a 16:9 card illustration ` +
-    `that will be shown small (about 320 px wide) on a website grid.\n` +
-    `Keep EXACTLY the same art style, colors, lighting, energy effects and characters as the banner. ` +
-    `Composition: the series title logo, same lettering as in the banner, centered in the lower third; the protagonist large on the left half and the rival / second lead large on the right half, ` +
-    `facing each other, faces clearly visible and big enough to read at small size; fewer secondary characters than the banner. ` +
-    (parts.length > 1 ? `Use the second image only to check what the characters look like. ` : "") +
+    `Create a 16:9 card illustration for the anime "${titulo}", shown small (about 320 px wide) on a website grid.\n` +
+    `STYLE: take from the first attached image (the series banner) ONLY the art style, color palette, lighting, energy effects, mood and the title-logo lettering. ` +
+    `Do NOT copy its characters or poses.\n` +
+    `CHARACTERS (spoiler-free, this is a hard rule): ${reparto}. ` +
+    (parts.length > 1 ? `Use the second image (first-season key visual) for what they look like at the beginning of the story. ` : "") +
+    `Nobody else. No transformations, power-up forms, masks, monster forms, later-season outfits, villains revealed later, deaths or plot twists.\n` +
+    `COMPOSITION: the series title logo centered in the lower third; the two main characters large, facing each other, faces clearly visible and readable at small size.\n` +
     `The only text allowed is the title "${titulo}" as the logo. No watermark, no borders, no extra text.`;
   const r = await gemini(IMAGE_MODELS, {
     contents: [{ role: "user", parts: [{ text: prompt }, ...parts] }],
@@ -443,7 +463,12 @@ async function main() {
       const bannerFile = s.banner || existingBanner(s.id);
       if (!bannerFile) { console.log(`- ${s.titulo}: sin banner todavía (primero --banners-pendientes)`); continue; }
       try {
-        const m = s.anilistId ? await getMedia(s.anilistId) : null;
+        let m = s.anilistId ? await getMedia(s.anilistId) : null;
+        if (!m) { // series añadidas a mano: se busca su primera temporada en AniList
+          const d = await anilist(`query ($q: String) { Page(perPage: 8) { media(search: $q, type: ANIME, format_in: [TV], isAdult: false) { ${FIELDS} } } }`, { q: s.titulo });
+          const best = d.Page.media.slice().sort((a, b) => (b.popularity || 0) - (a.popularity || 0))[0];
+          if (best) m = (await seasonChain(best))[0];
+        }
         const t = await tarjetaGemini(s.id, s.titulo, bannerFile, m);
         made++; console.log(`✓ tarjeta de ${s.titulo} → ${t}`);
       } catch (e) {
