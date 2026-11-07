@@ -131,6 +131,27 @@ h1 {
 .sub { margin: 0; color: var(--muted); }
 
 /* ===== Resumen ===== */
+/* ===== Buscador ===== */
+.search { position: relative; animation: rise .6s .04s cubic-bezier(.2, .8, .2, 1) both; }
+.search svg { position: absolute; left: 16px; top: 50%; width: 18px; height: 18px; transform: translateY(-50%); color: var(--muted); pointer-events: none; transition: color .2s ease; }
+.search input {
+  width: 100%; min-height: 50px; padding: 12px 48px 12px 46px; border-radius: 14px;
+  font: inherit; font-size: .95rem; color: var(--ink);
+  background: rgba(18, 18, 40, .75); border: 1px solid var(--line); backdrop-filter: blur(6px);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.search input::placeholder { color: rgba(156, 155, 194, .7); }
+.search input:focus { outline: none; border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(var(--accent-2-rgb), .18), 0 10px 30px -14px rgba(var(--accent-rgb), .6); }
+.search:focus-within svg { color: var(--accent-2); }
+.search kbd {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: .72rem; color: var(--muted);
+  border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px;
+}
+.search:focus-within kbd { display: none; }
+.noresults { margin: -18px 0 0; color: var(--muted); }
+.noresults span { color: var(--ink); }
+
 .stats { display: flex; gap: 12px; flex-wrap: wrap; animation: rise .6s .08s cubic-bezier(.2, .8, .2, 1) both; }
 .stat {
   flex: 1 1 160px; padding: 14px 16px; border-radius: 12px;
@@ -284,6 +305,13 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
     <p class="sub">Elige una serie y sigue por dónde vas, en el anime o en el manga.</p>
   </header>
 
+  <div class="search" role="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Buscar anime… (Bleach, Black Clover, Ichigo, Asta…)" autocomplete="off" aria-label="Buscar anime">
+    <kbd aria-hidden="true">/</kbd>
+  </div>
+  <p class="noresults" id="noresults" hidden>No hay ningún anime que coincida con «<span id="qtext"></span>».</p>
+
   <div class="stats" aria-label="Resumen">
     <div class="stat"><b id="sSeries">2</b><span>Series</span></div>
     <div class="stat"><b id="sEps">0</b><span>Capítulos vistos</span></div>
@@ -382,6 +410,35 @@ function renderSeries(meta) {
   document.getElementById("sChs").textContent = totalChs;
 }
 renderSeries(null);
+
+// Buscador: filtra las tarjetas por nombre, descripción o etiquetas (sin distinguir mayúsculas ni tildes)
+(function () {
+  var q = document.getElementById("q");
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".grid .card.feature"));
+  var soon = document.querySelector(".grid .card.soon");
+  function norm(s) { return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+  cards.forEach(function (c) { c.setAttribute("data-search", norm(c.textContent.replace(/\s+/g, " "))); });
+  function filter() {
+    var words = norm(q.value.trim()).split(/\s+/).filter(Boolean);
+    var shown = 0;
+    cards.forEach(function (c) {
+      // Cada palabra buscada tiene que ser el principio de alguna palabra de la tarjeta («asta» no coincide con «hasta»)
+      var hay = c.getAttribute("data-search").split(/[^a-z0-9]+/);
+      var ok = words.every(function (w) { return hay.some(function (h) { return h.indexOf(w) === 0; }); });
+      c.hidden = !ok; if (ok) shown++;
+    });
+    soon.hidden = words.length > 0;
+    document.getElementById("noresults").hidden = shown > 0;
+    document.getElementById("qtext").textContent = q.value.trim();
+  }
+  q.addEventListener("input", filter);
+  q.addEventListener("keydown", function (e) { if (e.key === "Escape") { q.value = ""; filter(); q.blur(); } });
+  // Pulsa "/" en cualquier parte para ir al buscador
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (e.key === "/" && tag !== "input" && tag !== "textarea") { e.preventDefault(); q.focus(); }
+  });
+})();
 
 // =====================================================================
 //  CUENTA CON SUPABASE — la sesión se comparte con bleach.html
