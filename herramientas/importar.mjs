@@ -238,6 +238,20 @@ const STYLE_REFS = ["blackclover-banner.jpg", "bleach-banner.png"];
 // Tamaño final de todos los banners: 5:1, como el de Bleach (1024×205) a doble resolución
 const BANNER_W = 2048, BANNER_H = 410;
 
+// Reparto del banner: lado izquierdo / lado derecho, todos personajes DISTINTOS (y sin spoilers)
+const REPARTO_BANNER = {
+  naruto: ["Naruto Uzumaki, Sakura Haruno, Kakashi Hatake, Rock Lee", "Sasuke Uchiha, Gaara, Neji Hyuga"],
+  onepiece: ["Monkey D. Luffy, Roronoa Zoro, Nami, Usopp", "Sanji, Tony Tony Chopper, Nico Robin"],
+  attackontitan: ["Eren Yeager, Mikasa Ackerman, Armin Arlert", "Levi Ackerman, Erwin Smith, Hange Zoë; the Colossal Titan's face looming over the wall in the background"],
+  demonslayerkimetsunoyaiba: ["Tanjiro Kamado, Nezuko Kamado", "Zenitsu Agatsuma, Inosuke Hashibira, Giyu Tomioka"],
+  jujutsukaisen: ["Yuji Itadori, Nobara Kugisaki", "Megumi Fushiguro with one divine dog, Satoru Gojo (blindfolded)"],
+  myheroacademia: ["Izuku 'Deku' Midoriya, Ochaco Uraraka, Tenya Iida, All Might", "Katsuki Bakugo, Shoto Todoroki, Eijiro Kirishima"],
+  hunterxhunter2011: ["Gon Freecss, Leorio Paradinight", "Killua Zoldyck, Kurapika"],
+  deathnote: ["Light Yagami holding the Death Note, the shinigami Ryuk behind him", "L crouching, Soichiro Yagami"],
+  fullmetalalchemistbrotherhood: ["Edward Elric, Alphonse Elric (suit of armor), Winry Rockbell", "Roy Mustang, Riza Hawkeye"],
+  onepunchman: ["Saitama, Genos", "Speed-o'-Sound Sonic, Mumen Rider"],
+};
+
 async function bannerGemini(id, titulo, m) {
   const parts = [];
   // 1) Referencias de estilo: los banners de Black Clover y Bleach
@@ -257,7 +271,12 @@ async function bannerGemini(id, titulo, m) {
     `the protagonist and allies in dynamic action poses on the LEFT side and the rival / second lead and their allies on the RIGHT side, facing the center; ` +
     `a dark, dramatic sky and a landmark of the series world as a silhouette behind the logo; strong contrasting energy effects on each side ` +
     `(fire, lightning, magic, particles) in the series' signature colors; polished anime key-visual illustration, high detail.\n` +
-    `CHARACTERS: use the remaining attached official artwork of "${titulo}" as the reference for who appears and what they look like (faces, hair, outfits, colors). Draw them in the series' own art style.\n` +
+    (REPARTO_BANNER[id]
+      ? `CHARACTERS — LEFT side: ${REPARTO_BANNER[id][0]}. RIGHT side: ${REPARTO_BANNER[id][1]}. Nobody else. Use the remaining attached official artwork only to check what they look like (faces, hair, outfits, colors). Draw them in the series' own art style.\n`
+      : `CHARACTERS: the main cast of "${titulo}" as they look at the beginning of the story; use the remaining attached official artwork to check what they look like. Draw them in the series' own art style.\n`) +
+    `NO SPOILERS: everyone in their normal, early-series form and outfit — no transformations, power-up modes (e.g. Gear forms, titan forms, masks, demon forms), no later-season looks.\n` +
+    `HARD RULE — NO DUPLICATES: every character appears EXACTLY ONCE in the whole image. Never draw the same person twice, no clones, no twins, no repeated faces, ` +
+    `not even small in the background. If there is empty space, fill it with background and effects, not with copies. Do not copy the characters of the style-reference banners.\n` +
     `FRAMING: the image will be cropped to a thin 5:1 strip, so keep the logo and every face inside the middle 80% of the height. ` +
     `The only text allowed is the title "${titulo}" as the logo. No watermark, no borders, no extra text.`;
   const r = await gemini(IMAGE_MODELS, {
@@ -331,6 +350,7 @@ async function tarjetaGemini(id, titulo, bannerFile, m) {
     `CHARACTERS (spoiler-free, this is a hard rule): ${reparto}. ` +
     (parts.length > 1 ? `Use the second image (first-season key visual) for what they look like at the beginning of the story. ` : "") +
     `Nobody else. No transformations, power-up forms, masks, monster forms, later-season outfits, villains revealed later, deaths or plot twists.\n` +
+    `NO DUPLICATES: every character appears exactly once — never the same person twice, no clones, no repeated faces.\n` +
     `COMPOSITION: the series title logo centered in the lower third; the two main characters large, facing each other, faces clearly visible and readable at small size.\n` +
     `The only text allowed is the title "${titulo}" as the logo. No watermark, no borders, no extra text.`;
   const r = await gemini(IMAGE_MODELS, {
