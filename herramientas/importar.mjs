@@ -289,8 +289,8 @@ const TARJETA_DIR = path.join(ROOT, "tarjetas");
 const TARJETA_W = 960, TARJETA_H = 540;
 // Reparto permitido en la tarjeta (todos aparecen en los primeros capítulos)
 const REPARTO_SIN_SPOILERS = {
-  bleach: "Ichigo Kurosaki in his black Soul Reaper robe with the big Zangetsu cleaver sword (NO hollow mask, no bankai) on the left, and Rukia Kuchiki on the right; optionally Orihime, Chad and Uryu small in the back",
-  blackclover: "Asta in his normal human form with his black anti-magic sword (NO devil wings, no black/demon form) on the left, and Yuno with his grimoire and wind magic on the right; optionally Noelle small in the back",
+  bleach: "Ichigo Kurosaki in his plain black Soul Reaper robe with the big Zangetsu cleaver sword (NO hollow mask, no bankai) on the left, and Rukia Kuchiki in a plain black Soul Reaper robe with NO armband, NO badge, NO lieutenant insignia on the right; optionally Orihime, Chad and Uryu small in the back. Setting: Karakura Town at night. FORBIDDEN effects: no ice dragon, no cherry-blossom petals, no other Soul Reapers' powers — only Ichigo's blue spiritual energy",
+  blackclover: "Asta in his normal human form — spiky ash-blond hair with his headband, NO horn, NO black wing, NO devil/black form, no red-black aura — holding his big black Demon-Slayer sword, on the left; and Yuno with his grimoire and green wind magic (NO wind spirit) on the right; optionally Noelle small in the back. Only Yuno's green wind effects and plain dark anti-magic sparks around Asta's sword",
   naruto: "kid Naruto Uzumaki (Part 1, orange jumpsuit, rasengan not needed) on the left and kid Sasuke Uchiha (Part 1, blue shirt, Sharingan allowed) on the right, with kid Sakura and Kakashi small in the back — Team 7 at the start of the series",
   onepiece: "Monkey D. Luffy (straw hat, red vest) on the left and Roronoa Zoro (three swords) on the right; optionally Nami, Usopp and Sanji small in the back — the East Blue crew only",
   attackontitan: "Eren Yeager in his Survey Corps / cadet uniform with ODM gear on the left and Mikasa Ackerman with her blades on the right; optionally Armin small in the back; the huge skinless Colossal Titan face peeking over the wall in the background (as in episode 1). NO other titans, no titan shifters, no human-titan reveals",
@@ -306,7 +306,18 @@ async function tarjetaGemini(id, titulo, bannerFile, m) {
   const parts = [];
   const bp = path.join(ROOT, bannerFile);
   if (!fs.existsSync(bp)) throw new Error("no tiene banner del que partir (" + bannerFile + ")");
-  parts.push({ inlineData: { mimeType: /\.png$/i.test(bp) ? "image/png" : "image/jpeg", data: fs.readFileSync(bp).toString("base64") } });
+  // Del banner solo se pasa la franja CENTRAL (logo, fondo y colores): los personajes de los lados
+  // pueden llevar transformaciones o formas avanzadas que serían spoilers
+  let sharpLib = null;
+  try { sharpLib = (await import("sharp")).default; } catch {}
+  if (sharpLib) {
+    const meta = await sharpLib(bp).metadata();
+    const w = Math.round(meta.width * 0.34);
+    const centro = await sharpLib(bp).extract({ left: Math.round((meta.width - w) / 2), top: 0, width: w, height: meta.height }).jpeg({ quality: 90 }).toBuffer();
+    parts.push({ inlineData: { mimeType: "image/jpeg", data: centro.toString("base64") } });
+  } else {
+    parts.push({ inlineData: { mimeType: /\.png$/i.test(bp) ? "image/png" : "image/jpeg", data: fs.readFileSync(bp).toString("base64") } });
+  }
   // Referencia de personajes: la portada de la PRIMERA temporada (aspecto inicial, sin spoilers)
   if (m && m.coverImage?.extraLarge) {
     try { const img = await download(m.coverImage.extraLarge); parts.push({ inlineData: { mimeType: img.mime.split(";")[0], data: img.data.toString("base64") } }); } catch {}
@@ -315,8 +326,8 @@ async function tarjetaGemini(id, titulo, bannerFile, m) {
     `only the protagonist on the left and the main ally or rival on the right, exactly as they look in the FIRST episodes of the series`;
   const prompt =
     `Create a 16:9 card illustration for the anime "${titulo}", shown small (about 320 px wide) on a website grid.\n` +
-    `STYLE: take from the first attached image (the series banner) ONLY the art style, color palette, lighting, energy effects, mood and the title-logo lettering. ` +
-    `Do NOT copy its characters or poses.\n` +
+    `STYLE: the first attached image is the center of the series banner (title logo and background): take from it ONLY the art style, color palette, lighting, mood, background setting and the title-logo lettering. ` +
+    `Do NOT copy its characters, poses, outfits, accessories or special-power effects (they may be spoilers): draw only the effects that belong to the characters listed below.\n` +
     `CHARACTERS (spoiler-free, this is a hard rule): ${reparto}. ` +
     (parts.length > 1 ? `Use the second image (first-season key visual) for what they look like at the beginning of the story. ` : "") +
     `Nobody else. No transformations, power-up forms, masks, monster forms, later-season outfits, villains revealed later, deaths or plot twists.\n` +
