@@ -471,6 +471,7 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
     <span><i class="sw cur"></i>Actual</span>
     <span><i class="sw" style="border:2px solid var(--accent)"></i>Siguiente</span>
     <span id="legfill"><i class="sw fill"></i>Relleno</span>
+    <span id="legpeli" hidden>🎬 Película (tócala para marcarla como vista)</span>
   </div>
 
   <div class="section-banner">
@@ -788,7 +789,7 @@ function iniciarSerie(D) {
     $("pelis").appendChild(row);
     m.row = row; m.btn = btn;
   });
-  $("pelis").hidden = $("pelishead").hidden = !PELIS.length;
+  $("pelis").hidden = $("pelishead").hidden = $("legpeli").hidden = !PELIS.length;
   function toggleMovie(key) {
     state.pelis = state.pelis || {};
     if (state.pelis[key]) delete state.pelis[key]; else state.pelis[key] = 1;

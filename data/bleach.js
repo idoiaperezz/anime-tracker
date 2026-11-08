@@ -28,5 +28,12 @@ registrarSerie({
   notaFlashback: "En el manga este arco es un flashback con numeración propia (Turn Back the Pendulum). Después sigue en el cap. ≈ 316.",
   // Progreso guardado por la primera versión del rastreador (formato { current, hideFiller })
   claveAntigua: "bleach-tracker-v1",
+  // Películas en orden de visionado: despues = capítulo del anime tras el que conviene verla (0 = antes del 1)
+  peliculas: [
+    { titulo: "Bleach: Memories of Nobody", anio: 2006, despues: 109, tipo: "no-canon", nota: "Historia original con los «Blanks» y la chica Senna." },
+    { titulo: "Bleach: The DiamondDust Rebellion", anio: 2007, despues: 137, tipo: "no-canon", nota: "Historia de Hitsugaya y el robo del sello del rey. Momento aproximado: las guías varían entre el cap. 127 y el 153." },
+    { titulo: "Bleach: Fade to Black", anio: 2008, despues: 137, tipo: "no-canon", nota: "Rukia pierde la memoria. Se ve justo después de la segunda película; momento aproximado: algunas guías la ponen tras el cap. 167 o 198." },
+    { titulo: "Bleach: Hell Verse", anio: 2010, despues: 299, tipo: "no-canon", nota: "El cap. 299 es su prólogo; se estrenó entre el 299 y el 300." }
+  ],
   nota: "El arco «Pasado: El Evento Visored» del anime adapta el flashback Turn Back the Pendulum, que en el manga tiene numeración propia (−108 a −96) y no aparece en la rejilla del manga. Incluye el anime completo (416 capítulos, hasta La guerra sangrienta de los mil años – Parte 4: The Calamity) y el manga completo (686 capítulos). Las equivalencias entre anime y manga son aproximadas (unos 2 capítulos de margen): salen de los rangos por arco de OtakusNotes y Beebom, repartidos de forma uniforme dentro de cada arco."
 });

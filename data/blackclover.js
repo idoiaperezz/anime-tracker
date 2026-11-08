@@ -20,5 +20,9 @@ registrarSerie({
   ],
   // Episodios de relleno sueltos (Anime Filler List)
   relleno: [29, 66, 68, 82, 123, 124, 125, 131, 134, 135, 142, 143, 144, 145, 146, 147, 148, 149],
+  // Películas en orden de visionado: despues = capítulo del anime tras el que conviene verla (0 = antes del 1)
+  peliculas: [
+    { titulo: "Black Clover: La espada del Rey Mago", anio: 2023, despues: 170, tipo: "no-canon", nota: "Historia original supervisada por Tabata. Transcurre entre los caps. 157 y 158 (antes de Heart Kingdom), pero destripa los últimos capítulos de la primera temporada, así que las guías recomiendan verla tras el 170." }
+  ],
   nota: "Incluye el anime hasta el capítulo 176 (la temporada 2 empezó en octubre de 2026 y sigue en emisión) y el manga completo (392 capítulos). Los títulos de los arcos van en su versión original: no hay títulos oficiales en español. Los episodios de relleno salen de Anime Filler List. Las equivalencias entre anime y manga son aproximadas: se reparten de forma uniforme dentro de cada arco, sin contar el relleno."
 });

@@ -20,5 +20,11 @@ registrarSerie({
     ["War of Underworld (parte 1)", 74, 85, 0, null, null],  // WoU 1–12
     ["War of Underworld (parte 2)", 86, 96, 0, null, null]   // WoU 13–23
   ],
+  // Películas en orden de visionado: despues = capítulo del anime tras el que conviene verla (0 = antes del 1)
+  peliculas: [
+    { titulo: "Sword Art Online Progressive: Aria of a Starless Night", anio: 2021, despues: 2, tipo: "no-canon", nota: "Reinterpretación del arco de Aincrad (piso 1) desde el punto de vista de Asuna, con un personaje nuevo (Mito) y escenas que no encajan con la serie: continuidad propia. Cronológicamente va entre los caps. 2 y 3; también se puede ver tras el arco de Aincrad (cap. 14)." },
+    { titulo: "Sword Art Online Progressive: Scherzo of Deep Night", anio: 2022, despues: 2, tipo: "no-canon", nota: "Continuación directa de Aria (pisos 2 a 5 de Aincrad), con la misma continuidad propia. Va justo después de Aria y antes del cap. 3." },
+    { titulo: "Sword Art Online: Ordinal Scale", anio: 2017, despues: 49, tipo: "canon", nota: "Historia original de Reki Kawahara, unas semanas después de Mother's Rosario y antes de Alicization, que hace referencia a ella." }
+  ],
   nota: "Incluye todas las temporadas de TV de la historia principal con numeración seguida: Sword Art Online (25 capítulos, 1–25), Sword Art Online II (24, aquí 26–49), Sword Art Online: Alicization (24, aquí 50–73) y Alicization – War of Underworld (12 + 11 = 23, aquí 74–96). Quedan fuera los spin-offs (Progressive, Alternative: Gun Gale Online), la película Ordinal Scale y los especiales y recapitulaciones sin número (14.5, 18.5, 24.5, 36.5, Extra Edition). Totales y cortes de arco según Wikipedia en inglés y en español, contrastados con MyAnimeList (War of Underworld 2nd Season: 11 capítulos). El origen es la novela ligera de Reki Kawahara, no un manga, así que no hay rejilla de manga ni equivalencias por capítulo. Anime Filler List no registra relleno. Los nombres de los arcos van en su versión original en inglés, que es la que se usa también en España."
 });

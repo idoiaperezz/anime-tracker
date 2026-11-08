@@ -30,5 +30,11 @@ registrarSerie({
   ],
   // Anime Filler List: los 59 capítulos son canon, no hay relleno
   relleno: [],
+  // Películas en orden de visionado: despues = capítulo del anime tras el que conviene verla (0 = antes del 1)
+  peliculas: [
+    { titulo: "Jujutsu Kaisen 0", anio: 2021, despues: 24, tipo: "precuela", nota: "Adapta el tomo 0 (precuela de 4 capítulos sin numeración en la serie principal). Orden de estreno: entre la temporada 1 y la 2." },
+    { titulo: "Jujutsu Kaisen: Hidden Inventory / Premature Death – The Movie", anio: 2025, despues: 29, tipo: "recopilatorio", nota: "Resume los capítulos 25-29 (Inventario oculto / Muerte prematura); prescindible si ya se han visto." },
+    { titulo: "Jujutsu Kaisen: Execution", anio: 2025, despues: 47, tipo: "recopilatorio", nota: "Resume el Incidente de Shibuya (capítulos 30-47) e incluye en preestreno los capítulos 48-49 de la temporada 3." }
+  ],
   nota: "Incluye el anime hasta el capítulo 59 (temporadas 1, 2 y 3; la 3.ª, «Culling Game, parte 1», terminó el 27 de marzo de 2026 y la 4.ª, «Culling Game, parte 2», está anunciada sin fecha) y el manga completo (271 capítulos más un epílogo sin número del tomo 30, que no se cuenta). No hay relleno según Anime Filler List; el especial recopilatorio 54.5 no se cuenta. La película Jujutsu Kaisen 0 adapta aparte el tomo 0 (precuela de 4 capítulos) y no forma parte de esta lista. El arco «Inventario oculto / Muerte prematura» es un flashback del pasado de Gojo, pero en el manga son los caps. 65–79, justo después del final de la temporada 1 (cap. 63); el cap. 64 se adapta al principio del capítulo 30 del anime y aquí se cuenta dentro de ese arco para no romper la rejilla. El capítulo 59 del anime cierra el arco de Sendai (manga 174–180) y llega a las primeras páginas del cap. 181 (la charla entre Yuta e Ishigori), así que el manga se retoma en el 181 (confirmado también por Vandal y Omelete). Los nombres de los arcos son traducciones de uso común de los nombres en inglés (no hay títulos oficiales en español; «Juego del Sacrificio» es la traducción más extendida de «Culling Game»). Fuentes: Wikipedia en inglés (listas de episodios y capítulos), Anime Filler List, Beebom, Soapcentral, Dexerto y Anime Explained. Las equivalencias son aproximadas: se reparten de forma uniforme dentro de cada arco."
 });
