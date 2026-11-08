@@ -21,12 +21,18 @@ Formato de arco: `[nombre, anime desde, hasta, relleno 0/1, manga desde, manga h
 - Los rangos del manga son crecientes y seguidos. Lo que el anime aún no adapta va en `soloManga`.
 - Pon `animeTotal` y `mangaTotal` verificados en la ficha: mandan sobre AniList. Después ejecuta `node herramientas/importar.mjs --sincronizar`.
 - Siempre debe pasar `node herramientas/validar.mjs <id>` sin ✗.
+- Si la serie no viene de un manga (novela ligera, novela visual, original): `mangaTotal: 0` y arcos sin manga; el rastreador queda en modo solo anime.
+- `tema`: colores representativos de la serie (solo se usan dentro de su página).
+- **Películas** (`peliculas`, en orden de visionado): `{ titulo, anio, despues, tipo, manga?: [desde, hasta], nota? }`. `despues` = capítulo del anime tras el que conviene verla (0 = antes del 1). `tipo`: `canon`, `no-canon`, `recopilatorio` o `precuela`. Solo películas de anime de cine (sin imagen real, OVAs ni especiales de TV). Salen como 🎬 en el mapa de capítulos y en una lista con botón de «vista».
+- Las series nuevas se añaden con `node herramientas/importar.mjs --nuevas N --banners ninguno` (las N más populares que falten).
 
 ## Preferencias de la usuaria
 - **Todo automatizado, sin revisión manual.** No propongas pasos en los que tenga que revisar o aprobar (por ejemplo, pull requests).
 - **Doble verificación obligatoria:** cualquier dato dudoso de una ficha se contrasta con al menos otra fuente independiente, distinta de las usadas al investigar. Si las fuentes discrepan, se busca una tercera y gana la mayoría; si no se puede confirmar, se marca como «aproximado» en la `nota`.
 - Las wikis de Fandom bloquean el acceso automático (error 402). No las esquives con espejos o proxies: usa Wikipedia en otros idiomas, MyAnimeList, Crunchyroll, guías y prensa especializada.
 - **Gemini se usa SOLO para imágenes de cada serie: banner, imagen de tarjeta e icono. Para nada más.** Las descripciones, las fichas, los textos, los colores y la investigación los hace Claude.
+- **A Gemini siempre hay que indicarle que los personajes NO SE REPITAN** (regla `REGLA_NO_REPETIR` al principio de cada petición) y darle el reparto exacto (`REPARTO_BANNER` y `REPARTO_SIN_SPOILERS` en `importar.mjs`). Aun así revisa cada imagen: si alguien sale dos veces (le pasa sobre todo con mascotas pequeñas como Pochita o Dimple), regenera o quita esa mascota del reparto.
+- **Sin spoilers:** en banners y tarjetas solo personajes del principio de la historia, en su forma normal (sin transformaciones, máscaras ni formas avanzadas). A Gemini solo se le pasa el centro del banner como referencia de estilo.
 - Imágenes (clave en `$env:GEMINI_API_KEY`, nunca en un archivo; revisa cada imagen nueva y regenera las que tengan el logo mal escrito o un símbolo irreconocible):
   - Banner (cabecera del rastreador): `node herramientas/importar.mjs --banners-pendientes --banners gemini` → `banners/<id>.jpg`, 2048×410 (5:1), estilo de `blackclover-banner.jpg` y `bleach-banner.png` (logo en el centro, bandos a los lados).
   - Imagen de tarjeta (portada, 4 por fila): `--tarjetas-pendientes` → `tarjetas/<id>.jpg`, 960×540 (16:9), recompuesta a partir del banner de la serie (mismos personajes, colores y logo).
