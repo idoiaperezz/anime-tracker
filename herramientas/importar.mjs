@@ -245,6 +245,14 @@ const REGLA_NO_REPETIR =
   `Each person, creature, pet or mascot is drawn exactly ONE time in the whole image — never twice, no clones, no twins, ` +
   `no mirrored copies, no second smaller version in the background. Before finishing, check every figure: if any character appears twice, remove the copy.\n\n`;
 
+// Estética propia de cada serie cuando NO es oscura y de acción como Bleach o Black Clover.
+// Manda sobre el estilo oscuro por defecto en el banner y en la imagen de tarjeta.
+const ESTILO_SERIE = {
+  yourlieinapril: "bright, luminous and nostalgic spring afternoon; soft warm sunlight and golden-hour glow; pastel palette of sakura pink, sky blue, cream and soft gold; " +
+    "floating cherry blossom petals and drifting musical notes; delicate watercolor-like lighting, emotional and gentle, like the series' key visuals — " +
+    "NOT dark, NO night sky, NO lightning, NO battle effects; the characters are playing music (piano and violin), calm and expressive, not fighting",
+};
+
 // Reparto del banner: lado izquierdo / lado derecho, todos personajes DISTINTOS (y sin spoilers)
 const REPARTO_BANNER = {
   naruto: ["Naruto Uzumaki, Sakura Haruno, Kakashi Hatake, Rock Lee", "Sasuke Uchiha, Gaara, Neji Hyuga"],
@@ -264,7 +272,8 @@ const REPARTO_BANNER = {
   assassinationclassroom: ["Koro-sensei (yellow round-faced tentacled teacher), Nagisa Shiota", "Karma Akabane, Tadaomi Karasuma"],
   mobpsycho100: ["Shigeo 'Mob' Kageyama (the ONLY boy with a black bowl haircut), Arataka Reigen (grey suit, pink tie)", "Teruki Hanazawa alone (blond, black school uniform with a fancy collar). NO green spirits or mascots anywhere in the image"],
   rezerostartinglifeinanotherworld: ["Subaru Natsuki in his tracksuit, Emilia with the small grey spirit cat Puck", "Rem, Ram (twin maids, each drawn once)"],
-  yourlieinapril: ["Kousei Arima at the piano", "Kaori Miyazono with her violin, Tsubaki Sawabe, Ryota Watari"],
+  yourlieinapril: ["Kousei Arima at the piano — he is the ONLY character with glasses and appears ONLY here, at the piano",
+    "Kaori Miyazono (long blonde hair) with her violin, Tsubaki Sawabe (short brown bob, sporty), Ryota Watari (spiky light-brown hair, NO glasses, cheerful)"],
   erased: ["Satoru Fujinuma as an adult pizza delivery manga artist, Airi Katagiri", "Kayo Hinazuki as a child in the snow, Kenya Kobayashi as a child"],
   steinsgate: ["Rintaro Okabe in his lab coat, Mayuri Shiina", "Kurisu Makise, Itaru 'Daru' Hashida"],
 };
@@ -284,11 +293,16 @@ async function bannerGemini(id, titulo, m) {
   const prompt =
     REGLA_NO_REPETIR +
     `Create an ultra-wide banner for the anime "${titulo}".\n` +
-    `STYLE: copy exactly the composition and look of the first ${nStyle} attached banners (Black Clover and Bleach): ` +
-    `the series title logo in its official lettering style, big and glowing, in the exact center; ` +
-    `the protagonist and allies in dynamic action poses on the LEFT side and the rival / second lead and their allies on the RIGHT side, facing the center; ` +
-    `a dark, dramatic sky and a landmark of the series world as a silhouette behind the logo; strong contrasting energy effects on each side ` +
-    `(fire, lightning, magic, particles) in the series' signature colors; polished anime key-visual illustration, high detail.\n` +
+    // Estructura común (la de Bleach y Black Clover) + estética propia de cada anime
+    `STRUCTURE (copy it from the first ${nStyle} attached banners, Black Clover and Bleach): the title of the series as a big logo in the exact center, ` +
+    `drawn in the same lettering style as the series' real logo; the protagonist and allies on the LEFT side and the second lead / rival and their allies on the RIGHT side, facing the center; ` +
+    `a landmark or setting of the series behind the logo. Copy ONLY this structure from those two banners — NOT their dark palette, night sky or battle effects.\n` +
+    `LOOK AND MOOD (most important — this anime's OWN aesthetic, as in its attached official artwork): ` +
+    (ESTILO_SERIE[id] || `use the color palette, lighting, time of day, mood, setting and kind of effects that define "${titulo}" in its official key visuals ` +
+      `(a dark action series can be dramatic with energy effects; a bright, slice-of-life or romantic series must stay bright and soft; a horror or thriller series moody, etc.)`) +
+    `. Polished anime key-visual illustration, high detail.\n` +
+    `TEXT: the ONLY text in the image is the title "${titulo}" as the logo, spelled exactly like that. ` +
+    `No other words or characters at all: no Japanese subtitle or kana, no captions, no "official", no taglines, no labels.\n` +
     (REPARTO_BANNER[id]
       ? `CHARACTERS — LEFT side: ${REPARTO_BANNER[id][0]}. RIGHT side: ${REPARTO_BANNER[id][1]}. Nobody else. Use the remaining attached official artwork only to check what they look like (faces, hair, outfits, colors). Draw them in the series' own art style.\n`
       : `CHARACTERS: the main cast of "${titulo}" as they look at the beginning of the story; use the remaining attached official artwork to check what they look like. Draw them in the series' own art style.\n`) +
@@ -345,7 +359,7 @@ const REPARTO_SIN_SPOILERS = {
   assassinationclassroom: "Nagisa Shiota (blue twin-tails) on the left and Koro-sensei (big yellow round smiling face, graduation gown) on the right; the old Class 3-E school building on the mountain",
   mobpsycho100: "Shigeo 'Mob' Kageyama (bowl haircut, black school uniform) on the left and Arataka Reigen (grey suit, pink tie) on the right; the small green spirit Dimple floating between them",
   rezerostartinglifeinanotherworld: "Subaru Natsuki in his black-and-orange tracksuit on the left and Emilia (silver hair, white outfit) with the small grey cat spirit Puck on the right; the royal capital streets",
-  yourlieinapril: "Kousei Arima (black hair, glasses, school uniform) on the left and Kaori Miyazono (blonde, holding her violin) on the right, among pink cherry blossoms",
+  yourlieinapril: "Kousei Arima (black hair, glasses, school uniform) on the left and Kaori Miyazono (blonde, holding her violin) on the right, under blooming cherry trees on a sunny spring afternoon",
   erased: "Satoru Fujinuma as a child on the left and Kayo Hinazuki as a child (red jacket) on the right, in the snowy town at dusk",
   steinsgate: "Rintaro Okabe in his white lab coat on the left and Kurisu Makise on the right; Akihabara and the Future Gadget Lab",
 };
@@ -376,11 +390,13 @@ async function tarjetaGemini(id, titulo, bannerFile, m) {
     `Create a 16:9 card illustration for the anime "${titulo}", shown small (about 320 px wide) on a website grid.\n` +
     `STYLE: the first attached image is the center of the series banner (title logo and background): take from it ONLY the art style, color palette, lighting, mood, background setting and the title-logo lettering. ` +
     `Do NOT copy its characters, poses, outfits, accessories or special-power effects (they may be spoilers): draw only the effects that belong to the characters listed below.\n` +
+    (ESTILO_SERIE[id] ? `LOOK AND MOOD (this series' own aesthetic, most important): ${ESTILO_SERIE[id]}.\n` : "") +
     `CHARACTERS (spoiler-free, this is a hard rule): ${reparto}. ` +
     (parts.length > 1 ? `Use the second image (first-season key visual) for what they look like at the beginning of the story. ` : "") +
     `Nobody else. No transformations, power-up forms, masks, monster forms, later-season outfits, villains revealed later, deaths or plot twists.\n` +
     `NO DUPLICATES: every character appears exactly once — never the same person twice, no clones, no repeated faces.\n` +
-    `COMPOSITION: the series title logo centered in the lower third; the two main characters large, facing each other, faces clearly visible and readable at small size.\n` +
+    `COMPOSITION: the series title logo centered in the lower third; the two main characters large on the left and right, facing each other, ` +
+    `their FACES FULLY VISIBLE in the upper half of the image (never covered by the logo, cropped or hidden), readable at small size.\n` +
     `The only text allowed is the title "${titulo}" as the logo. No watermark, no borders, no extra text.`;
   const r = await gemini(IMAGE_MODELS, {
     contents: [{ role: "user", parts: [{ text: prompt }, ...parts] }],
