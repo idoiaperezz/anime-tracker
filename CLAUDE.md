@@ -32,6 +32,11 @@ Formato de arco: `[nombre, anime desde, hasta, relleno 0/1, manga desde, manga h
 - **Doble verificación obligatoria:** cualquier dato dudoso de una ficha se contrasta con al menos otra fuente independiente, distinta de las usadas al investigar. Si las fuentes discrepan, se busca una tercera y gana la mayoría; si no se puede confirmar, se marca como «aproximado» en la `nota`.
 - Las wikis de Fandom bloquean el acceso automático (error 402). No las esquives con espejos o proxies: usa Wikipedia en otros idiomas, MyAnimeList, Crunchyroll, guías y prensa especializada.
 - **Gemini se usa SOLO para imágenes de cada serie: banner, imagen de tarjeta e icono. Para nada más.** Las descripciones, las fichas, los textos, los colores y la investigación los hace Claude.
+- **Ahorrar en Gemini (cada imagen cuesta dinero): las instrucciones tienen que salir bien a la primera.** Antes de generar:
+  1. Escribe en `REPARTO_BANNER`, `REPARTO_SIN_SPOILERS` y `SIMBOLOS` quién sale y **cómo es cada personaje** (pelo, gafas, ropa, rasgos que lo distingan de los demás). Sin eso el script se niega a generar.
+  2. Si la serie no es oscura y de acción, define su estética en `ESTILO_SERIE`.
+  3. Ejecuta el mismo comando con `--ver-prompt` (no llama a Gemini, es gratis) y revisa las instrucciones: que no haya frases que Gemini pueda copiar como texto, que cada personaje se distinga, que no falte nada.
+  4. Solo entonces genera, y revisa la imagen. Regenera únicamente si hay un fallo real (duplicado, spoiler, texto mal escrito).
 - **A Gemini siempre hay que indicarle que los personajes NO SE REPITAN** (regla `REGLA_NO_REPETIR` al principio de cada petición) y darle el reparto exacto (`REPARTO_BANNER` y `REPARTO_SIN_SPOILERS` en `importar.mjs`). Aun así revisa cada imagen: si alguien sale dos veces (le pasa sobre todo con mascotas pequeñas como Pochita o Dimple), regenera o quita esa mascota del reparto.
 - **Sin spoilers:** en banners y tarjetas solo personajes del principio de la historia, en su forma normal (sin transformaciones, máscaras ni formas avanzadas). A Gemini solo se le pasa el centro del banner como referencia de estilo.
 - Imágenes (clave en `$env:GEMINI_API_KEY`, nunca en un archivo; revisa cada imagen nueva y regenera las que tengan el logo mal escrito o un símbolo irreconocible):

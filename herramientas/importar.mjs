@@ -45,6 +45,8 @@ const IMAGE_MODELS = (process.env.GEMINI_IMAGE_MODEL || "gemini-3.1-flash-image,
 
 // ---------- Argumentos ----------
 const args = process.argv.slice(2);
+// --ver-prompt: enseña las instrucciones de cada imagen sin llamar a Gemini (gratis); úsalo antes de generar
+const VER_PROMPT = args.includes("--ver-prompt");
 let top = 0, bannerMode = GEMINI_KEY ? "gemini" : "anilist", redoBanners = false, sync = false, nuevas = 0, pendingBanners = false, pendingCards = false, pendingIcons = false;
 const searches = [], removeIds = [], onlyIds = [];
 for (let i = 0; i < args.length; i++) {
@@ -59,6 +61,7 @@ for (let i = 0; i < args.length; i++) {
   else if (a === "--solo") onlyIds.push(args[++i]);
   else if (a === "--tarjetas-pendientes") pendingCards = true;
   else if (a === "--iconos-pendientes") pendingIcons = true;
+  else if (a === "--ver-prompt") { /* ver VER_PROMPT */ }
   else if (a.startsWith("--")) { console.error("Opción desconocida: " + a); process.exit(1); }
   else searches.push(a);
 }
@@ -93,7 +96,7 @@ if (!top && !searches.length && !nuevas && !pendingBanners && !pendingCards && !
   process.exit(1);
 }
 if (!["gemini", "anilist", "ninguno"].includes(bannerMode)) { console.error("--banners tiene que ser gemini, anilist o ninguno"); process.exit(1); }
-if (bannerMode === "gemini" && !GEMINI_KEY) { console.error('Para los banners de Gemini falta la clave: $env:GEMINI_API_KEY = "tu-clave"'); process.exit(1); }
+if (bannerMode === "gemini" && !GEMINI_KEY && !VER_PROMPT) { console.error('Para los banners de Gemini falta la clave: $env:GEMINI_API_KEY = "tu-clave"'); process.exit(1); }
 
 // ---------- AniList (con caché y respetando su límite de peticiones) ----------
 let cache = {};
@@ -278,7 +281,18 @@ const REPARTO_BANNER = {
   steinsgate: ["Rintaro Okabe in his lab coat, Mayuri Shiina", "Kurisu Makise, Itaru 'Daru' Hashida"],
 };
 
+// --ver-prompt: muestra las instrucciones exactas que se enviarían a Gemini SIN llamarle (no gasta nada)
+function mostrarPrompt(tipo, id, prompt) {
+  console.log(`\n===== ${tipo} de ${id} (NO se ha llamado a Gemini) =====\n${prompt}\n`);
+  return null;
+}
+// Para no gastar en repeticiones: sin reparto detallado no se genera nada (Gemini no debe improvisar)
+function exigir(tabla, nombreTabla, id, que) {
+  if (!tabla[id]) throw new Error(`falta ${que} de «${id}» en ${nombreTabla} (importar.mjs): escribe quién sale y cómo es cada personaje antes de generar`);
+}
+
 async function bannerGemini(id, titulo, m) {
+  exigir(REPARTO_BANNER, "REPARTO_BANNER", id, "el reparto del banner");
   const parts = [];
   // 1) Referencias de estilo: los banners de Black Clover y Bleach
   for (const f of STYLE_REFS) {
@@ -311,6 +325,7 @@ async function bannerGemini(id, titulo, m) {
     `not even small in the background. If there is empty space, fill it with background and effects, not with copies. Do not copy the characters of the style-reference banners.\n` +
     `FRAMING: the image will be cropped to a thin 5:1 strip, so keep the logo and every face inside the middle 80% of the height. ` +
     `The only text allowed is the title "${titulo}" as the logo. No watermark, no borders, no extra text.`;
+  if (VER_PROMPT) return mostrarPrompt("BANNER", id, prompt);
   const r = await gemini(IMAGE_MODELS, {
     contents: [{ role: "user", parts: [{ text: prompt }, ...parts] }],
     generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "4:1" } },
@@ -383,8 +398,8 @@ async function tarjetaGemini(id, titulo, bannerFile, m) {
   if (m && m.coverImage?.extraLarge) {
     try { const img = await download(m.coverImage.extraLarge); parts.push({ inlineData: { mimeType: img.mime.split(";")[0], data: img.data.toString("base64") } }); } catch {}
   }
-  const reparto = REPARTO_SIN_SPOILERS[id] ||
-    `only the protagonist on the left and the main ally or rival on the right, exactly as they look in the FIRST episodes of the series`;
+  exigir(REPARTO_SIN_SPOILERS, "REPARTO_SIN_SPOILERS", id, "el reparto de la tarjeta");
+  const reparto = REPARTO_SIN_SPOILERS[id];
   const prompt =
     REGLA_NO_REPETIR +
     `Create a 16:9 card illustration for the anime "${titulo}", shown small (about 320 px wide) on a website grid.\n` +
@@ -398,6 +413,7 @@ async function tarjetaGemini(id, titulo, bannerFile, m) {
     `COMPOSITION: the series title logo centered in the lower third; the two main characters large on the left and right, facing each other, ` +
     `their FACES FULLY VISIBLE in the upper half of the image (never covered by the logo, cropped or hidden), readable at small size.\n` +
     `The only text allowed is the title "${titulo}" as the logo. No watermark, no borders, no extra text.`;
+  if (VER_PROMPT) return mostrarPrompt("TARJETA", id, prompt);
   const r = await gemini(IMAGE_MODELS, {
     contents: [{ role: "user", parts: [{ text: prompt }, ...parts] }],
     generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "16:9" } },
@@ -446,13 +462,15 @@ async function iconoGemini(id, titulo) {
     const p = path.join(ROOT, f);
     if (fs.existsSync(p)) parts.push({ inlineData: { mimeType: "image/png", data: fs.readFileSync(p).toString("base64") } });
   }
-  const simbolo = SIMBOLOS[id] || `the single most iconic emblem or symbol of the anime "${titulo}"`;
+  exigir(SIMBOLOS, "SIMBOLOS", id, "el símbolo del icono");
+  const simbolo = SIMBOLOS[id];
   const prompt =
     `Create a square app icon / browser favicon for the anime "${titulo}" showing ${simbolo}.\n` +
     `STYLE: match the attached icons (the Bleach hollow-skull emblem and the glowing Black Clover four-leaf clover): ` +
     `one single bold, simple, instantly recognizable emblem, centered, filling about 80% of the canvas, thick clean shapes, strong contrast, ` +
     `subtle glow in the series' signature colors, on a dark rounded-square tile. It must still be readable at 16×16 pixels. ` +
     `No text, no letters, no characters' faces, no watermark.`;
+  if (VER_PROMPT) return mostrarPrompt("ICONO", id, prompt);
   const r = await gemini(IMAGE_MODELS, {
     contents: [{ role: "user", parts: [{ text: prompt }, ...parts] }],
     generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "1:1" } },
@@ -534,12 +552,13 @@ async function main() {
 
   // --iconos-pendientes: crea con Gemini el icono de la pestaña de las series que no lo tengan
   if (pendingIcons) {
-    if (!GEMINI_KEY) { console.error('Falta la clave: $env:GEMINI_API_KEY = "tu-clave"'); process.exit(1); }
+    if (!GEMINI_KEY && !VER_PROMPT) { console.error('Falta la clave: $env:GEMINI_API_KEY = "tu-clave"'); process.exit(1); }
     let made = 0;
     for (const s of readManual().concat(auto)) {
       if (onlyIds.length && !onlyIds.includes(s.id)) continue;
-      if (s.icono || fs.existsSync(path.join(ROOT, "iconos", s.id + ".png"))) continue; // Bleach y Black Clover ya tienen el suyo
-      try { const f = await iconoGemini(s.id, s.titulo); made++; console.log(`✓ icono de ${s.titulo} → ${f}`); }
+      if (s.icono) continue; // Bleach y Black Clover ya tienen el suyo
+      if (!VER_PROMPT && fs.existsSync(path.join(ROOT, "iconos", s.id + ".png"))) continue;
+      try { const f = await iconoGemini(s.id, s.titulo); if (!f) continue; made++; console.log(`✓ icono de ${s.titulo} → ${f}`); }
       catch (e) { console.log(`✗ ${s.titulo}: ${e.message}`); if (/plan gratuito/.test(e.message)) break; }
     }
     if (made) bumpImgVersion();
@@ -549,12 +568,12 @@ async function main() {
 
   // --tarjetas-pendientes: crea con Gemini la imagen 16:9 de la portada de las series que tengan banner y no tarjeta
   if (pendingCards) {
-    if (!GEMINI_KEY) { console.error('Falta la clave: $env:GEMINI_API_KEY = "tu-clave"'); process.exit(1); }
+    if (!GEMINI_KEY && !VER_PROMPT) { console.error('Falta la clave: $env:GEMINI_API_KEY = "tu-clave"'); process.exit(1); }
     const all = readManual().concat(auto);
     let made = 0;
     for (const s of all) {
       if (onlyIds.length && !onlyIds.includes(s.id)) continue;
-      if (fs.existsSync(path.join(ROOT, "tarjetas", s.id + ".jpg"))) continue;
+      if (!VER_PROMPT && fs.existsSync(path.join(ROOT, "tarjetas", s.id + ".jpg"))) continue;
       const bannerFile = s.banner || existingBanner(s.id);
       if (!bannerFile) { console.log(`- ${s.titulo}: sin banner todavía (primero --banners-pendientes)`); continue; }
       try {
@@ -565,6 +584,7 @@ async function main() {
           if (best) m = (await seasonChain(best))[0];
         }
         const t = await tarjetaGemini(s.id, s.titulo, bannerFile, m);
+        if (!t) continue;
         made++; console.log(`✓ tarjeta de ${s.titulo} → ${t}`);
       } catch (e) {
         console.log(`✗ ${s.titulo}: ${e.message}`);
@@ -584,7 +604,7 @@ async function main() {
     for (const { s, manual } of all) {
       if (onlyIds.length && !onlyIds.includes(s.id)) continue;
       if (manual && s.banner) continue;          // las de catalogo.js con banner propio no se tocan
-      if (existingBanner(s.id)) continue;
+      if (!VER_PROMPT && existingBanner(s.id)) continue;
       let m = null;
       try {
         if (s.anilistId) m = await getMedia(s.anilistId);
@@ -599,7 +619,7 @@ async function main() {
           console.log(`✓ banner de ${s.titulo} → ${b}`);
           if (!manual && byId.has(s.id)) { byId.get(s.id).banner = b; writeAuto([...byId.values()]); }
           else if (manual && !b.endsWith(".png")) console.log(`  ! ${s.titulo} está en catalogo.js: pon banner: "${b}" en su entrada`);
-        } else console.log(`- ${s.titulo}: AniList no tiene banner`);
+        } else if (!VER_PROMPT) console.log(`- ${s.titulo}: AniList no tiene banner`);
       } catch (e) {
         console.log(`✗ ${s.titulo}: ${e.message}`);
         if (/plan gratuito/.test(e.message)) break; // el resto fallaría igual
