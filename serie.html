@@ -316,6 +316,24 @@ button:active { transform: scale(.96); }
 }
 .ep.cur { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 700; animation: cur-pulse 1.8s ease-in-out infinite; }
 .ep.next { border: 2px solid var(--accent); }
+/* Películas: un cuadro 🎬 en su sitio dentro del mapa de capítulos y una lista ordenada */
+.ep.movie { border: 1px solid var(--accent-2); background: rgba(var(--accent-rgb), .1); font-size: .95rem; }
+.ep.movie.vista { background: var(--accent-2); border-color: var(--accent-2); }
+.ep.movie.vista::after { content: "✓"; position: absolute; top: -5px; right: -3px; font-size: .55rem; color: var(--accent); }
+.pelis { display: grid; gap: 10px; }
+.peli {
+  display: flex; gap: 14px; align-items: center; padding: 12px 14px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--surface);
+}
+.peli.vista { border-color: var(--accent); }
+.peli-ico { font-size: 1.4rem; flex: none; }
+.peli-info { flex: 1; min-width: 0; display: grid; gap: 3px; }
+.peli-info b { font-size: .95rem; }
+.peli-when { font-family: var(--font-mono); font-size: .72rem; color: var(--muted); }
+.peli-nota { font-size: .8rem; color: var(--muted); }
+.peli .pill { justify-self: start; }
+.peli .btn { flex: none; }
+@media (max-width: 560px) { .peli { flex-wrap: wrap; } .peli .btn { width: 100%; } }
 .skipnote { color: var(--muted); font-size: .85rem; margin: 0; }
 .foot { color: var(--muted); font-size: .8rem; margin: 0; }
 .gform { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
@@ -462,6 +480,11 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
   <div class="arcs" id="arcs"></div>
   <div class="arcs" id="marcs" hidden></div>
   <p class="skipnote" id="skipnote" hidden></p>
+  <div class="section-banner" id="pelishead" hidden>
+    <h2>Películas</h2>
+    <p>En el orden en que conviene verlas · también salen como 🎬 en el mapa de capítulos</p>
+  </div>
+  <div class="pelis" id="pelis" hidden></div>
   <p class="foot" id="nota"></p>
 </div>
 
@@ -574,7 +597,7 @@ function iniciarSerie(D) {
     var st = document.createElement("style"); st.textContent = css; document.body.appendChild(st);
   }
 
-  var state = { mode: "anime", anime: 0, manga: 0, hideFiller: false, hideAhead: false, group: "", name: "" };
+  var state = { mode: "anime", anime: 0, manga: 0, hideFiller: false, hideAhead: false, group: "", name: "", pelis: {} };
   var fillerSet = {};
   ARCS.forEach(function (a) { for (var i = a[1]; i <= a[2]; i++) if (a[3]) fillerSet[i] = true; });
   FILLER_EPS.forEach(function (n) { fillerSet[n] = true; });
@@ -687,6 +710,7 @@ function iniciarSerie(D) {
     state.hideAhead = !!d.hideAhead;
     state.group = typeof d.group === "string" ? d.group : "";
     state.name = typeof d.name === "string" ? d.name : "";
+    state.pelis = d.pelis && typeof d.pelis === "object" ? d.pelis : {};
   }
   try {
     var raw = localStorage.getItem(KEY);
@@ -721,6 +745,65 @@ function iniciarSerie(D) {
     sec.appendChild(head); sec.appendChild(grid); arcsEl.appendChild(sec);
     arcEls.push({ sec: sec, cnt: cnt, arc: a });
   });
+
+  // ---------- Películas ----------
+  // { titulo, anio, despues (capítulo tras el que verla; 0 = antes del 1), tipo, manga: [desde, hasta], nota }
+  var TIPOS = { "canon": "Canon", "no-canon": "No canon", "recopilatorio": "Recopilatorio", "precuela": "Precuela" };
+  var PELIS = (D.peliculas || []).map(function (p, i) {
+    return { p: p, i: i, key: String(p.titulo || i).toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "-") };
+  });
+  PELIS.sort(function (x, y) { return (x.p.despues - y.p.despues) || ((x.p.anio || 0) - (y.p.anio || 0)) || (x.i - y.i); });
+  function movieWhen(p) {
+    if (!p.despues) return "Antes del capítulo 1";
+    if (p.despues >= TOTAL) return "Después del último capítulo (" + TOTAL + ")";
+    var a = arcOf(p.despues);
+    return "Después del capítulo " + p.despues + (a ? " · " + a[0] : "");
+  }
+  var lastAfter = {}; // varias películas tras el mismo capítulo: van seguidas, en orden
+  PELIS.forEach(function (m) {
+    var p = m.p;
+    // Cuadro en el mapa de capítulos
+    var t = document.createElement("button");
+    t.type = "button"; t.className = "ep movie"; t.textContent = "🎬";
+    t.setAttribute("data-peli", m.key);
+    var tt = p.titulo + (p.anio ? " (" + p.anio + ")" : "") + " · " + (TIPOS[p.tipo] || "Película") + " · toca para marcarla como vista";
+    t.title = tt; t.setAttribute("aria-label", "Película: " + tt);
+    var n = Math.max(0, Math.min(TOTAL, Math.round(p.despues) || 0));
+    if (n === 0) { if (epBtns[1]) epBtns[1].parentNode.insertBefore(t, epBtns[1]); }
+    else { var ref = lastAfter[n] || epBtns[n]; if (ref) ref.after(t); lastAfter[n] = t; }
+    m.tile = t;
+    // Fila de la lista
+    var row = document.createElement("div"); row.className = "peli";
+    var ico = document.createElement("span"); ico.className = "peli-ico"; ico.textContent = "🎬"; ico.setAttribute("aria-hidden", "true");
+    var info = document.createElement("div"); info.className = "peli-info";
+    var b = document.createElement("b"); b.textContent = p.titulo + (p.anio ? " (" + p.anio + ")" : "");
+    var pill = document.createElement("span"); pill.className = "pill" + (p.tipo === "no-canon" || p.tipo === "recopilatorio" ? " fil" : ""); pill.textContent = TIPOS[p.tipo] || "Película";
+    var when = document.createElement("span"); when.className = "peli-when";
+    when.textContent = movieWhen(p) + (p.manga ? " · manga caps. " + p.manga[0] + "–" + p.manga[1] : "");
+    info.appendChild(b); info.appendChild(pill); info.appendChild(when);
+    if (p.nota) { var nt = document.createElement("span"); nt.className = "peli-nota"; nt.textContent = p.nota; info.appendChild(nt); }
+    var btn = document.createElement("button"); btn.type = "button"; btn.className = "btn";
+    btn.addEventListener("click", function () { toggleMovie(m.key); });
+    row.appendChild(ico); row.appendChild(info); row.appendChild(btn);
+    $("pelis").appendChild(row);
+    m.row = row; m.btn = btn;
+  });
+  $("pelis").hidden = $("pelishead").hidden = !PELIS.length;
+  function toggleMovie(key) {
+    state.pelis = state.pelis || {};
+    if (state.pelis[key]) delete state.pelis[key]; else state.pelis[key] = 1;
+    paintMovies(); save();
+  }
+  function paintMovies() {
+    PELIS.forEach(function (m) {
+      var v = !!(state.pelis && state.pelis[m.key]);
+      m.tile.classList.toggle("vista", v);
+      m.row.classList.toggle("vista", v);
+      m.btn.textContent = v ? "Vista ✓" : "Marcar como vista";
+      // «Saltar relleno» también oculta las películas que no son canon ni recopilatorio útil
+      m.tile.hidden = !!(state.hideFiller && (m.p.tipo === "no-canon" || m.p.tipo === "recopilatorio"));
+    });
+  }
 
   // ---------- Rejilla del manga ----------
   var marcsEl = $("marcs"), chBtns = {}, marcEls = [];
@@ -898,6 +981,7 @@ function iniciarSerie(D) {
   });
   arcsEl.addEventListener("click", function (e) {
     var b = e.target.closest ? e.target.closest("button.ep") : null; if (!b) return;
+    if (b.classList.contains("movie")) { toggleMovie(b.getAttribute("data-peli")); return; }
     var n = Number(b.getAttribute("data-n"));
     var target = n === state.anime ? prevAnime(n) : n;
     setAnime(target);
@@ -1178,7 +1262,7 @@ function iniciarSerie(D) {
     if (!account) return;
     clearTimeout(cloudT);
     cloudT = setTimeout(function () {
-      var d = { mode: state.mode, anime: state.anime, manga: state.manga, hideFiller: state.hideFiller, t: state.t || Date.now() };
+      var d = { mode: state.mode, anime: state.anime, manga: state.manga, hideFiller: state.hideFiller, t: state.t || Date.now(), pelis: state.pelis || {} };
       var meta = {}; meta[CLOUD] = d;
       sb.auth.updateUser({ data: meta }).then(function (r) { if (r.error) setSync("err"); });
     }, 800);
@@ -1192,6 +1276,8 @@ function iniciarSerie(D) {
       state.manga = Math.max(state.manga, clampInt(d.manga, 0, MANGA_TOTAL));
       if (d.mode === "anime" || d.mode === "manga") state.mode = d.mode;
       state.hideFiller = !!d.hideFiller;
+      // películas vistas: se juntan las de la cuenta y las de este navegador
+      if (d.pelis && typeof d.pelis === "object") { state.pelis = state.pelis || {}; for (var k in d.pelis) if (d.pelis[k]) state.pelis[k] = 1; }
     }
     paint(); save();
   }

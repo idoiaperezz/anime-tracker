@@ -238,6 +238,13 @@ const STYLE_REFS = ["blackclover-banner.jpg", "bleach-banner.png"];
 // Tamaño final de todos los banners: 5:1, como el de Bleach (1024×205) a doble resolución
 const BANNER_W = 2048, BANNER_H = 410;
 
+// Regla que va SIEMPRE al principio de cada petición de imagen con personajes (prioridad máxima):
+// ningún personaje puede aparecer dos veces (ni pequeño al fondo, ni mascotas como Pochita)
+const REGLA_NO_REPETIR =
+  `RULE #1 (most important, overrides everything else): NO CHARACTER MAY APPEAR MORE THAN ONCE. ` +
+  `Each person, creature, pet or mascot is drawn exactly ONE time in the whole image — never twice, no clones, no twins, ` +
+  `no mirrored copies, no second smaller version in the background. Before finishing, check every figure: if any character appears twice, remove the copy.\n\n`;
+
 // Reparto del banner: lado izquierdo / lado derecho, todos personajes DISTINTOS (y sin spoilers)
 const REPARTO_BANNER = {
   naruto: ["Naruto Uzumaki, Sakura Haruno, Kakashi Hatake, Rock Lee", "Sasuke Uchiha, Gaara, Neji Hyuga"],
@@ -250,6 +257,16 @@ const REPARTO_BANNER = {
   deathnote: ["Light Yagami holding the Death Note, the shinigami Ryuk behind him", "L crouching, Soichiro Yagami"],
   fullmetalalchemistbrotherhood: ["Edward Elric, Alphonse Elric (suit of armor), Winry Rockbell", "Roy Mustang, Riza Hawkeye"],
   onepunchman: ["Saitama, Genos", "Speed-o'-Sound Sonic, Mumen Rider"],
+  tokyoghoul: ["Ken Kaneki with BLACK hair (NOT white hair), wearing his black ghoul mask with the zipper mouth, Hideyoshi Nagachika", "Touka Kirishima (rabbit mask in hand), Nishiki Nishio"],
+  swordartonline: ["Kirito in his black Aincrad coat with one black sword, Klein", "Asuna in her white-and-red Knights of the Blood uniform, Lisbeth"],
+  chainsawman: ["Denji holding Pochita (the small orange chainsaw-dog) in his arms — ONLY ONE Pochita in the whole image", "Power (blood devil horns), Aki Hayakawa, Makima"],
+  thepromisedneverland: ["Emma, Norman", "Ray, Mom Isabella (caretaker of Grace Field House)"],
+  assassinationclassroom: ["Koro-sensei (yellow round-faced tentacled teacher), Nagisa Shiota", "Karma Akabane, Tadaomi Karasuma"],
+  mobpsycho100: ["Shigeo 'Mob' Kageyama (the ONLY boy with a black bowl haircut), Arataka Reigen (grey suit, pink tie)", "Teruki Hanazawa alone (blond, black school uniform with a fancy collar). NO green spirits or mascots anywhere in the image"],
+  rezerostartinglifeinanotherworld: ["Subaru Natsuki in his tracksuit, Emilia with the small grey spirit cat Puck", "Rem, Ram (twin maids, each drawn once)"],
+  yourlieinapril: ["Kousei Arima at the piano", "Kaori Miyazono with her violin, Tsubaki Sawabe, Ryota Watari"],
+  erased: ["Satoru Fujinuma as an adult pizza delivery manga artist, Airi Katagiri", "Kayo Hinazuki as a child in the snow, Kenya Kobayashi as a child"],
+  steinsgate: ["Rintaro Okabe in his lab coat, Mayuri Shiina", "Kurisu Makise, Itaru 'Daru' Hashida"],
 };
 
 async function bannerGemini(id, titulo, m) {
@@ -265,6 +282,7 @@ async function bannerGemini(id, titulo, m) {
     try { const img = await download(u); parts.push({ inlineData: { mimeType: img.mime.split(";")[0], data: img.data.toString("base64") } }); } catch {}
   }
   const prompt =
+    REGLA_NO_REPETIR +
     `Create an ultra-wide banner for the anime "${titulo}".\n` +
     `STYLE: copy exactly the composition and look of the first ${nStyle} attached banners (Black Clover and Bleach): ` +
     `the series title logo in its official lettering style, big and glowing, in the exact center; ` +
@@ -320,6 +338,16 @@ const REPARTO_SIN_SPOILERS = {
   deathnote: "Light Yagami in his school uniform holding the Death Note on the left and L crouching on a chair on the right; the shinigami Ryuk looming in the background",
   fullmetalalchemistbrotherhood: "Edward Elric (red coat, automail arm) on the left and his brother Alphonse Elric (the big suit of armor) on the right; optionally Winry small in the back",
   onepunchman: "Saitama (bald, yellow suit, white cape, red gloves) on the left and Genos (blond cyborg) on the right",
+  tokyoghoul: "Ken Kaneki with BLACK hair (NOT white hair), in casual clothes with one red ghoul eye, on the left, and Touka Kirishima in her Anteiku waitress uniform on the right; Anteiku café / Tokyo streets at night",
+  swordartonline: "Kirito in his black Aincrad coat with a single black sword on the left and Asuna in her white-and-red Knights of the Blood uniform with her rapier on the right; the floating castle Aincrad in the sky",
+  chainsawman: "Denji (blond, white shirt, black tie) holding the small chainsaw-dog Pochita on the left and Power (blood devil horns) on the right",
+  thepromisedneverland: "Emma (orange hair) on the left and Norman (white hair) on the right, both in white orphanage clothes, Ray small in the back; the Grace Field House orphanage and its forest",
+  assassinationclassroom: "Nagisa Shiota (blue twin-tails) on the left and Koro-sensei (big yellow round smiling face, graduation gown) on the right; the old Class 3-E school building on the mountain",
+  mobpsycho100: "Shigeo 'Mob' Kageyama (bowl haircut, black school uniform) on the left and Arataka Reigen (grey suit, pink tie) on the right; the small green spirit Dimple floating between them",
+  rezerostartinglifeinanotherworld: "Subaru Natsuki in his black-and-orange tracksuit on the left and Emilia (silver hair, white outfit) with the small grey cat spirit Puck on the right; the royal capital streets",
+  yourlieinapril: "Kousei Arima (black hair, glasses, school uniform) on the left and Kaori Miyazono (blonde, holding her violin) on the right, among pink cherry blossoms",
+  erased: "Satoru Fujinuma as a child on the left and Kayo Hinazuki as a child (red jacket) on the right, in the snowy town at dusk",
+  steinsgate: "Rintaro Okabe in his white lab coat on the left and Kurisu Makise on the right; Akihabara and the Future Gadget Lab",
 };
 async function tarjetaGemini(id, titulo, bannerFile, m) {
   const parts = [];
@@ -344,6 +372,7 @@ async function tarjetaGemini(id, titulo, bannerFile, m) {
   const reparto = REPARTO_SIN_SPOILERS[id] ||
     `only the protagonist on the left and the main ally or rival on the right, exactly as they look in the FIRST episodes of the series`;
   const prompt =
+    REGLA_NO_REPETIR +
     `Create a 16:9 card illustration for the anime "${titulo}", shown small (about 320 px wide) on a website grid.\n` +
     `STYLE: the first attached image is the center of the series banner (title logo and background): take from it ONLY the art style, color palette, lighting, mood, background setting and the title-logo lettering. ` +
     `Do NOT copy its characters, poses, outfits, accessories or special-power effects (they may be spoilers): draw only the effects that belong to the characters listed below.\n` +
@@ -384,6 +413,16 @@ const SIMBOLOS = {
   deathnote: "the black Death Note notebook with its title",
   fullmetalalchemistbrotherhood: "the Flamel cross (serpent on a cross with a crown and wings)",
   onepunchman: "Saitama's red gloved fist",
+  tokyoghoul: "Kaneki's black leather ghoul eye-patch mask with the zipper-teeth mouth",
+  swordartonline: "two crossed swords, one black and one white, over a stylized floating castle",
+  chainsawman: "Pochita's head (small orange dog with a chainsaw sticking out of its forehead)",
+  thepromisedneverland: "the silhouette of the Grace Field House orphanage gate under a big tree",
+  assassinationclassroom: "Koro-sensei's big round yellow smiling face",
+  mobpsycho100: "Dimple, the small green spirit with a smile",
+  rezerostartinglifeinanotherworld: "Puck, the small grey cat spirit",
+  yourlieinapril: "a violin crossed with piano keys and a few pink cherry blossoms",
+  erased: "a single red mitten resting in the snow",
+  steinsgate: "a brass clockwork gear emblem",
 };
 async function iconoGemini(id, titulo) {
   const parts = [];

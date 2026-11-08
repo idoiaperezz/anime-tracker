@@ -251,6 +251,266 @@
         "onAccent": "#0b0b10"
       }
     }
+  },
+  {
+    "id": "tokyoghoul",
+    "titulo": "Tokyo Ghoul",
+    "descripcion": "Ken Kaneki, el universitario que se convierte en medio ghoul tras una cita que sale mal, de su primer encuentro con Rize hasta el final de Tokyo Ghoul √A.",
+    "animeTotal": 24,
+    "mangaTotal": 143,
+    "temporadas": 2,
+    "anilistId": 20605,
+    "tema": {
+      "claro": {
+        "accent": "#ae4924",
+        "accentRgb": "174, 73, 36",
+        "accentDeep": "#602814",
+        "accent2": "#d68812",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#ff6b35",
+        "accentRgb": "255, 107, 53",
+        "accentDeep": "#80361b",
+        "accent2": "#ffa957",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/tokyoghoul.jpg"
+  },
+  {
+    "id": "swordartonline",
+    "titulo": "Sword Art Online",
+    "descripcion": "Kirito y Asuna, atrapados en mundos virtuales donde morir puede ser real, de la saga de Aincrad hasta War of Underworld.",
+    "animeTotal": 96,
+    "mangaTotal": 0,
+    "temporadas": 2,
+    "anilistId": 11757,
+    "tema": {
+      "claro": {
+        "accent": "#6a572b",
+        "accentRgb": "106, 87, 43",
+        "accentDeep": "#3a3018",
+        "accent2": "#b48f16",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#e4bb5d",
+        "accentRgb": "228, 187, 93",
+        "accentDeep": "#725e2f",
+        "accent2": "#f2d16b",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/swordartonline.jpg"
+  },
+  {
+    "id": "chainsawman",
+    "titulo": "Chainsaw Man",
+    "descripcion": "Denji, el chico que se funde con su perro-motosierra Pochita para pagar las deudas de su padre, de su entrada en Seguridad Pública hasta el Hombre Katana.",
+    "animeTotal": 12,
+    "mangaTotal": 232,
+    "temporadas": 1,
+    "anilistId": 127230,
+    "tema": {
+      "claro": {
+        "accent": "#6b1a1a",
+        "accentRgb": "107, 26, 26",
+        "accentDeep": "#3b0e0e",
+        "accent2": "#b5710d",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#a47272",
+        "accentRgb": "164, 114, 114",
+        "accentDeep": "#523939",
+        "accent2": "#d2ac75",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/chainsawman.jpg"
+  },
+  {
+    "id": "thepromisedneverland",
+    "titulo": "The Promised Neverland",
+    "descripcion": "Emma, Norman y Ray, huérfanos de Grace Field que descubren el terrible secreto de su orfanato, de la fuga hasta el desenlace del anime.",
+    "animeTotal": 23,
+    "mangaTotal": 181,
+    "temporadas": 2,
+    "anilistId": 101759,
+    "tema": {
+      "claro": {
+        "accent": "#785c2a",
+        "accentRgb": "120, 92, 42",
+        "accentDeep": "#423317",
+        "accent2": "#bc9215",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#e4ae50",
+        "accentRgb": "228, 174, 80",
+        "accentDeep": "#725728",
+        "accent2": "#f2ca64",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/thepromisedneverland.jpg"
+  },
+  {
+    "id": "assassinationclassroom",
+    "titulo": "Assassination Classroom",
+    "descripcion": "La clase 3-E y Koro-sensei, el profesor-pulpo al que deben matar antes de que destruya la Tierra, del primer día de clase hasta la graduación.",
+    "animeTotal": 47,
+    "mangaTotal": 180,
+    "temporadas": 2,
+    "anilistId": 20755,
+    "tema": {
+      "claro": {
+        "accent": "#625d26",
+        "accentRgb": "98, 93, 38",
+        "accentDeep": "#363315",
+        "accent2": "#b19313",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f1e45d",
+        "accentRgb": "241, 228, 93",
+        "accentDeep": "#79722f",
+        "accent2": "#f8e56b",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/assassinationclassroom.jpg"
+  },
+  {
+    "id": "mobpsycho100",
+    "titulo": "Mob Psycho 100",
+    "descripcion": "Shigeo «Mob» Kageyama, un chico con enormes poderes psíquicos que solo quiere llevar una vida normal, de sus trabajos con Reigen hasta el ???%.",
+    "animeTotal": 37,
+    "mangaTotal": 101,
+    "temporadas": 3,
+    "anilistId": 21507,
+    "tema": {
+      "claro": {
+        "accent": "#a64814",
+        "accentRgb": "166, 72, 20",
+        "accentDeep": "#5b280b",
+        "accent2": "#d2880a",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#dc753c",
+        "accentRgb": "220, 117, 60",
+        "accentDeep": "#6e3b1e",
+        "accent2": "#eeae5a",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/mobpsycho100.jpg"
+  },
+  {
+    "id": "rezerostartinglifeinanotherworld",
+    "titulo": "Re:ZERO -Starting Life in Another World-",
+    "descripcion": "Subaru Natsuki, transportado a otro mundo con el poder de volver atrás al morir, de la capital real hasta la Torre de Pléyades.",
+    "animeTotal": 85,
+    "mangaTotal": 0,
+    "temporadas": 5,
+    "anilistId": 21355,
+    "tema": {
+      "claro": {
+        "accent": "#bb3e87",
+        "accentRgb": "187, 62, 135",
+        "accentDeep": "#67224a",
+        "accent2": "#dd8343",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f150ae",
+        "accentRgb": "241, 80, 174",
+        "accentDeep": "#792857",
+        "accent2": "#f89b93",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/rezerostartinglifeinanotherworld.jpg"
+  },
+  {
+    "id": "yourlieinapril",
+    "titulo": "Your lie in April",
+    "descripcion": "Kōsei Arima, el niño prodigio del piano que dejó de oír su música, y Kaori Miyazono, la violinista que le devuelve las ganas de tocar, de su primer encuentro hasta el último concurso.",
+    "animeTotal": 22,
+    "mangaTotal": 44,
+    "temporadas": 1,
+    "anilistId": 20665,
+    "tema": {
+      "claro": {
+        "accent": "#6a5725",
+        "accentRgb": "106, 87, 37",
+        "accentDeep": "#3a3014",
+        "accent2": "#b48f13",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#e4bb50",
+        "accentRgb": "228, 187, 80",
+        "accentDeep": "#725e28",
+        "accent2": "#f2d164",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/yourlieinapril.jpg"
+  },
+  {
+    "id": "erased",
+    "titulo": "Erased",
+    "descripcion": "Satoru Fujinuma, que viaja de vuelta a su infancia para impedir los secuestros que marcaron su pueblo, de 2006 hasta el desenlace del anime.",
+    "animeTotal": 12,
+    "mangaTotal": 49,
+    "temporadas": 1,
+    "anilistId": 21234,
+    "tema": {
+      "claro": {
+        "accent": "#7f552a",
+        "accentRgb": "127, 85, 42",
+        "accentDeep": "#462f17",
+        "accent2": "#bf8e15",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f1a150",
+        "accentRgb": "241, 161, 80",
+        "accentDeep": "#795128",
+        "accent2": "#f8c464",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/erased.jpg"
+  },
+  {
+    "id": "steinsgate",
+    "titulo": "Steins;Gate",
+    "descripcion": "Rintaro Okabe y su laboratorio de inventos, que descubren cómo enviar mensajes al pasado, de los primeros D-Mails hasta Steins Gate.",
+    "animeTotal": 24,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 9253,
+    "tema": {
+      "claro": {
+        "accent": "#685747",
+        "accentRgb": "104, 87, 71",
+        "accentDeep": "#393027",
+        "accent2": "#b49024",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#ffd6ae",
+        "accentRgb": "255, 214, 174",
+        "accentDeep": "#806b57",
+        "accent2": "#ffde93",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/steinsgate.jpg"
   }
 ]
 // @@fin
@@ -260,4 +520,4 @@
   window.CATALOGO.forEach(function (s) { ya[s.id] = true; });
   auto.forEach(function (s) { if (!ya[s.id]) window.CATALOGO.push(s); });
 })();
-window.VERSION_IMAGENES = "mw6zq5or";
+window.VERSION_IMAGENES = "mw8emc42";

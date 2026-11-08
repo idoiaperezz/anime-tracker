@@ -77,11 +77,24 @@ for (const ficha of CATALOGO) {
       seen.add(n);
     });
     if (!D.nota) warns.push("falta la nota del pie (fuentes y aclaraciones)");
+    // 4) Películas: { titulo, anio, despues, tipo, manga?: [desde, hasta], nota? }
+    const TIPOS = ["canon", "no-canon", "recopilatorio", "precuela"];
+    const vistos = new Set();
+    (D.peliculas || []).forEach((p, i) => {
+      const tag = `película ${i + 1} «${p && p.titulo}»`;
+      if (!p || typeof p.titulo !== "string" || !p.titulo) { errs.push(`película ${i + 1}: sin título`); return; }
+      if (vistos.has(p.titulo.toLowerCase())) errs.push(`${tag}: repetida`);
+      vistos.add(p.titulo.toLowerCase());
+      if (!Number.isInteger(p.anio) || p.anio < 1950 || p.anio > 2100) errs.push(`${tag}: año no válido (${p.anio})`);
+      if (!Number.isInteger(p.despues) || p.despues < 0 || p.despues > T) errs.push(`${tag}: «despues» tiene que ser un capítulo entre 0 y ${T}`);
+      if (!TIPOS.includes(p.tipo)) errs.push(`${tag}: tipo «${p.tipo}» no válido (${TIPOS.join(", ")})`);
+      if (p.manga != null && (!Array.isArray(p.manga) || p.manga.length !== 2 || !(p.manga[0] <= p.manga[1]))) errs.push(`${tag}: manga tiene que ser [desde, hasta]`);
+    });
     const canon = arcs.filter((a) => !a[3]).length, fill = arcs.length - canon;
     const fillEps = arcs.filter((a) => a[3]).reduce((s, a) => s + a[2] - a[1] + 1, 0) + (D.relleno || []).length;
     const ok = !errs.length;
     if (!ok) bad++;
-    console.log(`${ok ? "✓" : "✗"} ${ficha.id}: ${T} caps. anime, ${M || "sin"} manga · ${arcs.length} arcos (${fill} de relleno) · ${fillEps} caps. de relleno`);
+    console.log(`${ok ? "✓" : "✗"} ${ficha.id}: ${T} caps. anime, ${M || "sin"} manga · ${arcs.length} arcos (${fill} de relleno) · ${fillEps} caps. de relleno · ${(D.peliculas || []).length} películas`);
   } else if (!errs.length) errs.push("el archivo no llama a registrarSerie({...})");
   errs.forEach((e) => console.log("   ✗ " + e));
   warns.forEach((w) => console.log("   ! " + w));
