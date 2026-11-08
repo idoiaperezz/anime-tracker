@@ -867,6 +867,7 @@ function iniciarSerie(D) {
 
   // ---------- Guardar ----------
   function save() {
+    state.t = Date.now(); // última vez que tocaste esta serie (la portada ordena «Seguir viendo» con esto)
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
     pushSoon();
     cloudSoon();
@@ -1177,7 +1178,7 @@ function iniciarSerie(D) {
     if (!account) return;
     clearTimeout(cloudT);
     cloudT = setTimeout(function () {
-      var d = { mode: state.mode, anime: state.anime, manga: state.manga, hideFiller: state.hideFiller };
+      var d = { mode: state.mode, anime: state.anime, manga: state.manga, hideFiller: state.hideFiller, t: state.t || Date.now() };
       var meta = {}; meta[CLOUD] = d;
       sb.auth.updateUser({ data: meta }).then(function (r) { if (r.error) setSync("err"); });
     }, 800);

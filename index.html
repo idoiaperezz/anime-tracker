@@ -176,6 +176,15 @@ h1 {
 .stat span { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 
 /* ===== Tarjetas ===== */
+/* Secciones de la portada: «Seguir viendo» y «Todos los animes» */
+.shelf { display: grid; gap: 16px; }
+.shelf-head { display: flex; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+.shelf-head h2 {
+  margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 1.15rem; letter-spacing: .04em; text-transform: uppercase;
+  background: linear-gradient(95deg, #fff 10%, var(--accent-2) 60%, var(--accent));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.shelf-count { font-family: var(--font-mono); font-size: .75rem; color: var(--muted); }
 /* 4 por fila en pantallas anchas, 3, 2 y 1 según se estrecha */
 .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 @media (max-width: 1180px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -353,16 +362,25 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
     <div class="stat"><b id="sChs">0</b><span>Capítulos leídos</span></div>
   </div>
 
-  <main class="grid" id="grid">
-    <!-- Las tarjetas de las series se crean desde data/catalogo.js -->
-    <div class="card soon">
-      <div>
-        <div class="plus" aria-hidden="true">+</div>
-        <strong>Próximamente</strong>
-        <span>Aquí aparecerán más series</span>
+  <!-- Series empezadas y sin terminar (la última que tocaste, primero) -->
+  <section class="shelf" id="shelfSeguir" hidden aria-labelledby="hSeguir">
+    <div class="shelf-head"><h2 id="hSeguir">Seguir viendo</h2><span class="shelf-count" id="seguirCount"></span></div>
+    <div class="grid" id="gridSeguir"></div>
+  </section>
+
+  <!-- Catálogo completo en orden alfabético (las tarjetas se crean desde data/catalogo.js) -->
+  <section class="shelf" aria-labelledby="hTodos">
+    <div class="shelf-head"><h2 id="hTodos">Todos los animes</h2><span class="shelf-count" id="todosCount"></span></div>
+    <main class="grid" id="grid">
+      <div class="card soon">
+        <div>
+          <div class="plus" aria-hidden="true">+</div>
+          <strong>Próximamente</strong>
+          <span>Aquí aparecerán más series</span>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </section>
 
   <footer id="foot">Tu progreso se guarda en este navegador · Inicia sesión para guardarlo en tu cuenta</footer>
 </div>
@@ -378,19 +396,21 @@ var SERIES = (window.CATALOGO || []).map(function (s) {
   return { id: "s-" + s.id + "-", key: s.storageKey || (s.id + "-tracker-v1"), cloud: s.id, animeMax: s.animeTotal || 0, mangaMax: s.mangaTotal || 0, ficha: s };
 });
 
-// ---------- Tarjetas de la portada, una por serie del catálogo ----------
-(function () {
-  var grid = document.getElementById("grid"), soon = grid.querySelector(".card.soon");
-  var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-  function el(tag, cls, txt, id) {
-    var e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (txt != null) e.textContent = txt;
-    if (id) e.id = id;
-    return e;
-  }
-  SERIES.forEach(function (S, i) {
-    var s = S.ficha, p = S.id;
+// «Todos los animes» va en orden alfabético
+SERIES.sort(function (x, y) { return x.ficha.titulo.localeCompare(y.ficha.titulo, "es", { sensitivity: "base", numeric: true }); });
+
+// ---------- Tarjetas de la portada ----------
+// Cada tarjeta guarda referencias a sus partes (sin ids), porque una serie puede salir dos veces:
+// en «Seguir viendo» y en «Todos los animes»
+var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+function el(tag, cls, txt) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (txt != null) e.textContent = txt;
+  return e;
+}
+function buildCard(S, i) {
+    var s = S.ficha, refs = {};
     var a = el("a", "card feature");
     a.href = "serie.html?id=" + encodeURIComponent(s.id);
     a.style.setProperty("--i", Math.min(i, 8));
@@ -414,24 +434,46 @@ var SERIES = (window.CATALOGO || []).map(function (s) {
     a.appendChild(fill); a.appendChild(bg);
 
     var body = el("div", "card-body"), tags = el("div", "tags");
-    tags.appendChild(el("span", "tag hot", "Empezar", p + "State"));
+    refs.state = el("span", "tag hot", "Empezar"); tags.appendChild(refs.state);
     if (S.animeMax) tags.appendChild(el("span", "tag", S.animeMax + " caps. anime" + (s.enEmision ? " · en emisión" : "")));
     if (S.mangaMax) tags.appendChild(el("span", "tag", S.mangaMax + " caps. manga"));
     body.appendChild(tags);
     body.appendChild(el("h2", null, s.titulo));
     if (s.descripcion) { var dp = el("p", "desc", s.descripcion); dp.title = s.descripcion; body.appendChild(dp); }
     var prog = el("div", "prog"), row = el("div", "prog-row");
-    row.appendChild(el("span", null, "Anime", p + "Label"));
-    row.appendChild(el("span", null, "0 / " + S.animeMax, p + "Count"));
-    var bar = el("div", "bar"); bar.appendChild(el("i", null, null, p + "Fill"));
+    refs.label = el("span", null, "Anime"); row.appendChild(refs.label);
+    refs.count = el("span", null, "0 / " + S.animeMax); row.appendChild(refs.count);
+    var bar = el("div", "bar"); refs.fill = el("i"); bar.appendChild(refs.fill);
     prog.appendChild(row); prog.appendChild(bar); body.appendChild(prog);
-    var cta = el("span", "cta"); cta.appendChild(el("span", null, "Empezar a ver", p + "Cta"));
+    var cta = el("span", "cta"); refs.cta = el("span", null, "Empezar a ver"); cta.appendChild(refs.cta);
     cta.insertAdjacentHTML("beforeend", ARROW);
     body.appendChild(cta);
     a.appendChild(body);
-    grid.insertBefore(a, soon);
+    a.setAttribute("data-search", norm(s.titulo + " " + (s.descripcion || "") + " " + tags.textContent));
+    return { el: a, refs: refs };
+}
+// Pinta en una tarjeta el progreso calculado de su serie
+function applyProgress(card, P) {
+  var r = card.refs;
+  r.label.textContent = P.isManga ? "Manga" : "Anime";
+  r.count.textContent = P.cur + " / " + P.max;
+  r.state.textContent = P.done ? "Completado" : P.started ? "En curso" : "Empezar";
+  r.cta.textContent = P.done ? "Volver a verlo"
+    : P.started ? "Continuar por el " + (P.cur + 1)
+    : P.isManga ? "Empezar a leer" : "Empezar a ver";
+  setTimeout(function () { r.fill.style.width = (P.cur / P.max * 100) + "%"; }, 300);
+}
+function norm(s) { return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+
+// «Todos los animes»: una tarjeta por serie, en orden alfabético
+(function () {
+  var grid = document.getElementById("grid"), soon = grid.querySelector(".card.soon");
+  SERIES.forEach(function (S, i) {
+    S.cardAll = buildCard(S, i);
+    grid.insertBefore(S.cardAll.el, soon);
   });
   soon.style.setProperty("--i", Math.min(SERIES.length, 8));
+  document.getElementById("todosCount").textContent = SERIES.length;
 })();
 function readLocal(key) {
   try { return JSON.parse(localStorage.getItem(key) || "null"); } catch (e) { return null; }
@@ -451,30 +493,40 @@ function renderSeries(meta) {
     // Anime visto / manga leído = has llegado a su último capítulo
     if (s.animeMax > 0 && anime >= s.animeMax) animesVistos++;
     if (s.mangaMax > 0 && manga >= s.mangaMax) mangasLeidos++;
-
-    document.getElementById(s.id + "Label").textContent = isManga ? "Manga" : "Anime";
-    document.getElementById(s.id + "Count").textContent = cur + " / " + max;
-    var started = anime > 0 || manga > 0, done = cur >= max;
-    document.getElementById(s.id + "State").textContent = done ? "Completado" : started ? "En curso" : "Empezar";
-    document.getElementById(s.id + "Cta").textContent = done ? "Volver a verlo"
-      : started ? "Continuar por el " + (cur + 1)
-      : isManga ? "Empezar a leer" : "Empezar a ver";
-    setTimeout(function () { document.getElementById(s.id + "Fill").style.width = (cur / max * 100) + "%"; }, 300);
+    // t: cuándo tocaste esta serie por última vez (lo guarda su rastreador)
+    s.P = { isManga: isManga, cur: cur, max: max, started: anime > 0 || manga > 0, done: cur >= max,
+            t: Math.max(Number(d.t) || 0, Number(c.t) || 0) };
+    applyProgress(s.cardAll, s.P);
   });
   document.getElementById("sEps").textContent = totalEps;
   document.getElementById("sChs").textContent = totalChs;
   document.getElementById("sDone").textContent = animesVistos;
   document.getElementById("sMangaDone").textContent = mangasLeidos;
+  renderSeguir();
+}
+
+// «Seguir viendo»: empezadas y sin terminar; la última que tocaste, primero (las que no tienen fecha, por orden alfabético)
+function renderSeguir() {
+  var grid = document.getElementById("gridSeguir");
+  var list = SERIES.filter(function (s) { return s.P.started && !s.P.done; });
+  list.sort(function (x, y) { return (y.P.t - x.P.t); }); // sort estable: a igual fecha se mantiene el orden alfabético
+  grid.textContent = "";
+  list.forEach(function (s, i) {
+    var card = buildCard(s, i);
+    applyProgress(card, s.P);
+    grid.appendChild(card.el);
+  });
+  document.getElementById("seguirCount").textContent = list.length;
+  document.getElementById("shelfSeguir").hidden = !list.length || !!(document.getElementById("q") && document.getElementById("q").value.trim());
 }
 renderSeries(null);
 
 // Buscador: filtra las tarjetas por nombre, descripción o etiquetas (sin distinguir mayúsculas ni tildes)
+// Mientras buscas se oculta «Seguir viendo» y se filtra «Todos los animes»
 (function () {
   var q = document.getElementById("q");
-  var cards = Array.prototype.slice.call(document.querySelectorAll(".grid .card.feature"));
-  var soon = document.querySelector(".grid .card.soon");
-  function norm(s) { return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
-  cards.forEach(function (c) { c.setAttribute("data-search", norm(c.textContent.replace(/\s+/g, " "))); });
+  var cards = SERIES.map(function (s) { return s.cardAll.el; });
+  var soon = document.querySelector("#grid .card.soon");
   function filter() {
     var words = norm(q.value.trim()).split(/\s+/).filter(Boolean);
     var shown = 0;
@@ -485,6 +537,7 @@ renderSeries(null);
       c.hidden = !ok; if (ok) shown++;
     });
     soon.hidden = words.length > 0;
+    document.getElementById("shelfSeguir").hidden = words.length > 0 || !document.getElementById("gridSeguir").children.length;
     document.getElementById("noresults").hidden = shown > 0;
     document.getElementById("qtext").textContent = q.value.trim();
   }
