@@ -161,6 +161,8 @@ h1 {
 }
 .stat:nth-child(2) b { color: var(--accent-2); }
 .stat:nth-child(3) b { color: #c4a5ff; }
+.stat:nth-child(4) b { color: #ffd166; }
+.stat b small { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); margin-left: 4px; }
 .stat b { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .stat span { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 
@@ -336,6 +338,7 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
     <div class="stat"><b id="sSeries">2</b><span>Series</span></div>
     <div class="stat"><b id="sEps">0</b><span>Capítulos vistos</span></div>
     <div class="stat"><b id="sChs">0</b><span>Capítulos leídos</span></div>
+    <div class="stat"><b id="sDone">0</b><span>Animes vistos</span></div>
   </div>
 
   <main class="grid" id="grid">
@@ -425,7 +428,7 @@ function readLocal(key) {
 // Para el aviso de grupos de bleach.html al cambiar de cuenta
 function readLocalBleach() { return readLocal("bleach-tracker-v2"); }
 function renderSeries(meta) {
-  var totalEps = 0, totalChs = 0;
+  var totalEps = 0, totalChs = 0, animesVistos = 0, conAnime = 0;
   SERIES.forEach(function (s) {
     var d = readLocal(s.key) || {}, c = (meta && meta[s.cloud]) || {};
     var anime = Math.max(0, Math.min(s.animeMax, Math.max(Number(d.anime) || 0, Number(c.anime) || 0)));
@@ -434,6 +437,8 @@ function renderSeries(meta) {
     var isManga = s.mangaMax > 0 && ((c.mode || d.mode) === "manga" || !s.animeMax);
     var cur = isManga ? manga : anime, max = (isManga ? s.mangaMax : s.animeMax) || 1;
     totalEps += anime; totalChs += manga;
+    // Anime visto = has llegado al último capítulo del anime de esa serie
+    if (s.animeMax > 0) { conAnime++; if (anime >= s.animeMax) animesVistos++; }
 
     document.getElementById(s.id + "Label").textContent = isManga ? "Manga" : "Anime";
     document.getElementById(s.id + "Count").textContent = cur + " / " + max;
@@ -446,6 +451,9 @@ function renderSeries(meta) {
   });
   document.getElementById("sEps").textContent = totalEps;
   document.getElementById("sChs").textContent = totalChs;
+  var sd = document.getElementById("sDone");
+  sd.textContent = animesVistos;
+  var de = document.createElement("small"); de.textContent = "/ " + conAnime; sd.appendChild(de);
 }
 renderSeries(null);
 
