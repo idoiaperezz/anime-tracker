@@ -387,8 +387,13 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
 
 <!-- Supabase: si la librería no carga, la portada sigue funcionando sin cuenta -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="data/catalogo.js"></script>
-<script src="data/catalogo-auto.js"></script><!-- series importadas con herramientas/importar.mjs (si no existe, no pasa nada) -->
+<!-- Catálogo de series. Se pide con ?t=<minuto actual> para que el navegador no use una lista antigua
+     guardada en caché (así las series nuevas aparecen sin tener que recargar con Ctrl+F5) -->
+<script>
+  window.NOCACHE = "?t=" + Math.floor(Date.now() / 60000);
+  document.write('<script src="data/catalogo.js' + NOCACHE + '"><\/script>');
+  document.write('<script src="data/catalogo-auto.js' + NOCACHE + '"><\/script>');
+</script>
 <script>
 // Progreso de cada serie: lo que guarda su página en este navegador y, con sesión iniciada, lo de tu cuenta
 // id: prefijo de los elementos de su tarjeta · key: localStorage de su página · cloud: clave dentro de tu cuenta

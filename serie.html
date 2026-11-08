@@ -491,8 +491,12 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
 
 <!-- Supabase: si la librería no carga, la página sigue funcionando en modo local -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="data/catalogo.js"></script>
-<script src="data/catalogo-auto.js"></script>
+<!-- Catálogo y ficha se piden con ?t=<minuto actual> para no usar versiones antiguas guardadas en caché -->
+<script>
+  window.NOCACHE = "?t=" + Math.floor(Date.now() / 60000);
+  document.write('<script src="data/catalogo.js' + NOCACHE + '"><\/script>');
+  document.write('<script src="data/catalogo-auto.js' + NOCACHE + '"><\/script>');
+</script>
 <script>
 /* =====================================================================
    CONFIGURACIÓN — pega aquí los datos de tu proyecto de Supabase
@@ -538,7 +542,7 @@ if (!/^[a-z0-9-]{1,40}$/.test(SERIE_ID)) {
   serieError(window.CATALOGO ? "La serie «" + SERIE_ID + "» no está en data/catalogo.js." : "No se pudo cargar data/catalogo.js.");
 } else {
   var dataScript = document.createElement("script");
-  dataScript.src = "data/" + SERIE_ID + ".js";
+  dataScript.src = "data/" + SERIE_ID + ".js" + (window.NOCACHE || "");
   dataScript.onload = function () { arrancar(null); };   // por si el archivo no llama a registrarSerie
   dataScript.onerror = function () { arrancar(null); };  // sin detalles: capítulos en bloques de 25
   document.body.appendChild(dataScript);

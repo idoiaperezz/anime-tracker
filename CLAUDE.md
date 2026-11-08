@@ -27,6 +27,7 @@ Formato de arco: `[nombre, anime desde, hasta, relleno 0/1, manga desde, manga h
 - Las series nuevas se añaden con `node herramientas/importar.mjs --nuevas N --banners ninguno` (las N más populares que falten).
 
 ## Preferencias de la usuaria
+- **Publicación:** ella sube los cambios con «Push origin» en GitHub Desktop, a menudo en cuanto se los preparas. Por eso **nunca hagas `git commit --amend` ni reescribas commits**: si hay que corregir algo, haz un commit nuevo. Después de cada commit dile cuántos cambios hay pendientes de subir.
 - **Todo automatizado, sin revisión manual.** No propongas pasos en los que tenga que revisar o aprobar (por ejemplo, pull requests).
 - **Doble verificación obligatoria:** cualquier dato dudoso de una ficha se contrasta con al menos otra fuente independiente, distinta de las usadas al investigar. Si las fuentes discrepan, se busca una tercera y gana la mayoría; si no se puede confirmar, se marca como «aproximado» en la `nota`.
 - Las wikis de Fandom bloquean el acceso automático (error 402). No las esquives con espejos o proxies: usa Wikipedia en otros idiomas, MyAnimeList, Crunchyroll, guías y prensa especializada.
