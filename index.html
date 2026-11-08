@@ -29,20 +29,25 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 
+/* Fondo de luces: va en una capa fija aparte y se mueve con transform (lo hace la tarjeta gráfica),
+   así no hay que repintar toda la página en cada fotograma al hacer scroll */
 @keyframes ambient-shift {
-  0%, 100% { background-position: 0% 0%, 100% 100%, 0 0; }
-  50% { background-position: 100% 30%, 0% 70%, 0 0; }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-6%, 4%, 0); }
+}
+body::before {
+  content: ""; position: fixed; inset: -15%; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(1100px 560px at 22% 8%, rgba(var(--accent-rgb), .22), transparent 60%),
+    radial-gradient(900px 480px at 92% 20%, rgba(var(--accent-2-rgb), .14), transparent 55%);
+  animation: ambient-shift 24s ease-in-out infinite;
+  will-change: transform;
 }
 body {
   margin: 0; min-height: 100vh;
   background:
-    radial-gradient(1100px 560px at 15% -10%, rgba(var(--accent-rgb), .22), transparent 60%),
-    radial-gradient(900px 480px at 100% 10%, rgba(var(--accent-2-rgb), .14), transparent 55%),
     repeating-linear-gradient(135deg, rgba(var(--accent-rgb), .045) 0 1px, transparent 1px 36px),
     var(--bg);
-  background-attachment: fixed;
-  background-size: 200% 200%, 200% 200%, auto, auto;
-  animation: ambient-shift 24s ease-in-out infinite;
   color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5;
   padding-block: max(40px, env(safe-area-inset-top, 0px)) 64px;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
@@ -137,7 +142,7 @@ h1 {
 .search input {
   width: 100%; min-height: 50px; padding: 12px 48px 12px 46px; border-radius: 14px;
   font: inherit; font-size: .95rem; color: var(--ink);
-  background: rgba(18, 18, 40, .75); border: 1px solid var(--line); backdrop-filter: blur(6px);
+  background: rgba(18, 18, 40, .9); border: 1px solid var(--line);
   transition: border-color .2s ease, box-shadow .2s ease;
 }
 .search input::placeholder { color: rgba(156, 155, 194, .7); }
@@ -156,13 +161,17 @@ h1 {
 .stat {
   flex: 1 1 160px; padding: 14px 16px; border-radius: 12px;
   background: linear-gradient(160deg, rgba(var(--accent-rgb), .12), rgba(var(--accent-2-rgb), .04)), rgba(18, 18, 40, .75);
-  border: 1px solid var(--line); backdrop-filter: blur(6px);
+  border: 1px solid var(--line);
   display: grid; gap: 2px;
 }
 .stat:nth-child(2) b { color: var(--accent-2); }
 .stat:nth-child(3) b { color: #c4a5ff; }
-.stat:nth-child(4) b { color: #ffd166; }
-.stat b small { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); margin-left: 4px; }
+/* «Animes vistos»: degradado cian → violeta, como el título de la portada */
+.stat:nth-child(4) b {
+  background: linear-gradient(95deg, var(--accent-2), var(--accent));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.stat b small { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); -webkit-text-fill-color: var(--muted); margin-left: 4px; }
 .stat b { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .stat span { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 
@@ -227,7 +236,7 @@ h1 {
 .tag {
   font-family: var(--font-mono); font-size: .6rem; letter-spacing: .08em; text-transform: uppercase;
   padding: 2px 8px; border-radius: 99px;
-  background: rgba(10, 10, 12, .55); border: 1px solid rgba(255, 255, 255, .18); backdrop-filter: blur(6px);
+  background: rgba(10, 10, 14, .78); border: 1px solid rgba(255, 255, 255, .18);
 }
 .tag.hot { background: var(--accent); color: var(--on-accent); border-color: transparent; font-weight: 500; }
 .card h2 {
@@ -256,11 +265,14 @@ h1 {
   align-self: stretch; justify-content: center; display: flex; align-items: center; gap: 8px;
   padding: 9px 14px; border-radius: 9px; font-weight: 700; font-size: .86rem;
   background: linear-gradient(120deg, var(--accent-deep), var(--accent), #7c3aed, var(--accent));
-  background-size: 300% 100%; animation: shift 5s ease-in-out infinite;
+  background-size: 300% 100%; background-position: 0% 50%;
+  transition: background-position .6s ease;
   color: var(--on-accent);
   box-shadow: 0 12px 28px -12px rgba(var(--accent-rgb), .8);
 }
 @keyframes shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+/* el degradado del botón solo se mueve al pasar el ratón (antes se animaban los 12 sin parar) */
+.card:hover .cta, .card:focus-visible .cta { background-position: 100% 50%; }
 .cta svg { width: 16px; height: 16px; transition: transform .25s ease; }
 .card:hover .cta svg { transform: translateX(4px); }
 
@@ -685,18 +697,26 @@ renderSeries(null);
       p.col = Math.random() < .5 ? "155,92,255" : "34,211,238"; // violeta o cian
       return p;
     }
-    for (var i = 0; i < 42; i++) { var p = spawn({}); p.y = Math.random() * H; parts.push(p); }
+    for (var i = 0; i < 36; i++) { var p = spawn({}); p.y = Math.random() * H; parts.push(p); }
+    // El brillo se dibuja como un halo suave (círculo grande y transparente) en vez de con shadowBlur,
+    // que es muy costoso; y mientras haces scroll las partículas se pausan para que vaya fluido
+    var scrolling = false, scrollT = null;
+    addEventListener("scroll", function () {
+      scrolling = true; clearTimeout(scrollT);
+      scrollT = setTimeout(function () { scrolling = false; }, 150);
+    }, { passive: true });
     (function tick() {
-      if (!document.hidden) {
+      if (!document.hidden && !scrolling) {
         ctx.clearRect(0, 0, W, H);
         parts.forEach(function (p) {
           p.y -= p.vy; p.x += p.vx; p.life++;
           var fade = 1 - p.life / p.max;
           if (fade <= 0 || p.y < -10) spawn(p);
-          ctx.beginPath();
-          ctx.fillStyle = "rgba(" + p.col + "," + Math.max(0, p.a * fade) + ")";
-          ctx.shadowColor = "rgba(" + p.col + ",.8)"; ctx.shadowBlur = 6;
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+          var a = Math.max(0, p.a * fade);
+          ctx.fillStyle = "rgba(" + p.col + "," + (a * .25) + ")";
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.6, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "rgba(" + p.col + "," + a + ")";
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
         });
       }
       requestAnimationFrame(tick);
