@@ -28,8 +28,8 @@ var CATALOGO = [
     titulo: "Bleach",
     descripcion: "La historia de Ichigo Kurosaki, del arco «Shinigami Sustituto» hasta «La guerra sangrienta de los mil años».",
     animeTotal: 416, mangaTotal: 686,
-    banner: "banners/bleach.jpg", // imagen oficial (AniList); el banner anterior sigue en bleach-banner.png
-    bannerAlt: "Bleach: Ichigo, Rukia y sus amigos",
+    banner: "bleach-banner.png", bannerAjuste: "contain",
+    bannerAlt: "Bleach: Ichigo y los Shinigami en batalla",
     icono: "bleach-icon.png",
     storageKey: "bleach-tracker-v2",
     tema: {
@@ -42,8 +42,8 @@ var CATALOGO = [
     titulo: "Black Clover",
     descripcion: "Asta y Yuno, dos huérfanos que sueñan con ser el Rey Mago, del arco «Magic Knights Entrance» hasta «Spade Kingdom Raid».",
     animeTotal: 176, mangaTotal: 392, enEmision: true,
-    banner: "banners/blackclover.jpg", // imagen oficial (Kitsu); el banner anterior sigue en blackclover-banner.jpg
-    bannerAlt: "Black Clover: Asta y Yuno",
+    banner: "blackclover-banner.jpg",
+    bannerAlt: "Black Clover: Asta, Yuno y los Toros Negros",
     icono: "blackclover-icon.png",
     storageKey: "blackclover-tracker-v1",
     tema: {
