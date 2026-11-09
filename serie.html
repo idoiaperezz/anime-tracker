@@ -254,6 +254,22 @@ button:active { transform: scale(.96); }
 .jump input[type="number"] { width: 88px; min-height: 40px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); font-family: var(--font-mono); transition: border-color .2s ease, box-shadow .2s ease; }
 .jump input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18); }
 .jump .btn { min-height: 40px; padding: 8px 14px; }
+/* Tu nota (1-10) para el ranking */
+.rate { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.rate-label { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.rate-btns { display: flex; gap: 4px; flex-wrap: wrap; }
+.rate-btns button {
+  width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--ink);
+  font-family: var(--font-mono); font-size: .8rem; cursor: pointer; transition: transform .12s ease, background .12s ease, border-color .12s ease;
+}
+.rate-btns button:hover { border-color: var(--accent); transform: translateY(-2px); }
+.rate-btns button.on { background: rgba(var(--accent-rgb), .18); border-color: var(--accent); }
+.rate-btns button.sel { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 700; }
+.rate-clear { background: none; border: 0; color: var(--muted); font: inherit; font-size: .8rem; text-decoration: underline; cursor: pointer; }
+.rate-link { font-size: .85rem; font-weight: 700; color: var(--accent); text-decoration: none; margin-left: auto; }
+.rate-link:hover { text-decoration: underline; }
+.rate-msg { flex-basis: 100%; font-size: .78rem; color: var(--muted); }
+.rate-msg:empty { display: none; }
 .check { display: inline-flex; gap: 8px; align-items: center; min-height: 40px; cursor: pointer; }
 .check input { width: 18px; height: 18px; accent-color: var(--accent); }
 
@@ -424,6 +440,14 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
         <button class="btn" type="submit">Guardar</button>
       </form>
       <label class="check" id="skipwrap"><input type="checkbox" id="skip"> Saltar relleno</label>
+    </div>
+    <!-- Tu nota para el ranking (1-10). Con cuenta se guarda en Supabase y sale en tu ranking público -->
+    <div class="rate" role="group" aria-labelledby="ratelabel">
+      <span class="rate-label" id="ratelabel">Tu nota</span>
+      <div class="rate-btns" id="ratebtns"></div>
+      <button type="button" class="rate-clear" id="rateclear" hidden>Quitar</button>
+      <a class="rate-link" id="ratelink" href="ranking.html">🏆 Ver mi ranking</a>
+      <span class="rate-msg" id="ratemsg"></span>
     </div>
   </section>
 
@@ -716,6 +740,7 @@ function iniciarSerie(D) {
     state.group = typeof d.group === "string" ? d.group : "";
     state.name = typeof d.name === "string" ? d.name : "";
     state.pelis = d.pelis && typeof d.pelis === "object" ? d.pelis : {};
+    state.nota = Number.isInteger(d.nota) && d.nota >= 1 && d.nota <= 10 ? d.nota : 0;
   }
   try {
     var raw = localStorage.getItem(KEY);
@@ -794,6 +819,58 @@ function iniciarSerie(D) {
     m.row = row; m.btn = btn;
   });
   $("pelis").hidden = $("pelishead").hidden = $("legpeli").hidden = !PELIS.length;
+  // ---------- Tu nota (1-10) para el ranking ----------
+  var rateBtns = [];
+  for (var rv = 1; rv <= 10; rv++) (function (v) {
+    var b = document.createElement("button");
+    b.type = "button"; b.textContent = v; b.setAttribute("aria-label", "Ponerle un " + v);
+    b.addEventListener("click", function () { setNota(state.nota === v ? 0 : v); });
+    b.addEventListener("mouseenter", function () { paintNota(v); });
+    b.addEventListener("mouseleave", function () { paintNota(); });
+    $("ratebtns").appendChild(b); rateBtns.push(b);
+  })(rv);
+  $("rateclear").addEventListener("click", function () { setNota(0); });
+  function paintNota(hover) {
+    var n = hover || state.nota || 0;
+    rateBtns.forEach(function (b, i) {
+      b.classList.toggle("on", i + 1 < n);
+      b.classList.toggle("sel", i + 1 === n);
+      b.setAttribute("aria-pressed", String(i + 1 === state.nota));
+    });
+    $("rateclear").hidden = !state.nota;
+  }
+  function setNota(n) {
+    state.nota = n;
+    paintNota(); save(); pushNota(false);
+  }
+  // Con cuenta, la nota va a la tabla «valoraciones» de Supabase (la que leen los rankings públicos)
+  async function pushNota(silencioso) {
+    var msg = $("ratemsg");
+    if (!sb || !account) {
+      msg.textContent = state.nota ? "Guardada en este navegador. Inicia sesión para que salga en tu ranking y lo puedan ver tus amigos." : "";
+      return;
+    }
+    try {
+      var r = state.nota
+        ? await sb.from("valoraciones").upsert({ user_id: account.id, serie: SERIE, nota: state.nota, updated_at: new Date().toISOString() }, { onConflict: "user_id,serie" })
+        : await sb.from("valoraciones").delete().eq("user_id", account.id).eq("serie", SERIE);
+      if (r.error) throw r.error;
+      if (!silencioso) msg.textContent = state.nota ? "Guardada en tu ranking." : "Quitada de tu ranking.";
+    } catch (e) {
+      msg.textContent = "No se pudo guardar en tu ranking: " + (e && e.message ? e.message : "revisa la conexión") + ".";
+    }
+  }
+  // Al iniciar sesión: si no tenías nota en este navegador, se recupera la de tu cuenta; si la tenías, se sube
+  async function syncNota() {
+    if (!sb || !account) return;
+    if (state.nota) { pushNota(true); return; }
+    try {
+      var r = await sb.from("valoraciones").select("nota").eq("user_id", account.id).eq("serie", SERIE).maybeSingle();
+      if (r.data && r.data.nota) { state.nota = r.data.nota; paintNota(); try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+    } catch (e) {}
+  }
+  paintNota();
+
   function toggleMovie(key) {
     state.pelis = state.pelis || {};
     if (state.pelis[key]) delete state.pelis[key]; else state.pelis[key] = 1;
@@ -1267,7 +1344,7 @@ function iniciarSerie(D) {
     if (!account) return;
     clearTimeout(cloudT);
     cloudT = setTimeout(function () {
-      var d = { mode: state.mode, anime: state.anime, manga: state.manga, hideFiller: state.hideFiller, t: state.t || Date.now(), pelis: state.pelis || {} };
+      var d = { mode: state.mode, anime: state.anime, manga: state.manga, hideFiller: state.hideFiller, t: state.t || Date.now(), pelis: state.pelis || {}, nota: state.nota || 0 };
       var meta = {}; meta[CLOUD] = d;
       sb.auth.updateUser({ data: meta }).then(function (r) { if (r.error) setSync("err"); });
     }, 800);
@@ -1283,8 +1360,9 @@ function iniciarSerie(D) {
       state.hideFiller = !!d.hideFiller;
       // películas vistas: se juntan las de la cuenta y las de este navegador
       if (d.pelis && typeof d.pelis === "object") { state.pelis = state.pelis || {}; for (var k in d.pelis) if (d.pelis[k]) state.pelis[k] = 1; }
+      if (!state.nota && Number.isInteger(d.nota) && d.nota >= 1 && d.nota <= 10) state.nota = d.nota;
     }
-    paint(); save();
+    paint(); paintNota(); save();
   }
 
   async function reconnectGroup() {
@@ -1316,6 +1394,7 @@ function iniciarSerie(D) {
         if (f.data && f.data.user) u = f.data.user;
         account = u; uid = u.id;
         mergeCloud(u);
+        syncNota(); // nota del ranking (una por anime completo, no por temporada)
         // En otro navegador no se sabe tu grupo: se recupera de tu fila en Supabase
         if (!state.group) {
           var g = await sb.from(TABLE).select("grupo,nombre").eq("user_id", uid).eq("serie", SERIE).maybeSingle();

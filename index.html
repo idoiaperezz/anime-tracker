@@ -61,7 +61,13 @@ header { position: relative; z-index: 10; display: grid; gap: 10px; animation: r
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
 /* ===== Cuenta: botón arriba a la derecha + desplegable ===== */
-.acct { position: relative; z-index: 30; margin-left: auto; }
+.rank-link {
+  margin-left: auto; display: inline-flex; align-items: center; min-height: 36px; padding: 4px 14px; border-radius: 99px;
+  border: 1px solid var(--line); background: rgba(18, 18, 40, .9); color: var(--ink); font-size: .82rem; font-weight: 700; text-decoration: none;
+  transition: border-color .2s ease;
+}
+.rank-link:hover { border-color: rgba(var(--accent-rgb), .8); }
+.acct { position: relative; z-index: 30; }
 .acct-chip {
   display: inline-flex; align-items: center; gap: 8px;
   min-height: 36px; padding: 4px 14px 4px 4px; border-radius: 99px;
@@ -313,6 +319,7 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
   <header>
     <div class="topbar">
       <span class="eyebrow">Anime · Manga · Progreso</span>
+      <a class="rank-link" href="ranking.html">🏆 Mi ranking</a>
       <div class="acct" id="account" hidden>
         <button type="button" class="acct-chip" id="achip" aria-expanded="false" aria-controls="apop">
           <i class="acct-av" id="aav" aria-hidden="true"></i><span id="alabel">Iniciar sesión</span>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ranking de animes</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070713'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle'%3E%F0%9F%8F%86%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DM+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #070713; --surface: #121228; --ink: #f2f1ff; --muted: #9c9bc2; --line: #2a2a4a;
+  --accent: #9b5cff; --accent-rgb: 155, 92, 255; --accent-deep: #5b21b6;
+  --accent-2: #22d3ee; --accent-2-rgb: 34, 211, 238; --on-accent: #ffffff;
+  --font-display: "Dela Gothic One", "Arial Black", Impact, sans-serif;
+  --font-body: "Zen Kaku Gothic New", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body::before {
+  content: ""; position: fixed; inset: -15%; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(1100px 560px at 22% 8%, rgba(var(--accent-rgb), .22), transparent 60%),
+    radial-gradient(900px 480px at 92% 20%, rgba(var(--accent-2-rgb), .14), transparent 55%);
+}
+body {
+  margin: 0; min-height: 100vh; color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  background: repeating-linear-gradient(135deg, rgba(var(--accent-rgb), .045) 0 1px, transparent 1px 36px), var(--bg);
+  padding: max(32px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 64px max(16px, env(safe-area-inset-left, 0px));
+}
+.wrap { max-width: 860px; margin: 0 auto; display: grid; gap: 26px; }
+.back { justify-self: start; color: var(--muted); text-decoration: none; font-size: .85rem; }
+.back:hover { color: var(--accent-2); }
+.eyebrow { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+h1 {
+  margin: 4px 0 0; font-family: var(--font-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(1.8rem, 6vw, 3rem); line-height: 1.05;
+  background: linear-gradient(95deg, #fff 5%, var(--accent-2) 45%, var(--accent) 85%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.sub { margin: 6px 0 0; color: var(--muted); }
+.panel { padding: 18px; border-radius: 14px; border: 1px solid var(--line); background: rgba(18, 18, 40, .9); display: grid; gap: 12px; }
+.panel p { margin: 0; }
+.share { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.share code { font-family: var(--font-mono); font-size: .8rem; color: var(--accent-2); overflow-wrap: anywhere; flex: 1; min-width: 0; }
+.btn {
+  font: inherit; font-size: .88rem; font-weight: 700; min-height: 40px; padding: 8px 16px; border-radius: 10px; cursor: pointer;
+  border: 1px solid transparent; color: #fff; background: linear-gradient(120deg, var(--accent-deep), var(--accent)); text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.btn.ghost { background: transparent; border-color: var(--line); color: var(--ink); }
+.btn:disabled { opacity: .5; cursor: default; }
+.form { display: flex; gap: 8px; flex-wrap: wrap; }
+.form input {
+  font: inherit; flex: 1; min-width: 180px; min-height: 40px; padding: 8px 12px; border-radius: 10px;
+  border: 1px solid var(--line); background: rgba(255, 255, 255, .04); color: var(--ink);
+}
+.form input:focus { outline: none; border-color: var(--accent-2); }
+.msg { font-size: .85rem; color: #c4b5fd; }
+.msg:empty { display: none; }
+
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.item {
+  display: grid; grid-template-columns: 46px 120px 1fr auto; gap: 14px; align-items: center;
+  padding: 10px 14px 10px 10px; border-radius: 12px; border: 1px solid var(--line); background: rgba(18, 18, 40, .9);
+  color: inherit; text-decoration: none;
+}
+.item.top1 { border-color: rgba(255, 209, 102, .7); box-shadow: 0 0 0 1px rgba(255, 209, 102, .35), 0 14px 30px -18px rgba(255, 209, 102, .6); }
+.item.top2 { border-color: rgba(203, 213, 225, .6); }
+.item.top3 { border-color: rgba(217, 140, 87, .6); }
+.pos { font-family: var(--font-display); font-size: 1.5rem; text-align: center; color: var(--muted); }
+.top1 .pos { color: #ffd166; } .top2 .pos { color: #cbd5e1; } .top3 .pos { color: #d98c57; }
+.thumb { width: 120px; aspect-ratio: 16 / 9; border-radius: 8px; object-fit: cover; background: #0b0b1c; display: block; }
+.info { min-width: 0; display: grid; gap: 2px; }
+.info b { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; font-size: 1rem; line-height: 1.15; overflow-wrap: anywhere; }
+.info a { color: inherit; text-decoration: none; }
+.info a:hover b { color: var(--accent-2); }
+.info span { font-family: var(--font-mono); font-size: .72rem; color: var(--muted); }
+.right { display: flex; align-items: center; gap: 10px; }
+.nota {
+  font-family: var(--font-display); font-size: 1.6rem; line-height: 1;
+  background: linear-gradient(95deg, var(--accent-2), var(--accent)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.nota small { font-family: var(--font-mono); font-size: .7rem; color: var(--muted); -webkit-text-fill-color: var(--muted); }
+.moves { display: grid; gap: 4px; }
+.moves button {
+  width: 30px; height: 24px; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: var(--ink);
+  font-size: .7rem; cursor: pointer;
+}
+.moves button:hover:not(:disabled) { border-color: var(--accent-2); }
+.moves button:disabled { opacity: .2; cursor: default; }
+.empty { color: var(--muted); text-align: center; padding: 30px 10px; }
+@media (max-width: 560px) {
+  .item { grid-template-columns: 34px 84px 1fr; }
+  .thumb { width: 84px; }
+  .right { grid-column: 2 / -1; justify-content: flex-end; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Volver a mis animes</a>
+  <header>
+    <div class="eyebrow">🏆 Ranking de animes</div>
+    <h1 id="titulo">Ranking</h1>
+    <p class="sub" id="sub">Ordenado por nota. Una nota por anime completo, sin contar temporadas por separado.</p>
+  </header>
+
+  <!-- Tu ranking: enlace para compartir -->
+  <section class="panel" id="sharebox" hidden>
+    <p>Pásale este enlace a tus amigos para que vean tu ranking (no necesitan cuenta):</p>
+    <div class="share"><code id="sharelink"></code><button class="btn" id="copy" type="button">Copiar enlace</button></div>
+    <p class="msg">Pon o cambia notas desde la página de cada anime («Tu nota»). Si dos animes tienen la misma nota, ordénalos aquí con ▲ ▼.</p>
+  </section>
+
+  <!-- Elegir nombre de usuario (la primera vez) -->
+  <section class="panel" id="userbox" hidden>
+    <p><b>Elige tu nombre de usuario</b> para tu enlace público (3-20 caracteres: letras minúsculas, números o _).</p>
+    <form class="form" id="userform">
+      <input id="username" maxlength="20" placeholder="por ejemplo idoiaa99" autocomplete="username" aria-label="Nombre de usuario">
+      <button class="btn" type="submit" id="usersave">Guardar</button>
+    </form>
+    <p class="msg" id="usermsg"></p>
+  </section>
+
+  <!-- Sin sesión -->
+  <section class="panel" id="loginbox" hidden>
+    <p>Para tener un ranking que puedan ver tus amigos, inicia sesión o crea una cuenta en la portada. Mientras tanto, aquí ves las notas guardadas en este navegador.</p>
+    <a class="btn" href="index.html?next=ranking.html">Iniciar sesión</a>
+  </section>
+
+  <p class="msg" id="msg"></p>
+  <ol class="list" id="list"></ol>
+  <p class="empty" id="empty" hidden></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+  window.NOCACHE = "?t=" + Math.floor(Date.now() / 60000);
+  document.write('<script src="data/catalogo.js' + NOCACHE + '"><\/script>');
+  document.write('<script src="data/catalogo-auto.js' + NOCACHE + '"><\/script>');
+</script>
+<script>
+(function () {
+  var SUPABASE_URL = "https://ujsilpoaayexftxfngmv.supabase.co";
+  var SUPABASE_ANON_KEY = "sb_publishable_zypNT8Z5qbNYTDQ9Gzxf_g_fN2rE6bK";
+  function $(id) { return document.getElementById(id); }
+  var SERIES = {};
+  (window.CATALOGO || []).forEach(function (s) { SERIES[s.id] = s; });
+  var VER = window.VERSION_IMAGENES ? "?v=" + encodeURIComponent(window.VERSION_IMAGENES) : "";
+  var sb = null;
+  try { if (window.supabase) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch (e) {}
+  var ME = null, PERFIL = null, ROWS = [], EDITABLE = false;
+
+  function msg(t) { $("msg").textContent = t || ""; }
+  function hint(err) {
+    var m = String(err && err.message || err || "");
+    if (/relation|does not exist|schema cache|not find the table/i.test(m)) return "Falta crear las tablas del ranking en Supabase (perfiles y valoraciones).";
+    return m || "revisa la conexión";
+  }
+
+  // Orden del ranking: nota (de mayor a menor), luego el orden manual de los empates, luego el título
+  function ordenar(rows) {
+    return rows.filter(function (r) { return SERIES[r.serie]; }).sort(function (a, b) {
+      return (b.nota - a.nota) ||
+        ((a.orden == null ? 1e9 : a.orden) - (b.orden == null ? 1e9 : b.orden)) ||
+        SERIES[a.serie].titulo.localeCompare(SERIES[b.serie].titulo, "es");
+    });
+  }
+
+  function render() {
+    var list = $("list"); list.textContent = "";
+    ROWS = ordenar(ROWS);
+    $("empty").hidden = ROWS.length > 0;
+    $("empty").textContent = EDITABLE || !PERFIL
+      ? "Todavía no hay ningún anime puntuado. Entra en un anime y ponle nota en «Tu nota»."
+      : "Este ranking todavía está vacío.";
+    ROWS.forEach(function (r, i) {
+      var s = SERIES[r.serie];
+      var li = document.createElement("li");
+      li.className = "item" + (i < 3 ? " top" + (i + 1) : "");
+      var pos = document.createElement("div"); pos.className = "pos"; pos.textContent = i + 1;
+      var img = document.createElement("img"); img.className = "thumb"; img.alt = ""; img.loading = "lazy";
+      var srcs = [(s.tarjeta || "tarjetas/" + s.id + ".jpg") + VER, (s.banner || "banners/" + s.id + ".jpg") + VER];
+      img.onerror = function () { srcs.shift(); if (srcs.length) img.src = srcs[0]; else img.style.visibility = "hidden"; };
+      img.src = srcs[0];
+      var info = document.createElement("div"); info.className = "info";
+      var a = document.createElement("a"); a.href = "serie.html?id=" + encodeURIComponent(s.id);
+      var b = document.createElement("b"); b.textContent = s.titulo; a.appendChild(b); info.appendChild(a);
+      var meta = document.createElement("span");
+      meta.textContent = [s.animeTotal ? s.animeTotal + " caps. anime" : "", s.mangaTotal ? s.mangaTotal + " caps. manga" : ""].filter(Boolean).join(" · ");
+      info.appendChild(meta);
+      var right = document.createElement("div"); right.className = "right";
+      var nota = document.createElement("div"); nota.className = "nota"; nota.textContent = r.nota;
+      var de = document.createElement("small"); de.textContent = "/10"; nota.appendChild(de);
+      right.appendChild(nota);
+      if (EDITABLE) {
+        // ▲▼ solo dentro de los empates (misma nota)
+        var mv = document.createElement("div"); mv.className = "moves";
+        var up = document.createElement("button"); up.type = "button"; up.textContent = "▲"; up.setAttribute("aria-label", "Subir " + s.titulo);
+        var dn = document.createElement("button"); dn.type = "button"; dn.textContent = "▼"; dn.setAttribute("aria-label", "Bajar " + s.titulo);
+        up.disabled = !(i > 0 && ROWS[i - 1].nota === r.nota);
+        dn.disabled = !(i < ROWS.length - 1 && ROWS[i + 1].nota === r.nota);
+        up.addEventListener("click", function () { mover(i, -1); });
+        dn.addEventListener("click", function () { mover(i, 1); });
+        mv.appendChild(up); mv.appendChild(dn); right.appendChild(mv);
+      }
+      li.appendChild(pos); li.appendChild(img); li.appendChild(info); li.appendChild(right);
+      list.appendChild(li);
+    });
+  }
+
+  async function mover(i, dir) {
+    var j = i + dir;
+    if (!ROWS[j] || ROWS[j].nota !== ROWS[i].nota) return;
+    var tmp = ROWS[i]; ROWS[i] = ROWS[j]; ROWS[j] = tmp;
+    // Reasigna el orden de todo el grupo con esa nota
+    var nota = ROWS[i].nota, k = 0, cambios = [];
+    ROWS.forEach(function (r) { if (r.nota === nota) { r.orden = ++k; cambios.push({ user_id: ME.id, serie: r.serie, nota: r.nota, orden: r.orden, updated_at: new Date().toISOString() }); } });
+    render();
+    var res = await sb.from("valoraciones").upsert(cambios, { onConflict: "user_id,serie" });
+    msg(res.error ? "No se pudo guardar el orden: " + hint(res.error) : "");
+  }
+
+  // Ranking guardado solo en este navegador (sin cuenta)
+  function rankingLocal() {
+    var rows = [];
+    (window.CATALOGO || []).forEach(function (s) {
+      try {
+        var d = JSON.parse(localStorage.getItem(s.storageKey || (s.id + "-tracker-v1")) || "null");
+        if (d && d.nota >= 1 && d.nota <= 10) rows.push({ serie: s.id, nota: d.nota, orden: null });
+      } catch (e) {}
+    });
+    return rows;
+  }
+
+  async function cargarDe(userId) {
+    var r = await sb.from("valoraciones").select("serie,nota,orden").eq("user_id", userId);
+    if (r.error) throw r.error;
+    return r.data || [];
+  }
+
+  function mostrarCompartir() {
+    var url = location.href.split(/[?#]/)[0] + "?u=" + encodeURIComponent(PERFIL.usuario);
+    $("sharelink").textContent = url;
+    $("sharebox").hidden = false;
+    $("copy").onclick = function () {
+      var btn = $("copy");
+      function ok() { btn.textContent = "¡Copiado!"; setTimeout(function () { btn.textContent = "Copiar enlace"; }, 2000); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok, function () { window.prompt("Copia este enlace:", url); });
+      else window.prompt("Copia este enlace:", url);
+    };
+  }
+
+  async function iniciar() {
+    var u = (new URLSearchParams(location.search).get("u") || "").toLowerCase();
+    if (!sb) { msg("No se pudo conectar con el servidor."); ROWS = rankingLocal(); render(); return; }
+    try {
+      var s = await sb.auth.getSession();
+      var user = s.data && s.data.session && s.data.session.user;
+      if (user && !user.is_anonymous && user.email) ME = user;
+    } catch (e) {}
+
+    try {
+      if (u) {
+        // Ranking público de otra persona (o el tuyo visto por enlace)
+        var p = await sb.from("perfiles").select("user_id,usuario,nombre").eq("usuario", u).maybeSingle();
+        if (p.error) throw p.error;
+        if (!p.data) { $("titulo").textContent = "Usuario no encontrado"; $("sub").textContent = "No hay ningún ranking con el nombre «" + u + "»."; return; }
+        PERFIL = p.data;
+        EDITABLE = !!(ME && ME.id === PERFIL.user_id);
+        $("titulo").textContent = "Ranking de " + (PERFIL.nombre || PERFIL.usuario);
+        document.title = "Ranking de " + (PERFIL.nombre || PERFIL.usuario);
+        if (EDITABLE) mostrarCompartir();
+        ROWS = await cargarDe(PERFIL.user_id);
+        render();
+        return;
+      }
+      if (!ME) {
+        $("titulo").textContent = "Mi ranking";
+        $("loginbox").hidden = false;
+        ROWS = rankingLocal(); render();
+        return;
+      }
+      // Tu ranking
+      $("titulo").textContent = "Mi ranking";
+      var mine = await sb.from("perfiles").select("user_id,usuario,nombre").eq("user_id", ME.id).maybeSingle();
+      if (mine.error) throw mine.error;
+      if (!mine.data) {
+        $("userbox").hidden = false;
+        $("username").value = (ME.email.split("@")[0] || "").toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 20);
+      } else {
+        PERFIL = mine.data;
+        mostrarCompartir();
+      }
+      EDITABLE = true;
+      ROWS = await cargarDe(ME.id);
+      render();
+    } catch (e) {
+      msg("No se pudo cargar el ranking: " + hint(e));
+      if (!u) { ROWS = rankingLocal(); EDITABLE = false; render(); }
+    }
+  }
+
+  $("userform").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var v = $("username").value.trim().toLowerCase();
+    if (!/^[a-z0-9_]{3,20}$/.test(v)) { $("usermsg").textContent = "Usa de 3 a 20 letras minúsculas, números o _."; return; }
+    $("usersave").disabled = true;
+    var r = await sb.from("perfiles").insert({ user_id: ME.id, usuario: v, nombre: v });
+    $("usersave").disabled = false;
+    if (r.error) {
+      $("usermsg").textContent = /duplicate|unique/i.test(r.error.message) ? "Ese nombre ya lo tiene otra persona. Prueba otro." : "No se pudo guardar: " + hint(r.error);
+      return;
+    }
+    PERFIL = { user_id: ME.id, usuario: v, nombre: v };
+    $("userbox").hidden = true;
+    mostrarCompartir();
+  });
+
+  iniciar();
+})();
+</script>
+</body>
+</html>

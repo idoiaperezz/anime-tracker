@@ -12,7 +12,8 @@ Web estática (GitHub Pages) para seguir por dónde vas en cada anime y su manga
 - `tarjetas/<id>.jpg`: imagen 16:9 de la tarjeta de la portada (Gemini, a partir del banner).
 - `iconos/<id>.png`: icono de la pestaña del navegador (Gemini). Bleach y Black Clover usan `bleach-icon.png` y `blackclover-icon.png`.
 - `bleach.html` y `blackclover.html`: solo redirigen a `serie.html` para que sigan funcionando los enlaces de grupo antiguos.
-- `herramientas/`: `importar.mjs` (AniList + banners), `validar.mjs` (comprueba las fichas). No hace falta publicarla.
+- `herramientas/`: `importar.mjs` (AniList + banners), `validar.mjs` (comprueba las fichas), `ranking.sql` (tablas de Supabase del ranking).
+- `ranking.html`: ranking de animes. Una nota 1-10 **por anime completo (nunca por temporada)**, que se pone en «Tu nota» de cada rastreador; el top se ordena por nota y los empates con ▲▼. Se comparte con `ranking.html?u=<usuario>` (lectura pública, sin cuenta). Tablas `perfiles` y `valoraciones` en Supabase.
 
 ## Fichas (`data/<id>.js`)
 Formato de arco: `[nombre, anime desde, hasta, relleno 0/1, manga desde, manga hasta, (fin en la rejilla del manga si "manga hasta" es null)]`.
