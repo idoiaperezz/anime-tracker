@@ -8,7 +8,9 @@
 //
 //    node herramientas/buscar-banners.mjs --usar naruto 3
 //      descarga la opción 3 de Naruto, la recorta a 2048×410 (5:1) y la
-//      guarda como su banner (banners/naruto.jpg)
+//      guarda como su banner (banners/naruto.jpg). Si la imagen no tiene la
+//      proporción del banner, se muestra entera con los lados desenfocados.
+//      Añade --recortar-abajo 10 para quitar el 10 % inferior (marcas de agua).
 //
 //  Ojo con los spoilers: las imágenes de temporadas avanzadas pueden tenerlos.
 // =====================================================================
@@ -77,8 +79,34 @@ async function kitsu(s) {
     .map((d) => ({ fuente: "Kitsu", detalle: `${d.attributes.canonicalTitle}${d.attributes.subtype === "movie" ? " (película)" : ""}`, url: d.attributes.coverImage.original, spoiler: false }));
 }
 
+// ---------- Encajar la imagen en el formato del banner (2048×410, 5:1) ----------
+// Si la proporción es casi la del banner, se recorta un poco. Si no, la imagen se muestra ENTERA
+// y los huecos se rellenan con una copia desenfocada y oscurecida (así no se corta a nadie).
+const BW = 2048, BH = 410;
+async function encajar(sharp, buf, file) {
+  const meta = await sharp(buf).metadata();
+  const ratio = meta.width / meta.height, objetivo = BW / BH;
+  if (Math.abs(ratio - objetivo) / objetivo < 0.12) {
+    await sharp(buf).resize(BW, BH, { fit: "cover", position: "centre" }).jpeg({ quality: 88, mozjpeg: true }).toFile(file);
+    return "recorte";
+  }
+  // Imágenes casi cuadradas: antes se recortan a 3:1 por la zona con más detalle (caras),
+  // para que no queden diminutas en el centro del banner
+  if (ratio < 2.4) {
+    const h = Math.round(meta.width / 3);
+    buf = await sharp(buf).resize(meta.width, h, { fit: "cover", position: "attention" }).toBuffer();
+  }
+  const fondo = await sharp(buf).resize(BW, BH, { fit: "cover" }).blur(28).modulate({ brightness: 0.55, saturation: 1.15 }).toBuffer();
+  const frente = await sharp(buf).resize(BW, BH, { fit: "inside" }).toBuffer();
+  const fm = await sharp(frente).metadata();
+  await sharp(fondo)
+    .composite([{ input: frente, left: Math.round((BW - fm.width) / 2), top: Math.round((BH - fm.height) / 2) }])
+    .jpeg({ quality: 88, mozjpeg: true }).toFile(file);
+  return "entera";
+}
+
 // ---------- Recorte a banner ----------
-async function usar(id, num) {
+async function usar(id, num, recorteAbajo) {
   const cands = JSON.parse(fs.readFileSync(CAND_FILE, "utf8"));
   const lista = cands[id];
   if (!lista) throw new Error(`no hay opciones guardadas de «${id}»: ejecuta antes node herramientas/buscar-banners.mjs ${id}`);
@@ -86,10 +114,15 @@ async function usar(id, num) {
   if (!c) throw new Error(`«${id}» solo tiene ${lista.length} opciones`);
   const res = await fetch(c.url);
   if (!res.ok) throw new Error("no se pudo descargar la imagen (" + res.status + ")");
-  const buf = Buffer.from(await res.arrayBuffer());
+  let buf = Buffer.from(await res.arrayBuffer());
   const sharp = (await import("sharp")).default;
+  // --recortar-abajo N: quita el N % inferior (marcas de agua, créditos…)
+  if (recorteAbajo > 0) {
+    const m = await sharp(buf).metadata();
+    buf = await sharp(buf).extract({ left: 0, top: 0, width: m.width, height: Math.round(m.height * (1 - recorteAbajo / 100)) }).toBuffer();
+  }
   const file = path.join(ROOT, "banners", id + ".jpg");
-  await sharp(buf).resize(2048, 410, { fit: "cover", position: "attention" }).jpeg({ quality: 88, mozjpeg: true }).toFile(file);
+  await encajar(sharp, buf, file);
   // Nueva versión de imágenes para que los navegadores descarguen la nueva
   const auto = path.join(ROOT, "data", "catalogo-auto.js");
   const txt = fs.readFileSync(auto, "utf8").replace(/VERSION_IMAGENES = "[^"]*"/, `VERSION_IMAGENES = "${Date.now().toString(36)}"`);
@@ -132,7 +165,8 @@ ${bloques}
 // ---------- Principal ----------
 const args = process.argv.slice(2);
 if (args[0] === "--usar") {
-  usar(args[1], Number(args[2])).catch((e) => { console.error("Error: " + e.message); process.exit(1); });
+  const ia = args.indexOf("--recortar-abajo");
+  usar(args[1], Number(args[2]), ia > 0 ? Number(args[ia + 1]) : 0).catch((e) => { console.error("Error: " + e.message); process.exit(1); });
 } else {
   (async () => {
     const todas = catalogo();
