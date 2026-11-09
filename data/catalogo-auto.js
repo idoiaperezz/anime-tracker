@@ -771,6 +771,32 @@
       }
     },
     "banner": "banners/nogamenolife.jpg"
+  },
+  {
+    "id": "bluelock",
+    "titulo": "Blue Lock",
+    "descripcion": "Yoichi Isagi y 300 delanteros encerrados en Blue Lock para crear al goleador más egoísta del mundo, de la primera selección hasta el partido contra la selección sub-20.",
+    "animeTotal": 38,
+    "mangaTotal": 367,
+    "temporadas": 3,
+    "anilistId": 137822,
+    "tema": {
+      "claro": {
+        "accent": "#235ec9",
+        "accentRgb": "35, 94, 201",
+        "accentDeep": "#13346e",
+        "accent2": "#919364",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#4881e8",
+        "accentRgb": "72, 129, 232",
+        "accentDeep": "#244174",
+        "accent2": "#a4b4b0",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/bluelock.jpg"
   }
 ]
 // @@fin
@@ -780,4 +806,4 @@
   window.CATALOGO.forEach(function (s) { ya[s.id] = true; });
   auto.forEach(function (s) { if (!ya[s.id]) window.CATALOGO.push(s); });
 })();
-window.VERSION_IMAGENES = "mw9qfcvb";
+window.VERSION_IMAGENES = "mw9qnp9e";

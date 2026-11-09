@@ -274,6 +274,8 @@ const ESTILO_SERIE = {
     "playful and lively mood, NOT dark, NO battle or magic effects",
   nogamenolife: "ultra-saturated, rainbow-colored fantasy world of Disboard: vivid magenta, cyan and yellow, giant chess pieces and floating playing cards, " +
     "a huge chess king piece on the horizon, colorful outlines, dreamy and playful mood, NOT dark",
+  bluelock: "high-voltage soccer anime look: futuristic Blue Lock training facility with glowing grid lines and screens, an intense floodlit soccer pitch, " +
+    "electric blue and black palette, glowing eyes and blue energy auras, symbolic chains, dramatic speed lines, a soccer ball in motion",
 };
 
 // Reparto del banner: lado izquierdo / lado derecho, todos personajes DISTINTOS (y sin spoilers)
@@ -317,6 +319,8 @@ const REPARTO_BANNER = {
     "Izumi Miyamura (black hair, NO glasses, several silver piercings in his ears and lip, school uniform), Toru Ishikawa (spiky blond hair, friendly smile)"],
   toradora: ["Ryuuji Takasu (dark blue hair, very sharp scary-looking eyes, school uniform, kitchen apron), Minori Kushieda (short orange-red hair, energetic smile)",
     "Taiga Aisaka (very small girl with very long light-brown hair, school uniform, holding a wooden sword, fierce expression), Yusaku Kitamura (glasses, neat short hair, student council)"],
+  bluelock: ["Yoichi Isagi (short dark navy-black hair with two spiky strands on his forehead, big blue eyes, kind ordinary face), Meguru Bachira (black bob-length hair with YELLOW tips, golden eyes, playful grin), Rensuke Kunigami (very muscular, short spiky ORANGE hair, violet eyes)",
+    "Hyoma Chigiri (long straight red-pink hair, fuchsia eyes, delicate features), Seishiro Nagi (very tall, messy WHITE hair, sleepy grey eyes, bored expression). All in the black-and-blue Blue Lock training bodysuits"],
   nogamenolife: ["Sora (messy black hair, plain white T-shirt with NO text, black-and-red jacket, confident grin) and Shiro (small girl with very long white hair, red eyes, oversized sailor uniform), siblings side by side",
     "Stephanie Dola (long red hair, princess dress, flustered), Jibril (long hair fading from pink to blue, angel halo and white wings, cross-shaped pupils)"],
 };
@@ -426,6 +430,7 @@ const REPARTO_SIN_SPOILERS = {
   violetevergarden: "Violet Evergarden (long blonde braided hair with red ribbons, blue jacket, emerald brooch) at her typewriter on the left and Claudia Hodgins (red-orange hair) on the right, in a sunlit office of the postal company",
   horimiya: "Kyouko Hori (long brown hair, school cardigan) on the left and Izumi Miyamura (black hair, silver ear and lip piercings) on the right, in a sunny classroom",
   toradora: "Ryuuji Takasu (dark blue hair, sharp eyes, school uniform) on the left and Taiga Aisaka (tiny, very long light-brown hair, wooden sword) on the right, in a sunny school hallway",
+  bluelock: "Yoichi Isagi (short dark navy-black hair with two spiky forehead strands, big blue eyes) kicking a soccer ball on the left and Meguru Bachira (black bob hair with yellow tips, golden eyes, playful grin) dribbling on the right, both in black-and-blue Blue Lock bodysuits, on a floodlit pitch",
   nogamenolife: "Sora (messy black hair, plain white T-shirt with no text) on the left and Shiro (very long white hair, oversized sailor uniform) on the right, over a giant colorful chessboard",
 };
 async function tarjetaGemini(id, titulo, bannerFile, m) {
@@ -515,6 +520,7 @@ const SIMBOLOS = {
   horimiya: "a soft pink heart with a small silver earring hanging from it",
   toradora: "a small tiger and a dragon curled together inside a circle",
   nogamenolife: "a white chess king piece standing on a playing card",
+  bluelock: "a glowing blue padlock with a soccer ball pattern",
 };
 async function iconoGemini(id, titulo) {
   const parts = [];
