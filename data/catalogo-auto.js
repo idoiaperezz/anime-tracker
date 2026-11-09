@@ -511,6 +511,266 @@
       }
     },
     "banner": "banners/steinsgate.jpg"
+  },
+  {
+    "id": "haikyu",
+    "titulo": "Haikyu!!",
+    "descripcion": "Shōyō Hinata, el chico bajito que sueña con triunfar en el voleibol, y el equipo del Karasuno, de su formación hasta el Torneo Nacional de Primavera.",
+    "animeTotal": 85,
+    "mangaTotal": 402,
+    "temporadas": 3,
+    "anilistId": 20464,
+    "tema": {
+      "claro": {
+        "accent": "#895020",
+        "accentRgb": "137, 80, 32",
+        "accentDeep": "#4b2c11",
+        "accent2": "#c48c10",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#e48635",
+        "accentRgb": "228, 134, 53",
+        "accentDeep": "#72431b",
+        "accent2": "#f2b657",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/haikyu.jpg"
+  },
+  {
+    "id": "rascaldoesnotdreamofbunnygirlsenpai",
+    "titulo": "Rascal Does Not Dream of Bunny Girl Senpai",
+    "descripcion": "Sakuta Azusagawa y los extraños fenómenos del «síndrome de la adolescencia», de su encuentro con Mai Sakurajima hasta el misterio de Santa Claus.",
+    "animeTotal": 26,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 101291,
+    "tema": {
+      "claro": {
+        "accent": "#0d43f1",
+        "accentRgb": "13, 67, 241",
+        "accentDeep": "#072585",
+        "accent2": "#868679",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#5077f5",
+        "accentRgb": "80, 119, 245",
+        "accentDeep": "#283c7a",
+        "accent2": "#a8afb6",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/rascaldoesnotdreamofbunnygirlsenpai.jpg"
+  },
+  {
+    "id": "spyxfamily",
+    "titulo": "SPY x FAMILY",
+    "descripcion": "Loid, un espía; Yor, una asesina, y Anya, una niña que lee mentes, forman una familia falsa, de la Operación Strix hasta el arco de Wheeler.",
+    "animeTotal": 50,
+    "mangaTotal": 143,
+    "temporadas": 5,
+    "anilistId": 140960,
+    "tema": {
+      "claro": {
+        "accent": "#526262",
+        "accentRgb": "82, 98, 98",
+        "accentDeep": "#2d3636",
+        "accent2": "#a99531",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#c9f1f1",
+        "accentRgb": "201, 241, 241",
+        "accentDeep": "#657979",
+        "accent2": "#e4ecb5",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/spyxfamily.jpg"
+  },
+  {
+    "id": "kaguyasamaloveiswar",
+    "titulo": "Kaguya-sama: Love is War",
+    "descripcion": "Kaguya Shinomiya y Miyuki Shirogane, presidente y vicepresidenta del consejo estudiantil, en una guerra de ingenio por no ser el primero en confesarse.",
+    "animeTotal": 37,
+    "mangaTotal": 281,
+    "temporadas": 4,
+    "anilistId": 101921,
+    "tema": {
+      "claro": {
+        "accent": "#b13e68",
+        "accentRgb": "177, 62, 104",
+        "accentDeep": "#612239",
+        "accent2": "#d88334",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#e45086",
+        "accentRgb": "228, 80, 134",
+        "accentDeep": "#722843",
+        "accent2": "#f29b7f",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/kaguyasamaloveiswar.jpg"
+  },
+  {
+    "id": "drstone",
+    "titulo": "Dr. STONE",
+    "descripcion": "Senku Ishigami, que despierta miles de años después de que la humanidad quedara petrificada y decide reconstruir la civilización con la ciencia, hasta la misión a la Luna.",
+    "animeTotal": 94,
+    "mangaTotal": 232,
+    "temporadas": 2,
+    "anilistId": 105333,
+    "tema": {
+      "claro": {
+        "accent": "#5d6338",
+        "accentRgb": "93, 99, 56",
+        "accentDeep": "#33371f",
+        "accent2": "#ae961c",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#c9d678",
+        "accentRgb": "201, 214, 120",
+        "accentDeep": "#656b3c",
+        "accent2": "#e4de78",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/drstone.jpg"
+  },
+  {
+    "id": "vinlandsaga",
+    "titulo": "Vinland Saga",
+    "descripcion": "Thorfinn, un joven guerrero que busca venganza en la Inglaterra de los vikingos, de la guerra de Inglaterra hasta la granja de Ketil.",
+    "animeTotal": 48,
+    "mangaTotal": 220,
+    "temporadas": 2,
+    "anilistId": 101348,
+    "tema": {
+      "claro": {
+        "accent": "#a4493f",
+        "accentRgb": "164, 73, 63",
+        "accentDeep": "#5a2823",
+        "accent2": "#d28820",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f16b5d",
+        "accentRgb": "241, 107, 93",
+        "accentDeep": "#79362f",
+        "accent2": "#f8a96b",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/vinlandsaga.jpg"
+  },
+  {
+    "id": "violetevergarden",
+    "titulo": "Violet Evergarden",
+    "descripcion": "Violet Evergarden, una antigua soldado que trabaja escribiendo cartas para los demás mientras intenta entender qué significa «te quiero».",
+    "animeTotal": 13,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 21827,
+    "tema": {
+      "claro": {
+        "accent": "#2968b1",
+        "accentRgb": "41, 104, 177",
+        "accentDeep": "#173961",
+        "accent2": "#949858",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#3586e4",
+        "accentRgb": "53, 134, 228",
+        "accentDeep": "#1b4372",
+        "accent2": "#9ab6ae",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/violetevergarden.jpg"
+  },
+  {
+    "id": "horimiya",
+    "titulo": "Horimiya",
+    "descripcion": "Hori, la chica popular, y Miyamura, el chico callado de la clase, que descubren sus lados ocultos y se van enamorando, incluidos los capítulos de The Missing Pieces.",
+    "animeTotal": 26,
+    "mangaTotal": 122,
+    "temporadas": 1,
+    "anilistId": 124080,
+    "tema": {
+      "claro": {
+        "accent": "#316a7f",
+        "accentRgb": "49, 106, 127",
+        "accentDeep": "#1b3a46",
+        "accent2": "#989940",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#5dc9f1",
+        "accentRgb": "93, 201, 241",
+        "accentDeep": "#2f6579",
+        "accent2": "#aed8b5",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/horimiya.jpg"
+  },
+  {
+    "id": "toradora",
+    "titulo": "Toradora!",
+    "descripcion": "Ryūji, el chico de mirada aterradora, y Taiga, la pequeña «tigre de bolsillo», que se alían para conquistar a sus amores, de su encuentro hasta San Valentín.",
+    "animeTotal": 25,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 4224,
+    "tema": {
+      "claro": {
+        "accent": "#b1485d",
+        "accentRgb": "177, 72, 93",
+        "accentDeep": "#612833",
+        "accent2": "#d8882e",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#e45d78",
+        "accentRgb": "228, 93, 120",
+        "accentDeep": "#722f3c",
+        "accent2": "#f2a278",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/toradora.jpg"
+  },
+  {
+    "id": "nogamenolife",
+    "titulo": "No Game, No Life",
+    "descripcion": "Sora y Shiro, dos hermanos imbatibles en los videojuegos, transportados a un mundo donde todo se decide jugando, de Elkia hasta la partida contra Izuna.",
+    "animeTotal": 12,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 19815,
+    "tema": {
+      "claro": {
+        "accent": "#7f551c",
+        "accentRgb": "127, 85, 28",
+        "accentDeep": "#462f0f",
+        "accent2": "#bf8e0e",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f1a135",
+        "accentRgb": "241, 161, 53",
+        "accentDeep": "#79511b",
+        "accent2": "#f8c457",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/nogamenolife.jpg"
   }
 ]
 // @@fin
@@ -520,4 +780,4 @@
   window.CATALOGO.forEach(function (s) { ya[s.id] = true; });
   auto.forEach(function (s) { if (!ya[s.id]) window.CATALOGO.push(s); });
 })();
-window.VERSION_IMAGENES = "1a1c2053534";
+window.VERSION_IMAGENES = "mw9qfcvb";

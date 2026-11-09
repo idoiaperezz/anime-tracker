@@ -254,6 +254,26 @@ const ESTILO_SERIE = {
   yourlieinapril: "bright, luminous and nostalgic spring afternoon; soft warm sunlight and golden-hour glow; pastel palette of sakura pink, sky blue, cream and soft gold; " +
     "floating cherry blossom petals and drifting musical notes; delicate watercolor-like lighting, emotional and gentle, like the series' key visuals — " +
     "NOT dark, NO night sky, NO lightning, NO battle effects; the characters are playing music (piano and violin), calm and expressive, not fighting",
+  haikyu: "bright, energetic sports anime look: sunlit school gymnasium with wooden floor and volleyball net, warm daylight, Karasuno orange and black palette, " +
+    "dynamic motion lines and sweat sparkles, flying volleyball, NOT dark, NO magic or lightning effects — pure sports action",
+  rascaldoesnotdreamofbunnygirlsenpai: "soft, bright seaside romance: clear blue sky, Shichirigahama beach and the Enoden coastal train, gentle afternoon sunlight, " +
+    "pastel blues and soft pinks, calm and emotional slice-of-life mood, NOT dark, NO battle effects",
+  spyxfamily: "warm, bright retro-European spy comedy: 1960s-style city of Berlint with stone buildings, sunny daylight, warm cream, teal and red palette, " +
+    "playful and stylish like a spy-film poster, light comedic energy, NOT dark, NO magic or lightning effects",
+  kaguyasamaloveiswar: "bright romantic-comedy look: elegant student council room with large windows, warm light, red and pink palette with sparkles, " +
+    "hearts and dramatic manga-style speed lines, playful 'battle of wits' mood, NOT dark, NO fighting or magic",
+  drstone: "bright adventure in a lush petrified world: vivid green forests reclaiming ruined cities, sunny sky, green and teal palette, " +
+    "science sparks, glass flasks and glowing green formulas floating in the air, optimistic mood, NOT dark",
+  vinlandsaga: "gritty, realistic historical Viking epic: cold misty North Sea, longships, grey-blue sky, snow and fjords, muted earthy palette of grey, brown and steel blue, " +
+    "painterly realistic lighting, NO magic, NO glowing energy or lightning — only sea spray, wind and drifting snow",
+  violetevergarden: "luminous, painterly Kyoto Animation look: golden sunlight, early-20th-century European harbor city, flower fields, " +
+    "soft pastel blues, golds and greens, floating letters and paper, delicate and emotional mood, NOT dark, NO battle effects",
+  horimiya: "soft, bright school slice-of-life romance: sunny classroom and school corridor, warm afternoon light, pastel pinks, creams and light blues, " +
+    "gentle and cozy mood, NOT dark, NO battle effects",
+  toradora: "bright, warm school romantic comedy: sunny school building and classroom, warm afternoon light, warm orange, pink and blue palette, " +
+    "playful and lively mood, NOT dark, NO battle or magic effects",
+  nogamenolife: "ultra-saturated, rainbow-colored fantasy world of Disboard: vivid magenta, cyan and yellow, giant chess pieces and floating playing cards, " +
+    "a huge chess king piece on the horizon, colorful outlines, dreamy and playful mood, NOT dark",
 };
 
 // Reparto del banner: lado izquierdo / lado derecho, todos personajes DISTINTOS (y sin spoilers)
@@ -279,6 +299,26 @@ const REPARTO_BANNER = {
     "Kaori Miyazono (long blonde hair) with her violin, Tsubaki Sawabe (short brown bob, sporty), Ryota Watari (spiky light-brown hair, NO glasses, cheerful)"],
   erased: ["Satoru Fujinuma as an adult pizza delivery manga artist, Airi Katagiri", "Kayo Hinazuki as a child in the snow, Kenya Kobayashi as a child"],
   steinsgate: ["Rintaro Okabe in his lab coat, Mayuri Shiina", "Kurisu Makise, Itaru 'Daru' Hashida"],
+  haikyu: ["Shoyo Hinata (short spiky ORANGE hair, small, black Karasuno jersey number 10) jumping to spike, Tobio Kageyama (straight black hair, tall, black jersey number 9) setting the ball, Kei Tsukishima (tall, blond, glasses, black jersey number 11)",
+    "Toru Oikawa (wavy brown hair, white-and-teal Aoba Johsai jersey), Kenma Kozume (shoulder-length blond hair with dark roots, red Nekoma jersey)"],
+  rascaldoesnotdreamofbunnygirlsenpai: ["Sakuta Azusagawa (messy dark hair, school blazer), Rio Futaba (glasses, hair in a ponytail, white lab coat)",
+    "Mai Sakurajima (long straight black hair, school uniform, black rabbit-ear headband), Tomoe Koga (short light-brown hair, cheerful)"],
+  spyxfamily: ["Loid Forger (slicked-back blond hair, grey suit and tie), Anya Forger (small girl, short pink hair with two black cone-shaped hair clips, black Eden Academy uniform), Bond (large fluffy white dog)",
+    "Yor Forger (long black hair, red eyes, black dress with a gold rose headband, holding two thin daggers), Franky Franklin (curly brown hair, round glasses)"],
+  kaguyasamaloveiswar: ["Miyuki Shirogane (messy dark-blond hair, blue eyes with tired dark circles, black high-collared school uniform with gold aiguillette), Chika Fujiwara (long light-pink hair with a black bow, cheerful)",
+    "Kaguya Shinomiya (long black hair tied with a red ribbon, red eyes, black school dress), Yu Ishigami (long dark bangs covering one eye, headphones around the neck)"],
+  drstone: ["Senku Ishigami (tall spiky GREEN-and-white hair, stone-crack marks on his face, simple ragged clothes) holding a glowing flask, Chrome (brown hair, headband, explorer clothes), Taiju Oki (big muscular boy, short hair)",
+    "Kohaku (blonde ponytail, blue headband, warrior outfit), Tsukasa Shishio (long brown hair, muscular, leopard-fur cloak)"],
+  vinlandsaga: ["young Thorfinn (shaggy light-brown hair, scarred, ragged tunic, two short daggers, angry eyes)",
+    "Askeladd (blond hair, short blond beard, red cloak, sly smile), Thorkell (huge giant warrior with a big beard and long hair, laughing), Prince Canute (long blond hair, delicate, hooded cloak, timid)"],
+  violetevergarden: ["Violet Evergarden (long blonde hair braided with red ribbons, blue eyes, white dress with a long Prussian-blue jacket, a green emerald brooch, silver mechanical hands in black gloves) at a typewriter",
+    "Claudia Hodgins (spiky red-orange hair, white shirt, cheerful), Cattleya Baudelaire (long wavy dark hair, elegant, red lipstick), Benedict Blue (blond ponytail, sunglasses on his head)"],
+  horimiya: ["Kyouko Hori (long brown hair, school uniform with a beige cardigan), Yuki Yoshikawa (short brown bob, bubbly)",
+    "Izumi Miyamura (black hair, NO glasses, several silver piercings in his ears and lip, school uniform), Toru Ishikawa (spiky blond hair, friendly smile)"],
+  toradora: ["Ryuuji Takasu (dark blue hair, very sharp scary-looking eyes, school uniform, kitchen apron), Minori Kushieda (short orange-red hair, energetic smile)",
+    "Taiga Aisaka (very small girl with very long light-brown hair, school uniform, holding a wooden sword, fierce expression), Yusaku Kitamura (glasses, neat short hair, student council)"],
+  nogamenolife: ["Sora (messy black hair, plain white T-shirt with NO text, black-and-red jacket, confident grin) and Shiro (small girl with very long white hair, red eyes, oversized sailor uniform), siblings side by side",
+    "Stephanie Dola (long red hair, princess dress, flustered), Jibril (long hair fading from pink to blue, angel halo and white wings, cross-shaped pupils)"],
 };
 
 // --ver-prompt: muestra las instrucciones exactas que se enviarían a Gemini SIN llamarle (no gasta nada)
@@ -377,6 +417,16 @@ const REPARTO_SIN_SPOILERS = {
   yourlieinapril: "Kousei Arima (black hair, glasses, school uniform) on the left and Kaori Miyazono (blonde, holding her violin) on the right, under blooming cherry trees on a sunny spring afternoon",
   erased: "Satoru Fujinuma as a child on the left and Kayo Hinazuki as a child (red jacket) on the right, in the snowy town at dusk",
   steinsgate: "Rintaro Okabe in his white lab coat on the left and Kurisu Makise on the right; Akihabara and the Future Gadget Lab",
+  haikyu: "Shoyo Hinata (short spiky ORANGE hair, black Karasuno jersey number 10) jumping to spike on the left and Tobio Kageyama (straight black hair, black jersey number 9) setting the ball on the right; volleyball between them in a sunlit gym",
+  rascaldoesnotdreamofbunnygirlsenpai: "Sakuta Azusagawa (messy dark hair, school blazer) on the left and Mai Sakurajima (long straight black hair, school uniform, black rabbit-ear headband) on the right, by the seaside under a blue sky",
+  spyxfamily: "Loid Forger (slicked-back blond hair, grey suit) on the left and Yor Forger (long black hair, red eyes, black dress with gold rose headband) on the right; small Anya (short pink hair, two black cone hair clips) peeking between them in the upper middle",
+  kaguyasamaloveiswar: "Miyuki Shirogane (messy dark-blond hair, blue eyes with dark circles, black high-collared uniform with gold aiguillette) on the left and Kaguya Shinomiya (long black hair with a red ribbon, red eyes) on the right, sizing each other up in the student council room",
+  drstone: "Senku Ishigami (tall spiky green-and-white hair, stone-crack marks on his face) holding a glowing green flask on the left and Kohaku (blonde ponytail, blue headband) on the right, in a sunny overgrown forest",
+  vinlandsaga: "young Thorfinn (shaggy light-brown hair, two short daggers) on the left and Askeladd (blond hair and beard, red cloak) on the right, on a Viking longship deck at sea",
+  violetevergarden: "Violet Evergarden (long blonde braided hair with red ribbons, blue jacket, emerald brooch) at her typewriter on the left and Claudia Hodgins (red-orange hair) on the right, in a sunlit office of the postal company",
+  horimiya: "Kyouko Hori (long brown hair, school cardigan) on the left and Izumi Miyamura (black hair, silver ear and lip piercings) on the right, in a sunny classroom",
+  toradora: "Ryuuji Takasu (dark blue hair, sharp eyes, school uniform) on the left and Taiga Aisaka (tiny, very long light-brown hair, wooden sword) on the right, in a sunny school hallway",
+  nogamenolife: "Sora (messy black hair, plain white T-shirt with no text) on the left and Shiro (very long white hair, oversized sailor uniform) on the right, over a giant colorful chessboard",
 };
 async function tarjetaGemini(id, titulo, bannerFile, m) {
   const parts = [];
@@ -455,6 +505,16 @@ const SIMBOLOS = {
   yourlieinapril: "a violin crossed with piano keys and a few pink cherry blossoms",
   erased: "a single red mitten resting in the snow",
   steinsgate: "a brass clockwork gear emblem",
+  haikyu: "a yellow-and-blue volleyball with a single black crow feather",
+  rascaldoesnotdreamofbunnygirlsenpai: "a black rabbit-ear headband",
+  spyxfamily: "a black spy fedora hat next to a red rose",
+  kaguyasamaloveiswar: "a red heart pierced by an arrow, with a small golden crown on top",
+  drstone: "an Erlenmeyer flask with bright glowing green liquid",
+  vinlandsaga: "the prow of a Viking longship with its square sail, in front of a rising sun",
+  violetevergarden: "a sealed envelope with a red wax seal and a fountain pen",
+  horimiya: "a soft pink heart with a small silver earring hanging from it",
+  toradora: "a small tiger and a dragon curled together inside a circle",
+  nogamenolife: "a white chess king piece standing on a playing card",
 };
 async function iconoGemini(id, titulo) {
   const parts = [];
