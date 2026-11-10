@@ -74,6 +74,7 @@ function detailTotals(id) {
   const out = {};
   if (Number.isInteger(det.animeTotal)) out.animeTotal = det.animeTotal;
   if (Number.isInteger(det.mangaTotal)) out.mangaTotal = det.mangaTotal;
+  if (typeof det.titulo === "string" && det.titulo) out.titulo = det.titulo; // título corregido a mano en la ficha
   // Los colores de la ficha (det.tema) solo se usan dentro de la página de la serie: el catálogo no se toca
   return out;
 }
@@ -298,6 +299,16 @@ const ESTILO_SERIE = {
     "vivid cheerful pastel colors, a big comedic red-orange explosion spell in the sky, silly fun mood, NOT dark",
   darlinginthefranxx: "sci-fi mecha youth drama: a giant domed plantation city over a barren wasteland, sunset sky, red and pink versus blue palette, " +
     "the red-and-white mech Strelizia in the background, emotional and dramatic mood",
+  fireforce: "urban industrial Tokyo with smoke and ash, raging orange and red flames against black, firefighting action, embers in the air. LOGO: only the English words FIRE FORCE — absolutely NO Japanese characters; do NOT copy the logo of the attached official artwork",
+  jojosbizarreadventuretv: "JoJo's flamboyant style: dramatic poses, bold outlines and stylized shading, a Victorian English mansion under a stormy sky, purple, gold and crimson palette. LOGO: only the English words JOJO'S BIZARRE ADVENTURE — absolutely NO Japanese characters and NO sound-effect katakana (no 'ゴゴゴ') anywhere in the image",
+  cowboybebop: "1990s space-noir jazz look: the spaceship Bebop over a dusky city on Mars, ochre, orange and steel-blue palette, subtle film grain, cool laid-back mood, NO glowing energy effects. LOGO: only the English words COWBOY BEBOP — NO Japanese characters",
+  thattimeigotreincarnatedasaslime: "bright, cheerful fantasy: clear blue sky, green forest and the monster town of Tempest, sky blue and gold palette, soft sparkles, NOT dark. LOGO: only the English words That Time I Got Reincarnated as a Slime — absolutely NO Japanese characters; do NOT copy the logo of the attached official artwork",
+  therisingoftheshieldhero: "medieval fantasy with a slightly somber tone: forest edge and a stone village, emerald green and earthy brown palette, soft natural light. LOGO: only the English words The Rising of the Shield Hero — absolutely NO Japanese characters; do NOT copy the logo of the attached official artwork",
+  blueexorcist: "gothic supernatural school: True Cross Academy, a vertical city of stone towers at dusk, electric blue on black palette, NO blue flames on any character. LOGO: only the English words BLUE EXORCIST — absolutely NO Japanese characters; do NOT copy the logo of the attached official artwork",
+  kakegurui: "luxury casino look: an elegant private school hall with chandeliers, red, black and gold palette, playing cards and gambling chips flying, glowing red eyes. LOGO: only the English word KAKEGURUI — absolutely NO Japanese characters; do NOT copy the logo of the attached official artwork",
+  sololeveling: "dark urban fantasy: modern Seoul at night, a gloomy dungeon gate glowing blue, floating blue holographic panels that are completely BLANK (no text), violet aura. LOGO: only the English words SOLO LEVELING — absolutely NO Japanese or Korean characters; do NOT copy the logo of the attached official artwork",
+  mushokutenseijoblessreincarnation: "bright, warm rural fantasy: green meadows, a wooden village, a warm afternoon sky, earthy and golden palette, gentle magic sparkles, NOT dark. LOGO: only the English words Mushoku Tensei: Jobless Reincarnation — absolutely NO Japanese characters; do NOT copy the logo of the attached official artwork",
+  deathparade: "dark, elegant art-deco bar (Quindecim): black, deep purple and neon blue palette, bowling lanes and a bar counter, theatrical and melancholic mood. LOGO: only the English words DEATH PARADE — absolutely NO Japanese characters; do NOT copy the logo of the attached official artwork",
 };
 
 // Reparto del banner: lado izquierdo / lado derecho, todos personajes DISTINTOS (y sin spoilers)
@@ -361,12 +372,38 @@ const REPARTO_BANNER = {
     "Megumin (short black hair, red eyes, eye patch, big pointed witch hat, red dress with black cape, staff), Darkness (long blonde hair in a high ponytail, blue eyes, silver crusader armor)"],
   darlinginthefranxx: ["Hiro (black hair, blue eyes, white-and-navy uniform), Ichigo (short blue hair with a yellow hairclip, blue eyes), Goro (short orange hair, green eyes)",
     "Zero Two (long pink hair, two small red horns, teal eyes, red uniform, confident smile); the red-and-white feminine mech Strelizia with a lance behind her"],
+  fireforce: ["Shinra Kusakabe (short spiky black hair, red eyes, sharp teeth, nervous grin, flames only at his feet, black firefighter coat with light-blue reflective bands), Arthur Boyle (messy chin-length blond hair, blue eyes, same black coat, holding a sword hilt with no blade)",
+    "Maki Oze (long straight black hair with blunt bangs, violet eyes, muscular, black firefighter coat — NO small flame mascots), Iris (a shorter nun, shoulder-length blonde hair, blue eyes, black nun veil with a light-blue band), Akitaru Obi (short black hair, very muscular, olive-green jacket)"],
+  jojosbizarreadventuretv: ["Jonathan Joestar (very tall and muscular, dark indigo hair, light-blue eyes, blue shirt, brown shoulder pads, grey trousers, orange belt), Erina Pendleton (blonde hair in a ponytail, cyan eyes, blue dress with a white collar), Robert E. O. Speedwagon (long blond hair at the back, a scar across his left cheek, black bowler hat, black suit)",
+    "Dio Brando as a HUMAN young man (blond hair, orange eyes, pale skin, crimson-and-white suit with a brown vest and purple cravat — NO stone mask, NO vampire form), Will A. Zeppeli (curly dark hair, thin curled mustache, black-and-white checkered top hat, white suit with blue trim — Zeppeli appears ONLY ONCE; nobody else wears a top hat)"],
+  cowboybebop: ["Spike Spiegel (tall and lean, fluffy dark green-black hair, reddish-brown eyes, blue suit, yellow shirt, thin black tie), Jet Black (very tall and burly, bald except the back of his head, beard, cybernetic LEFT arm)",
+    "Faye Valentine (short violet hair with a headband, green eyes, yellow jacket-style top), Ein (a Welsh corgi dog — Ein appears ONLY ONCE)"],
+  thattimeigotreincarnatedasaslime: ["Rimuru Tempest in SLIME form only (a small translucent sky-blue blob with two simple oval eyes — NO human form), Gobta (short childlike hobgoblin, green skin, scrappy clothes)",
+    "Ranga (huge black wolf with ONE horn growing from a star mark on its forehead), Rigurd (big muscular middle-aged hobgoblin, green skin)"],
+  therisingoftheshieldhero: ["Naofumi Iwatani (short spiky black hair, green eyes, frowning, green cloak with white fur trim, light armor, a silver shield with a green gem on his arm)",
+    "Raphtalia as a young woman (long light-brown hair, red eyes, raccoon-dog ears and a fluffy tail, light armor, holding a short sword — NO katana, NO shrine-maiden clothes), Filo in her BIRD form only (a big round white owl-like bird — Filo appears ONLY ONCE, no human girl form)"],
+  blueexorcist: ["Rin Okumura (messy blue-black hair, blue eyes, pointed ears, small fangs, black academy uniform with a red striped tie, sword in a red sheath on his back — NO blue flames, NO tail), Shiemi Moriyama (blonde bob with blunt bangs, green eyes, pink kimono)",
+    "Yukio Okumura (neat black hair, glasses, a mole under his left eye and one on his chin, long black exorcist coat, two pistols), Ryuji 'Bon' Suguro (tall, black hair with a bleached-blond crest, goatee, several earrings), Izumo Kamiki (dark purple hair in two low pigtails, red eyes, two dot eyebrows). NO cat anywhere"],
+  kakegurui: ["Yumeko Jabami (long straight black hime-cut hair with blunt bangs, glowing red eyes, red school blazer with black lapels), Ryota Suzui (plain boy, short messy brown hair, brown eyes, same red blazer)",
+    "Mary Saotome (blonde twin tails tied with black ribbons, amber eyes, red blazer), Itsuki Sumeragi (wavy shoulder-length brown hair with a patterned headband, blue eyes, red blazer), Yuriko Nishinotouin (long dark-brown hair with a red bow, eyes always closed, white kimono with lilies and red hakama)"],
+  sololeveling: ["Sung Jinwoo AS HE IS AT THE BEGINNING (thin young man, short messy black hair, grey-blue eyes, tired look, blue hoodie with white drawstrings over a mustard T-shirt — NOT muscular, NO black coat, NO glowing eyes), Sung Jinah (his younger sister, purple ponytail, violet eyes, blue school blazer with a red bow)",
+    "Lee Joo-hee (healer, long straight reddish-brown hair with bangs, light-blue eyes, white high collar, beige cape), Song Chi-yul (older man with wrinkles, shoulder-length wavy brown hair slicked back, dark high collar, grey-blue jacket). NO shadow soldiers, NO statues"],
+  mushokutenseijoblessreincarnation: ["Rudeus Greyrat as a 7-year-old CHILD (messy light-brown hair, green eyes, white shirt with a dark vest, red trousers, small mage staff), Sylphie as a 7-year-old child (short messy green hair, pointed ears, reddish eyes, white hooded jacket)",
+    "Roxy Migurdia (petite young woman, blue hair in two long braids, blue eyes, big black witch hat with a white-and-gold band, white and brown robe), Paul Greyrat (shoulder-length light-brown hair in a low ponytail, green eyes, NO beard, swordsman clothes), Zenith Greyrat (blonde hair in a ponytail, blue eyes, maroon high-collared dress)"],
+  deathparade: ["Decim (messy white hair with long bangs covering his right eye, light-blue eyes, very pale skin, expressionless, white shirt, black vest, maroon bow tie) standing behind the bar",
+    "a young woman with long straight black hair with a purple sheen, blunt bangs with ONE white streak, violet eyes, gold pendant with a green stone, short black jacket and black shorts; Nona (looks like a young girl, white hair in a thick braid, violet eyes, white frilled blouse with a red bow)"],
   bluelock: ["Yoichi Isagi (short dark navy-black hair with two spiky strands on his forehead, big blue eyes, kind ordinary face), Meguru Bachira (black bob-length hair with YELLOW tips, golden eyes, playful grin), Rensuke Kunigami (very muscular, short spiky ORANGE hair, violet eyes)",
     "Hyoma Chigiri (long straight red-pink hair, fuchsia eyes, delicate features), Seishiro Nagi (very tall, messy WHITE hair, sleepy grey eyes, bored expression). All in the black-and-blue Blue Lock training bodysuits"],
   nogamenolife: ["Sora (messy black hair, plain white T-shirt with NO text, black-and-red jacket, confident grin) and Shiro (small girl with very long white hair, red eyes, oversized sailor uniform), siblings side by side",
     "Stephanie Dola (long red hair, princess dress, flustered), Jibril (long hair fading from pink to blue, angel halo and white wings, cross-shaped pupils)"],
 };
 
+// Motivo por el que Gemini no devuelve imagen (filtro de seguridad, etc.)
+function motivoRechazo(r) {
+  const c = r.candidates?.[0];
+  const partes = [r.promptFeedback?.blockReason, c?.finishReason, c?.finishMessage, (c?.content?.parts || []).map((p) => p.text).filter(Boolean).join(' ')].filter(Boolean);
+  return partes.length ? ' (' + partes.join(' · ').slice(0, 300) + ')' : '';
+}
 // --ver-prompt: muestra las instrucciones exactas que se enviarían a Gemini SIN llamarle (no gasta nada)
 function mostrarPrompt(tipo, id, prompt) {
   // Con PROMPTS_JSON=<archivo> se guardan para las instrucciones manuales (herramientas/instrucciones-gemini.mjs)
@@ -409,7 +446,7 @@ async function bannerGemini(id, titulo, m) {
     (ESTILO_SERIE[id] || `use the color palette, lighting, time of day, mood, setting and kind of effects that define "${titulo}" in its official key visuals ` +
       `(a dark action series can be dramatic with energy effects; a bright, slice-of-life or romantic series must stay bright and soft; a horror or thriller series moody, etc.)`) +
     `. Polished anime key-visual illustration, high detail.\n` +
-    `TEXT: the ONLY text in the image is the title "${titulo}" as the logo, spelled exactly like that. ` +
+    `TEXT: the ONLY text in the image is the title "${titulo}" as the logo, spelled exactly like that, letter by letter: ${[...titulo.toUpperCase()].filter((c) => /[A-Z0-9]/.test(c)).join("-")}. Do not add any word before, after or above it. ` +
     `No other words or characters at all: no Japanese subtitle or kana, no captions, no "official", no taglines, no labels.\n` +
     (REPARTO_BANNER[id]
       ? `CHARACTERS — LEFT side: ${REPARTO_BANNER[id][0]}. RIGHT side: ${REPARTO_BANNER[id][1]}. Nobody else. Use the remaining attached official artwork only to check what they look like (faces, hair, outfits, colors). Draw them in the series' own art style.\n`
@@ -425,7 +462,7 @@ async function bannerGemini(id, titulo, m) {
     generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "4:1" } },
   });
   const part = (r.candidates?.[0]?.content?.parts || []).find((p) => p.inlineData || p.inline_data);
-  if (!part) throw new Error("Gemini no devolvió imagen" + (r.candidates?.[0]?.finishReason ? " (" + r.candidates[0].finishReason + ")" : ""));
+  if (!part) throw new Error("Gemini no devolvió imagen" + motivoRechazo(r));
   const d = part.inlineData || part.inline_data;
   const raw = Buffer.from(d.data, "base64");
 
@@ -490,6 +527,16 @@ const REPARTO_SIN_SPOILERS = {
   neongenesisevangelion: "Shinji Ikari (short brown hair, white school shirt) on the left and Rei Ayanami (short light-blue hair, red eyes, white plugsuit) on the right, with Eva Unit-01 towering behind under an orange sunset",
   konosubagodsblessingonthiswonderfulworld: "Kazuma Sato (short brown hair, green cape, smug grin) on the left and Aqua (very long light-blue hair, blue-and-white goddess outfit) on the right, in the sunny town of Axel",
   darlinginthefranxx: "Hiro (black hair, blue eyes, white-and-navy uniform) on the left and Zero Two (long pink hair, two small red horns, red uniform) on the right, at sunset over a domed city",
+  fireforce: "Shinra Kusakabe (short spiky black hair, red eyes, sharp-toothed grin, flames only at his feet) on the left and Arthur Boyle (messy chin-length blond hair, blue eyes, bladeless sword hilt) on the right, both in black firefighter coats with light-blue reflective bands, a burning city behind",
+  jojosbizarreadventuretv: "Jonathan Joestar (very tall, muscular, dark indigo hair, blue shirt) on the left and the human Dio Brando (blond, orange eyes, crimson-and-white suit, NO stone mask) on the right, facing each other in front of a Victorian mansion",
+  cowboybebop: "Spike Spiegel (fluffy dark green-black hair, blue suit, yellow shirt, thin black tie) on the left and Faye Valentine (short violet hair with a headband, yellow outfit) on the right, the ship Bebop in an ochre sky",
+  thattimeigotreincarnatedasaslime: "Rimuru in slime form (a small translucent sky-blue blob with two oval eyes) on the left and the big black one-horned wolf Ranga on the right, in a sunny forest near the town of Tempest",
+  therisingoftheshieldhero: "Naofumi Iwatani (short spiky black hair, green eyes, green cloak with white fur trim, silver shield with a green gem) on the left and young Raphtalia (long light-brown hair, red eyes, raccoon-dog ears and tail, light armor, NO katana) on the right, at the edge of a forest",
+  blueexorcist: "Rin Okumura (messy blue-black hair, pointed ears, black academy uniform, sword in a red sheath, NO blue flames) on the left and his twin Yukio Okumura (neat black hair, glasses, moles, long black exorcist coat) on the right, True Cross Academy towers behind",
+  kakegurui: "Yumeko Jabami (long straight black hime-cut hair, glowing red eyes, red blazer, fanning playing cards in her hands) on the left and Mary Saotome (blonde twin tails with black ribbons, amber eyes, red blazer) on the right, across a casino gambling table",
+  sololeveling: "Sung Jinwoo as he is at the beginning (thin, short messy black hair, tired look, blue hoodie over a mustard T-shirt, NOT muscular, NO glowing eyes) on the left and Lee Joo-hee (long reddish-brown hair, white high collar, beige cape) on the right, in front of a glowing blue dungeon gate",
+  mushokutenseijoblessreincarnation: "Rudeus Greyrat as a 7-year-old child (messy light-brown hair, green eyes, white shirt, dark vest, small mage staff) on the left and his tutor Roxy Migurdia (blue hair in two long braids, big black witch hat) on the right, in a green meadow by a wooden village",
+  deathparade: "Decim (messy white hair with bangs over his right eye, pale, black vest, maroon bow tie) on the left behind the bar and the young woman with long black hair with one white streak and violet eyes on the right, in the dark art-deco bar",
   bluelock: "Yoichi Isagi (short dark navy-black hair with two spiky forehead strands, big blue eyes) kicking a soccer ball on the left and Meguru Bachira (black bob hair with yellow tips, golden eyes, playful grin) dribbling on the right, both in black-and-blue Blue Lock bodysuits, on a floodlit pitch",
   nogamenolife: "Sora (messy black hair, plain white T-shirt with no text) on the left and Shiro (very long white hair, oversized sailor uniform) on the right, over a giant colorful chessboard",
 };
@@ -519,7 +566,7 @@ async function tarjetaGemini(id, titulo, bannerFile, m) {
   const reparto = REPARTO_SIN_SPOILERS[id];
   const prompt =
     REGLA_NO_REPETIR +
-    `Create a 16:9 card illustration for the anime "${titulo}", shown small (about 320 px wide) on a website grid.\n` +
+    `Create a 16:9 card illustration for the anime "${titulo}". It will be displayed as a small thumbnail, so keep it simple and readable.\n` +
     `STYLE: the first attached image is the center of the series banner (title logo and background): take from it ONLY the art style, color palette, lighting, mood, background setting and the title-logo lettering. ` +
     `Do NOT copy its characters, poses, outfits, accessories or special-power effects (they may be spoilers): draw only the effects that belong to the characters listed below.\n` +
     (ESTILO_SERIE[id] ? `LOOK AND MOOD (this series' own aesthetic, most important): ${ESTILO_SERIE[id]}.\n` : "") +
@@ -536,7 +583,7 @@ async function tarjetaGemini(id, titulo, bannerFile, m) {
     generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "16:9" } },
   });
   const part = (r.candidates?.[0]?.content?.parts || []).find((p) => p.inlineData || p.inline_data);
-  if (!part) throw new Error("Gemini no devolvió imagen" + (r.candidates?.[0]?.finishReason ? " (" + r.candidates[0].finishReason + ")" : ""));
+  if (!part) throw new Error("Gemini no devolvió imagen" + motivoRechazo(r));
   const d = part.inlineData || part.inline_data;
   const raw = Buffer.from(d.data, "base64");
   fs.mkdirSync(TARJETA_DIR, { recursive: true });
@@ -593,6 +640,16 @@ const SIMBOLOS = {
   neongenesisevangelion: "the purple-and-green horned head of a giant mecha (Eva Unit-01)",
   konosubagodsblessingonthiswonderfulworld: "a pointed witch hat with a red explosion spark behind it",
   darlinginthefranxx: "two small red horns over a pink heart",
+  fireforce: "a black firefighter helmet surrounded by orange flames",
+  jojosbizarreadventuretv: "a golden five-pointed star",
+  cowboybebop: "a golden saxophone",
+  thattimeigotreincarnatedasaslime: "a translucent sky-blue slime droplet",
+  therisingoftheshieldhero: "a silver shield with a green gem in the center",
+  blueexorcist: "a sword in a red sheath with a soft blue glow",
+  kakegurui: "a red ace-of-hearts playing card with a gold gambling chip",
+  sololeveling: "a glowing blue dungeon gate portal with a violet edge",
+  mushokutenseijoblessreincarnation: "a wooden mage staff topped with a glowing blue gem",
+  deathparade: "a black bowling pin with a magenta neon glow",
 };
 async function iconoGemini(id, titulo) {
   const parts = [];
@@ -614,7 +671,7 @@ async function iconoGemini(id, titulo) {
     generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "1:1" } },
   });
   const part = (r.candidates?.[0]?.content?.parts || []).find((p) => p.inlineData || p.inline_data);
-  if (!part) throw new Error("Gemini no devolvió imagen" + (r.candidates?.[0]?.finishReason ? " (" + r.candidates[0].finishReason + ")" : ""));
+  if (!part) throw new Error("Gemini no devolvió imagen" + motivoRechazo(r));
   const d = part.inlineData || part.inline_data;
   const raw = Buffer.from(d.data, "base64");
   fs.mkdirSync(ICONO_DIR, { recursive: true });

@@ -1057,6 +1057,265 @@
       }
     },
     "banner": "banners/frierenbeyondjourneysend.jpg"
+  },
+  {
+    "id": "fireforce",
+    "titulo": "Fire Force",
+    "descripcion": "Shinra Kusakabe, un joven con llamas en los pies que se une a la Brigada Especial 8 para acabar con la combustión humana espontánea y descubrir la verdad sobre su pasado.",
+    "animeTotal": 73,
+    "mangaTotal": 304,
+    "temporadas": 4,
+    "anilistId": 105310,
+    "tema": {
+      "claro": {
+        "accent": "#705713",
+        "accentRgb": "112, 87, 19",
+        "accentDeep": "#3e300a",
+        "accent2": "#b78f09",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f1bb28",
+        "accentRgb": "241, 187, 40",
+        "accentDeep": "#795e14",
+        "accent2": "#f8d150",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/fireforce.jpg"
+  },
+  {
+    "id": "jojosbizarreadventuretv",
+    "titulo": "JoJo's Bizarre Adventure",
+    "descripcion": "La saga de la familia Joestar a lo largo de las generaciones, de Phantom Blood hasta Steel Ball Run.",
+    "animeTotal": 198,
+    "mangaTotal": 998,
+    "temporadas": 1,
+    "anilistId": 14719,
+    "tema": {
+      "claro": {
+        "accent": "#895828",
+        "accentRgb": "137, 88, 40",
+        "accentDeep": "#4b3016",
+        "accent2": "#c49014",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#e49343",
+        "accentRgb": "228, 147, 67",
+        "accentDeep": "#724a22",
+        "accent2": "#f2bd5e",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/jojosbizarreadventuretv.jpg"
+  },
+  {
+    "id": "cowboybebop",
+    "titulo": "Cowboy Bebop",
+    "descripcion": "Spike Spiegel y la tripulación de la nave Bebop, cazarrecompensas que recorren el sistema solar al ritmo del jazz.",
+    "animeTotal": 26,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 1,
+    "tema": {
+      "claro": {
+        "accent": "#a44937",
+        "accentRgb": "164, 73, 55",
+        "accentDeep": "#5a281e",
+        "accent2": "#d2881b",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f16b50",
+        "accentRgb": "241, 107, 80",
+        "accentDeep": "#793628",
+        "accent2": "#f8a964",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "thattimeigotreincarnatedasaslime",
+    "titulo": "That Time I Got Reincarnated as a Slime",
+    "descripcion": "Satoru Mikami reencarna en otro mundo como un slime con poderes únicos y funda una nación de monstruos, de los goblins hasta el despertar del héroe.",
+    "animeTotal": 96,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 101280,
+    "tema": {
+      "claro": {
+        "accent": "#315c7f",
+        "accentRgb": "49, 92, 127",
+        "accentDeep": "#1b3346",
+        "accent2": "#989240",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#5daef1",
+        "accentRgb": "93, 174, 241",
+        "accentDeep": "#2f5779",
+        "accent2": "#aecab5",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/thattimeigotreincarnatedasaslime.jpg"
+  },
+  {
+    "id": "deathparade",
+    "titulo": "Death Parade",
+    "descripcion": "Decim, un árbitro que juzga a las almas de los recién fallecidos en un bar donde se juega la vida en partidas aparentemente inocentes.",
+    "animeTotal": 12,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 20931,
+    "tema": {
+      "claro": {
+        "accent": "#206191",
+        "accentRgb": "32, 97, 145",
+        "accentDeep": "#11354f",
+        "accent2": "#8f9448",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#35a1f1",
+        "accentRgb": "53, 161, 241",
+        "accentDeep": "#1b5179",
+        "accent2": "#9ac4b5",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/deathparade.jpg"
+  },
+  {
+    "id": "mushokutenseijoblessreincarnation",
+    "titulo": "Mushoku Tensei: Jobless Reincarnation",
+    "descripcion": "Un hombre que desperdició su vida reencarna como Rudeus en un mundo de magia y decide hacerlo bien esta vez, de su infancia en Buena en adelante.",
+    "animeTotal": 62,
+    "mangaTotal": 0,
+    "temporadas": 6,
+    "anilistId": 108465,
+    "tema": {
+      "claro": {
+        "accent": "#286189",
+        "accentRgb": "40, 97, 137",
+        "accentDeep": "#16354b",
+        "accent2": "#949444",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#43a1e4",
+        "accentRgb": "67, 161, 228",
+        "accentDeep": "#225172",
+        "accent2": "#a1c4ae",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/mushokutenseijoblessreincarnation.jpg"
+  },
+  {
+    "id": "therisingoftheshieldhero",
+    "titulo": "The Rising of the Shield Hero",
+    "descripcion": "Naofumi Iwatani, invocado como Héroe del Escudo y traicionado nada más llegar, que se abre camino junto a Raphtalia y Filo, de las primeras olas hasta Q'ten Lo.",
+    "animeTotal": 62,
+    "mangaTotal": 0,
+    "temporadas": 5,
+    "anilistId": 99263,
+    "tema": {
+      "claro": {
+        "accent": "#316a78",
+        "accentRgb": "49, 106, 120",
+        "accentDeep": "#1b3a42",
+        "accent2": "#98993c",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#5dc9e4",
+        "accentRgb": "93, 201, 228",
+        "accentDeep": "#2f6572",
+        "accent2": "#aed8ae",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/therisingoftheshieldhero.jpg"
+  },
+  {
+    "id": "blueexorcist",
+    "titulo": "Blue Exorcist",
+    "descripcion": "Rin Okumura, que descubre que es hijo de Satán y decide hacerse exorcista para derrotarlo, de la True Cross Academy hasta The Blue Night Saga.",
+    "animeTotal": 73,
+    "mangaTotal": 171,
+    "temporadas": 5,
+    "anilistId": 9919,
+    "tema": {
+      "claro": {
+        "accent": "#516370",
+        "accentRgb": "81, 99, 112",
+        "accentDeep": "#2c373e",
+        "accent2": "#a89638",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#aed6f1",
+        "accentRgb": "174, 214, 241",
+        "accentDeep": "#576b79",
+        "accent2": "#d7deb5",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/blueexorcist.jpg"
+  },
+  {
+    "id": "kakegurui",
+    "titulo": "Kakegurui",
+    "descripcion": "Yumeko Jabami llega a una academia donde todo se decide apostando y desafía a los mejores jugadores del consejo estudiantil.",
+    "animeTotal": 24,
+    "mangaTotal": 133,
+    "temporadas": 2,
+    "anilistId": 98314,
+    "tema": {
+      "claro": {
+        "accent": "#c93b23",
+        "accentRgb": "201, 59, 35",
+        "accentDeep": "#6e2013",
+        "accent2": "#e48112",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#e85f48",
+        "accentRgb": "232, 95, 72",
+        "accentDeep": "#743024",
+        "accent2": "#f4a360",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/kakegurui.jpg"
+  },
+  {
+    "id": "sololeveling",
+    "titulo": "Solo Leveling",
+    "descripcion": "Sung Jinwoo, el cazador más débil del mundo, recibe un misterioso Sistema que le permite subir de nivel sin límites, de la mazmorra de rango D hasta la isla de Jeju.",
+    "animeTotal": 25,
+    "mangaTotal": 179,
+    "temporadas": 2,
+    "anilistId": 151807,
+    "tema": {
+      "claro": {
+        "accent": "#1c637f",
+        "accentRgb": "28, 99, 127",
+        "accentDeep": "#0f3646",
+        "accent2": "#8d9540",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#35bbf1",
+        "accentRgb": "53, 187, 241",
+        "accentDeep": "#1b5e79",
+        "accent2": "#9ad1b5",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/sololeveling.jpg"
   }
 ]
 // @@fin
@@ -1066,4 +1325,4 @@
   window.CATALOGO.forEach(function (s) { ya[s.id] = true; });
   auto.forEach(function (s) { if (!ya[s.id]) window.CATALOGO.push(s); });
 })();
-window.VERSION_IMAGENES = "mwaype2v";
+window.VERSION_IMAGENES = "mwb0m35f";

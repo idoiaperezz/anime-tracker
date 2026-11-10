@@ -40,6 +40,9 @@ Formato de arco: `[nombre, anime desde, hasta, relleno 0/1, manga desde, manga h
   - **Personajes parecidos** (dos chicos morenos con uniforme): describe en el reparto lo que los diferencia (gafas, peinado, color de pelo).
   - **Descripciones físicas equivocadas** (el pelo de Miyuki): no escribas el aspecto de memoria; usa el que confirmen los agentes al investigar la ficha.
   - **Anatomía** (Toradora!: un personaje con 3 brazos): la regla `RULE #2` de `REGLA_NO_REPETIR` exige dos brazos y dos manos por persona. Al revisar, cuenta brazos y manos de cada personaje.
+  - **Títulos de AniList con añadidos** («JoJo's Bizarre Adventure (TV)»): Gemini los escribe tal cual. Revisa el título de cada serie nueva y, si lleva coletillas, pon `titulo` limpio en su ficha.
+  - **Personajes menores de edad**: no los describas con la edad ni con detalles de ropa o cuerpo (p. ej. «niña de 13 años, descalza»): el filtro de seguridad bloquea la petición. Descríbelos solo por pelo, accesorios y personalidad, o déjalos fuera.
+  - **Series que Gemini bloquea** (`PROHIBITED_CONTENT`, como Cowboy Bebop): no insistas. Usa la imagen oficial gratis con `node herramientas/buscar-banners.mjs <id>` y `--usar <id> <n>`.
   - **Iconos**: a veces hace una lámina de muestra con varios tamaños o añade adornos en las esquinas; la instrucción ya lo prohíbe (no la quites).
 - **Ahorrar en Gemini (cada imagen cuesta dinero): las instrucciones tienen que salir bien a la primera.** Antes de generar:
   1. Escribe en `REPARTO_BANNER`, `REPARTO_SIN_SPOILERS` y `SIMBOLOS` quién sale y **cómo es cada personaje** (pelo, gafas, ropa, rasgos que lo distingan de los demás). Sin eso el script se niega a generar.
