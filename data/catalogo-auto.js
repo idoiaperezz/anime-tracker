@@ -1324,7 +1324,8 @@
     "animeTotal": 26,
     "mangaTotal": 59,
     "temporadas": 1,
-    "anilistId": 10620
+    "anilistId": 10620,
+    "banner": "banners/thefuturediary.jpg"
   },
   {
     "id": "umamusumecinderellagray",
@@ -1349,7 +1350,8 @@
         "accent2": "#8dc4a7",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/umamusumecinderellagray.jpg"
   },
   {
     "id": "datealive",
@@ -1374,7 +1376,8 @@
         "accent2": "#f8d15e",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/datealive.jpg"
   },
   {
     "id": "theapothecarydiaries",
@@ -1400,7 +1403,8 @@
         "accent2": "#f8b66b",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/theapothecarydiaries.jpg"
   },
   {
     "id": "kaijuno8",
@@ -1425,7 +1429,8 @@
         "accent2": "#f8e593",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/kaijuno8.jpg"
   },
   {
     "id": "witchhatatelier",
@@ -1450,7 +1455,8 @@
         "accent2": "#98bf8e",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/witchhatatelier.jpg"
   }
 ]
 // @@fin
@@ -1460,4 +1466,4 @@
   window.CATALOGO.forEach(function (s) { ya[s.id] = true; });
   auto.forEach(function (s) { if (!ya[s.id]) window.CATALOGO.push(s); });
 })();
-window.VERSION_IMAGENES = "mwb0m35f";
+window.VERSION_IMAGENES = "mwbaa8jr";
