@@ -276,6 +276,26 @@ const ESTILO_SERIE = {
     "a huge chess king piece on the horizon, colorful outlines, dreamy and playful mood, NOT dark",
   bluelock: "high-voltage soccer anime look: futuristic Blue Lock training facility with glowing grid lines and screens, an intense floodlit soccer pitch, " +
     "electric blue and black palette, glowing eyes and blue energy auras, symbolic chains, dramatic speed lines, a soccer ball in motion",
+  inuyasha: "classic early-2000s anime look of feudal Japan: sunlit ancient forest with the giant Sacred Tree, thatched-roof village, warm daylight, " +
+    "rich red, forest green and warm gold palette, glowing pink spiritual light and swirling cherry petals, adventurous mood",
+  frierenbeyondjourneysend: "serene, luminous fantasy: wide green meadows, a field of small glowing BLUE flowers, clear blue sky with soft clouds, " +
+    "gentle pastel palette of white, gold, lavender and sky blue, soft magical light particles, calm and nostalgic mood, NOT dark, NO battle effects",
+  thesevendeadlysins: "bright, colorful medieval fantasy adventure: green meadows, the Kingdom of Liones castle on a hill, warm sunlight, " +
+    "vivid green, red and gold palette, soft magic sparkles, cheerful adventurous mood, NOT dark",
+  noragami: "urban Tokyo at night: Shinto shrines with red torii gates and paper lanterns, city lights, deep blue and soft pink palette, " +
+    "flowing white sacred light, mysterious but warm mood",
+  akamegakill: "dark fantasy: gothic imperial capital at night under a red moon, rooftops and spires, blood red and black palette, " +
+    "dramatic moonlight, tense assassin mood",
+  parasytethemaxim: "realistic modern Japanese city, cold grey and blue-grey palette with accents of blood red, overcast sky and city streets, " +
+    "uneasy body-horror tension, NO fantasy glow, NO magic effects",
+  codegeasslelouchoftherebellion: "dramatic mecha political thriller: imperial purple, black and gold palette, a futuristic Tokyo settlement skyline at dusk, " +
+    "giant humanoid Knightmare Frame mechs in the background, the glowing red bird-shaped Geass sigil, chessboard motifs",
+  neongenesisevangelion: "1990s cel-animation look: Tokyo-3 city under an orange sunset, power lines and skyscrapers, the giant purple-and-green Eva Unit-01 towering in the background, " +
+    "orange, purple and red palette, quiet melancholic mood, NO glowing energy auras",
+  konosubagodsblessingonthiswonderfulworld: "bright, comedic fantasy: the medieval European town of Axel under a clear blue sky, green fields, " +
+    "vivid cheerful pastel colors, a big comedic red-orange explosion spell in the sky, silly fun mood, NOT dark",
+  darlinginthefranxx: "sci-fi mecha youth drama: a giant domed plantation city over a barren wasteland, sunset sky, red and pink versus blue palette, " +
+    "the red-and-white mech Strelizia in the background, emotional and dramatic mood",
 };
 
 // Reparto del banner: lado izquierdo / lado derecho, todos personajes DISTINTOS (y sin spoilers)
@@ -319,6 +339,26 @@ const REPARTO_BANNER = {
     "Izumi Miyamura (black hair, NO glasses, several silver piercings in his ears and lip, school uniform), Toru Ishikawa (spiky blond hair, friendly smile)"],
   toradora: ["Ryuuji Takasu (dark blue hair, very sharp scary-looking eyes, school uniform, kitchen apron), Minori Kushieda (short orange-red hair, energetic smile)",
     "Taiga Aisaka (very small girl with very long light-brown hair, school uniform, holding a wooden sword, fierce expression), Yusaku Kitamura (glasses, neat short hair, student council)"],
+  inuyasha: ["Inuyasha (long silver-white hair, white dog ears on top of his head, golden eyes, red fire-rat robe, holding the big Tessaiga sword), Kagome Higurashi (long black hair, green-and-white school sailor uniform with a red scarf, holding a bow), Shippo (small fox-demon child, reddish-brown hair in a ponytail, blue vest, fox tail)",
+    "Sesshomaru (very long straight silver hair, crescent moon mark on his forehead, white kimono with armor and a white fur stole, cold expression), Miroku (monk with short black hair in a small ponytail, purple and black robes, golden ringed staff)"],
+  frierenbeyondjourneysend: ["Frieren (elf with long silver-white hair in twin pigtails, pointed ears, green eyes, white-and-gold cape, wooden staff), Fern (long straight purple hair, black coat-dress, staff)",
+    "Stark (short spiky red hair, young warrior, holding a big axe); and in faded golden light in the far background, the old hero party seen ONCE each: Himmel (light-blue hair, hero cape), Heiter (tall priest with brown hair), Eisen (bearded dwarf with an axe)"],
+  thesevendeadlysins: ["Meliodas (short boy with messy blond hair, green eyes, black vest over a white shirt, broken sword on his back), Elizabeth Liones (very long silver hair covering one eye, blue eyes, tavern waitress outfit), Hawk (small talking pink pig with two black spots on his forehead)",
+    "Ban (spiky white hair, red eyes, red leather jacket, scars on his chest), King (boy with brown hair, green hoodie, sitting on a floating pillow), Diane (giant girl with brown twin pigtails, standing tall behind them)"],
+  noragami: ["Yato (messy black hair, blue eyes, black tracksuit with a white scarf), Yukine (golden-blond hair, amber eyes, white hoodie)",
+    "Hiyori Iki (long brown hair, violet eyes, school uniform with a red bow, a translucent cat-like spirit tail), Kofuku (cheerful goddess with short pink hair)"],
+  akamegakill: ["Tatsumi (short messy brown hair, green eyes, light travel clothes, a sword), Leone (wild blonde hair, yellow eyes, black top and scarf, human form with no beast ears), Lubbock (green hair, aviator goggles on his forehead, green coat)",
+    "Akame (long straight black hair, red eyes, black uniform with a red tie, holding a katana), Mine (long pink twin tails, pink dress, holding a huge rifle), Najenda (short silver hair, eye patch on her right eye, mechanical right arm, black suit)"],
+  parasytethemaxim: ["Shinichi Izumi (short black hair, glasses, dark school uniform) with Migi — his right hand turned into a creature with ONE eye and a mouth (Migi is part of Shinichi's hand, not a separate person)",
+    "Satomi Murano (shoulder-length brown hair, school uniform), Ryoko Tamiya (long straight black hair, cold expression, dark teacher's suit)"],
+  codegeasslelouchoftherebellion: ["Lelouch Lamperouge (black hair, violet eyes, black Ashford Academy uniform, one eye glowing with the red Geass sigil), C.C. (very long lime-green hair, golden eyes, white straitjacket-like outfit)",
+    "Suzaku Kururugi (curly brown hair, green eyes, white pilot suit), Kallen Kozuki (short spiky red hair, blue eyes, red pilot suit); the white Knightmare Lancelot and the red Knightmare Guren behind them"],
+  neongenesisevangelion: ["Shinji Ikari (short brown hair, blue eyes, white school shirt, headphones around his neck), Misato Katsuragi (long purple hair, black jacket, silver cross necklace)",
+    "Rei Ayanami (short light-blue hair, red eyes, white plugsuit), Asuka Langley Soryu (long red-orange hair with red hair clips, blue eyes, red plugsuit)"],
+  konosubagodsblessingonthiswonderfulworld: ["Kazuma Sato (short brown hair, green eyes, green cape over adventurer clothes, smug grin), Aqua (very long light-blue hair with a ring-shaped hair ornament, blue eyes, blue-and-white goddess outfit)",
+    "Megumin (short black hair, red eyes, eye patch, big pointed witch hat, red dress with black cape, staff), Darkness (long blonde hair in a high ponytail, blue eyes, silver crusader armor)"],
+  darlinginthefranxx: ["Hiro (black hair, blue eyes, white-and-navy uniform), Ichigo (short blue hair with a yellow hairclip, blue eyes), Goro (short orange hair, green eyes)",
+    "Zero Two (long pink hair, two small red horns, teal eyes, red uniform, confident smile); the red-and-white feminine mech Strelizia with a lance behind her"],
   bluelock: ["Yoichi Isagi (short dark navy-black hair with two spiky strands on his forehead, big blue eyes, kind ordinary face), Meguru Bachira (black bob-length hair with YELLOW tips, golden eyes, playful grin), Rensuke Kunigami (very muscular, short spiky ORANGE hair, violet eyes)",
     "Hyoma Chigiri (long straight red-pink hair, fuchsia eyes, delicate features), Seishiro Nagi (very tall, messy WHITE hair, sleepy grey eyes, bored expression). All in the black-and-blue Blue Lock training bodysuits"],
   nogamenolife: ["Sora (messy black hair, plain white T-shirt with NO text, black-and-red jacket, confident grin) and Shiro (small girl with very long white hair, red eyes, oversized sailor uniform), siblings side by side",
@@ -327,6 +367,14 @@ const REPARTO_BANNER = {
 
 // --ver-prompt: muestra las instrucciones exactas que se enviarían a Gemini SIN llamarle (no gasta nada)
 function mostrarPrompt(tipo, id, prompt) {
+  // Con PROMPTS_JSON=<archivo> se guardan para las instrucciones manuales (herramientas/instrucciones-gemini.mjs)
+  if (process.env.PROMPTS_JSON) {
+    let lista = [];
+    try { lista = JSON.parse(fs.readFileSync(process.env.PROMPTS_JSON, "utf8")); } catch {}
+    lista = lista.filter((p) => !(p.tipo === tipo && p.id === id)).concat({ tipo, id, prompt });
+    fs.writeFileSync(process.env.PROMPTS_JSON, JSON.stringify(lista, null, 1));
+    return null;
+  }
   console.log(`\n===== ${tipo} de ${id} (NO se ha llamado a Gemini) =====\n${prompt}\n`);
   return null;
 }
@@ -430,18 +478,30 @@ const REPARTO_SIN_SPOILERS = {
   violetevergarden: "Violet Evergarden (long blonde braided hair with red ribbons, blue jacket, emerald brooch) at her typewriter on the left and Claudia Hodgins (red-orange hair) on the right, in a sunlit office of the postal company",
   horimiya: "Kyouko Hori (long brown hair, school cardigan) on the left and Izumi Miyamura (black hair, silver ear and lip piercings) on the right, in a sunny classroom",
   toradora: "Ryuuji Takasu (dark blue hair, sharp eyes, school uniform) on the left and Taiga Aisaka (tiny, very long light-brown hair, wooden sword) on the right, in a sunny school hallway",
+  inuyasha: "Inuyasha (long silver-white hair, white dog ears, golden eyes, red robe, Tessaiga sword) on the left and Kagome Higurashi (long black hair, green-and-white sailor uniform with red scarf, bow) on the right, by the Sacred Tree in a sunlit forest",
+  frierenbeyondjourneysend: "Frieren (elf, long silver-white twin pigtails, green eyes, white-and-gold cape, staff) on the left and Fern (long straight purple hair, black coat-dress) on the right, in a meadow of small blue flowers under a clear sky",
+  thesevendeadlysins: "Meliodas (short boy, messy blond hair, black vest over white shirt) on the left and Elizabeth Liones (very long silver hair covering one eye, waitress outfit) on the right, with Liones castle behind",
+  noragami: "Yato (messy black hair, blue eyes, black tracksuit with white scarf) on the left and Hiyori Iki (long brown hair, school uniform with red bow) on the right, in front of a red torii gate at night",
+  akamegakill: "Tatsumi (short messy brown hair, green eyes, travel clothes, sword) on the left and Akame (long black hair, red eyes, black uniform, katana) on the right, on rooftops under a red moon",
+  parasytethemaxim: "Shinichi Izumi (short black hair, glasses, school uniform) on the left with Migi — his right hand turned into a one-eyed creature — and Satomi Murano (shoulder-length brown hair, school uniform) on the right, on a grey city street",
+  codegeasslelouchoftherebellion: "Lelouch Lamperouge (black hair, violet eyes, black Ashford uniform, glowing red Geass sigil in one eye) on the left and Suzaku Kururugi (curly brown hair, green eyes, white pilot suit) on the right, imperial purple background",
+  neongenesisevangelion: "Shinji Ikari (short brown hair, white school shirt) on the left and Rei Ayanami (short light-blue hair, red eyes, white plugsuit) on the right, with Eva Unit-01 towering behind under an orange sunset",
+  konosubagodsblessingonthiswonderfulworld: "Kazuma Sato (short brown hair, green cape, smug grin) on the left and Aqua (very long light-blue hair, blue-and-white goddess outfit) on the right, in the sunny town of Axel",
+  darlinginthefranxx: "Hiro (black hair, blue eyes, white-and-navy uniform) on the left and Zero Two (long pink hair, two small red horns, red uniform) on the right, at sunset over a domed city",
   bluelock: "Yoichi Isagi (short dark navy-black hair with two spiky forehead strands, big blue eyes) kicking a soccer ball on the left and Meguru Bachira (black bob hair with yellow tips, golden eyes, playful grin) dribbling on the right, both in black-and-blue Blue Lock bodysuits, on a floodlit pitch",
   nogamenolife: "Sora (messy black hair, plain white T-shirt with no text) on the left and Shiro (very long white hair, oversized sailor uniform) on the right, over a giant colorful chessboard",
 };
 async function tarjetaGemini(id, titulo, bannerFile, m) {
   const parts = [];
-  const bp = path.join(ROOT, bannerFile);
-  if (!fs.existsSync(bp)) throw new Error("no tiene banner del que partir (" + bannerFile + ")");
+  const bp = path.join(ROOT, bannerFile || "");
+  const hayBanner = !!bannerFile && fs.existsSync(bp);
+  if (!hayBanner && !VER_PROMPT) throw new Error("no tiene banner del que partir (" + bannerFile + ")");
   // Del banner solo se pasa la franja CENTRAL (logo, fondo y colores): los personajes de los lados
   // pueden llevar transformaciones o formas avanzadas que serían spoilers
   let sharpLib = null;
   try { sharpLib = (await import("sharp")).default; } catch {}
-  if (sharpLib) {
+  if (!hayBanner) { /* solo se está mostrando la instrucción */ }
+  else if (sharpLib) {
     const meta = await sharpLib(bp).metadata();
     const w = Math.round(meta.width * 0.34);
     const centro = await sharpLib(bp).extract({ left: Math.round((meta.width - w) / 2), top: 0, width: w, height: meta.height }).jpeg({ quality: 90 }).toBuffer();
@@ -521,6 +581,16 @@ const SIMBOLOS = {
   toradora: "a small tiger and a dragon curled together inside a circle",
   nogamenolife: "a white chess king piece standing on a playing card",
   bluelock: "a glowing blue padlock with a soccer ball pattern",
+  inuyasha: "the glowing pink round Shikon Jewel hanging from a cord",
+  frierenbeyondjourneysend: "a small glowing blue star-shaped flower",
+  thesevendeadlysins: "a red stylized dragon emblem",
+  noragami: "a shining gold five-yen coin with a square hole in the center",
+  akamegakill: "a black katana with a blood-red glow, crossed in front of a red moon",
+  parasytethemaxim: "a right hand with a single eye in the palm",
+  codegeasslelouchoftherebellion: "the red bird-shaped Geass sigil",
+  neongenesisevangelion: "the purple-and-green horned head of a giant mecha (Eva Unit-01)",
+  konosubagodsblessingonthiswonderfulworld: "a pointed witch hat with a red explosion spark behind it",
+  darlinginthefranxx: "two small red horns over a pink heart",
 };
 async function iconoGemini(id, titulo) {
   const parts = [];
@@ -641,7 +711,7 @@ async function main() {
       if (onlyIds.length && !onlyIds.includes(s.id)) continue;
       if (!VER_PROMPT && fs.existsSync(path.join(ROOT, "tarjetas", s.id + ".jpg"))) continue;
       const bannerFile = s.banner || existingBanner(s.id);
-      if (!bannerFile) { console.log(`- ${s.titulo}: sin banner todavía (primero --banners-pendientes)`); continue; }
+      if (!bannerFile && !VER_PROMPT) { console.log(`- ${s.titulo}: sin banner todavía (primero --banners-pendientes)`); continue; }
       try {
         let m = s.anilistId ? await getMedia(s.anilistId) : null;
         if (!m) { // series añadidas a mano: se busca su primera temporada en AniList

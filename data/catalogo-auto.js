@@ -797,6 +797,256 @@
       }
     },
     "banner": "banners/bluelock.jpg"
+  },
+  {
+    "id": "inuyasha",
+    "titulo": "InuYasha",
+    "descripcion": "Kagome, una estudiante que cae al Japón feudal, e Inuyasha, un medio demonio, buscan los fragmentos de la Perla de Shikon, incluido InuYasha: The Final Act.",
+    "animeTotal": 193,
+    "mangaTotal": 558,
+    "temporadas": 2,
+    "anilistId": 249,
+    "tema": {
+      "claro": {
+        "accent": "#bb3e72",
+        "accentRgb": "187, 62, 114",
+        "accentDeep": "#67223f",
+        "accent2": "#dd8339",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f15093",
+        "accentRgb": "241, 80, 147",
+        "accentDeep": "#79284a",
+        "accent2": "#f89b86",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "akamegakill",
+    "titulo": "Akame ga Kill!",
+    "descripcion": "Tatsumi, un joven campesino que se une a Night Raid, un grupo de asesinos que lucha contra la corrupción del Imperio.",
+    "animeTotal": 24,
+    "mangaTotal": 78,
+    "temporadas": 1,
+    "anilistId": 20613,
+    "tema": {
+      "claro": {
+        "accent": "#b14834",
+        "accentRgb": "177, 72, 52",
+        "accentDeep": "#61281d",
+        "accent2": "#d8881a",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#e45d43",
+        "accentRgb": "228, 93, 67",
+        "accentDeep": "#722f22",
+        "accent2": "#f2a25e",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "noragami",
+    "titulo": "Noragami",
+    "descripcion": "Yato, un dios menor sin santuario que hace cualquier encargo por cinco yenes, Hiyori y Yukine, del arco de Yukine hasta el de Ebisu.",
+    "animeTotal": 25,
+    "mangaTotal": 109,
+    "temporadas": 2,
+    "anilistId": 20447,
+    "tema": {
+      "claro": {
+        "accent": "#4c5d62",
+        "accentRgb": "76, 93, 98",
+        "accentDeep": "#2a3336",
+        "accent2": "#a69331",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#bbe4f1",
+        "accentRgb": "187, 228, 241",
+        "accentDeep": "#5e7279",
+        "accent2": "#dde5b5",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "thesevendeadlysins",
+    "titulo": "The Seven Deadly Sins",
+    "descripcion": "Meliodas y Elizabeth reúnen a los Siete Pecados Capitales, caballeros acusados de traición, para salvar el reino de Liones.",
+    "animeTotal": 100,
+    "mangaTotal": 346,
+    "temporadas": 5,
+    "anilistId": 20789,
+    "tema": {
+      "claro": {
+        "accent": "#895010",
+        "accentRgb": "137, 80, 16",
+        "accentDeep": "#4b2c09",
+        "accent2": "#c48c08",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#e4861a",
+        "accentRgb": "228, 134, 26",
+        "accentDeep": "#72430d",
+        "accent2": "#f2b649",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "konosubagodsblessingonthiswonderfulworld",
+    "titulo": "KONOSUBA -God's blessing on this wonderful world!",
+    "descripcion": "Kazuma, que reencarna en un mundo de fantasía junto a la diosa Aqua, Megumin y Darkness, un grupo de aventureros desastroso, de su llegada a Axel en adelante.",
+    "animeTotal": 31,
+    "mangaTotal": 0,
+    "temporadas": 2,
+    "anilistId": 21202,
+    "tema": {
+      "claro": {
+        "accent": "#386889",
+        "accentRgb": "56, 104, 137",
+        "accentDeep": "#1f394b",
+        "accent2": "#9b9844",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#5daee4",
+        "accentRgb": "93, 174, 228",
+        "accentDeep": "#2f5772",
+        "accent2": "#aecaae",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "codegeasslelouchoftherebellion",
+    "titulo": "Code Geass: Lelouch of the Rebellion",
+    "descripcion": "Lelouch, un príncipe exiliado que obtiene el poder del Geass y lidera una rebelión contra el Imperio de Britannia, incluida la temporada R2.",
+    "animeTotal": 50,
+    "mangaTotal": 0,
+    "temporadas": 2,
+    "anilistId": 1575,
+    "tema": {
+      "claro": {
+        "accent": "#5d6338",
+        "accentRgb": "93, 99, 56",
+        "accentDeep": "#33371f",
+        "accent2": "#ae961c",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#c9d678",
+        "accentRgb": "201, 214, 120",
+        "accentDeep": "#656b3c",
+        "accent2": "#e4de78",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "darlinginthefranxx",
+    "titulo": "DARLING in the FRANXX",
+    "descripcion": "Hiro, un piloto que no consigue pilotar, y Zero Two, una misteriosa chica con cuernos, se unen para defender a la humanidad dentro de un robot gigante.",
+    "animeTotal": 24,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 99423,
+    "tema": {
+      "claro": {
+        "accent": "#bb3e34",
+        "accentRgb": "187, 62, 52",
+        "accentDeep": "#67221d",
+        "accent2": "#dd831a",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f36a5f",
+        "accentRgb": "243, 106, 95",
+        "accentDeep": "#7a3530",
+        "accent2": "#f9a86c",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "parasytethemaxim",
+    "titulo": "Parasyte -the maxim-",
+    "descripcion": "Shinichi Izumi, un estudiante cuya mano derecha es invadida por un parásito, Migi, mientras otros parásitos devoran humanos en secreto.",
+    "animeTotal": 24,
+    "mangaTotal": 64,
+    "temporadas": 1,
+    "anilistId": 20623,
+    "tema": {
+      "claro": {
+        "accent": "#285086",
+        "accentRgb": "40, 80, 134",
+        "accentDeep": "#162c4a",
+        "accent2": "#948c43",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#6481a8",
+        "accentRgb": "100, 129, 168",
+        "accentDeep": "#324054",
+        "accent2": "#b1b390",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "neongenesisevangelion",
+    "titulo": "Neon Genesis Evangelion",
+    "descripcion": "Shinji Ikari, un chico de 14 años obligado a pilotar el Evangelion para defender Tokio-3 de los misteriosos Ángeles.",
+    "animeTotal": 26,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 30,
+    "tema": {
+      "claro": {
+        "accent": "#a4522e",
+        "accentRgb": "164, 82, 46",
+        "accentDeep": "#5a2d19",
+        "accent2": "#d28d17",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f17843",
+        "accentRgb": "241, 120, 67",
+        "accentDeep": "#793c22",
+        "accent2": "#f8af5e",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "frierenbeyondjourneysend",
+    "titulo": "Frieren: Beyond Journey’s End",
+    "descripcion": "Frieren, una maga elfa que sobrevive a sus compañeros de aventuras, emprende un nuevo viaje para entender a las personas, del fin del viaje del héroe hasta la Tierra Dorada.",
+    "animeTotal": 38,
+    "mangaTotal": 147,
+    "temporadas": 3,
+    "anilistId": 154587,
+    "tema": {
+      "claro": {
+        "accent": "#4c6242",
+        "accentRgb": "76, 98, 66",
+        "accentDeep": "#2a3624",
+        "accent2": "#a69521",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#bbf1a1",
+        "accentRgb": "187, 241, 161",
+        "accentDeep": "#5e7951",
+        "accent2": "#ddec8d",
+        "onAccent": "#0b0b10"
+      }
+    }
   }
 ]
 // @@fin
