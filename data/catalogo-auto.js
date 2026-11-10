@@ -1316,6 +1316,141 @@
       }
     },
     "banner": "banners/sololeveling.jpg"
+  },
+  {
+    "id": "thefuturediary",
+    "titulo": "Mirai Nikki",
+    "descripcion": "Yukiteru Amano, un chico que recibe un diario que predice el futuro y queda atrapado en un juego a muerte junto a Yuno Gasai, del arco «Los doce poseedores» hasta «Akise contra Yuno y el último diario».",
+    "animeTotal": 26,
+    "mangaTotal": 59,
+    "temporadas": 1,
+    "anilistId": 10620
+  },
+  {
+    "id": "umamusumecinderellagray",
+    "titulo": "Umamusume: Cinderella Gray",
+    "descripcion": "Oguri Cap, una corredora de un modesto hipódromo de provincias que llega a la élite de las carreras, del arco «La estrella de Kasamatsu» hasta «El Arima Kinen».",
+    "animeTotal": 23,
+    "mangaTotal": 210,
+    "temporadas": 2,
+    "anilistId": 180516,
+    "tema": {
+      "claro": {
+        "accent": "#126e92",
+        "accentRgb": "18, 110, 146",
+        "accentDeep": "#0a3c50",
+        "accent2": "#889b49",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#1aa1d6",
+        "accentRgb": "26, 161, 214",
+        "accentDeep": "#0d516b",
+        "accent2": "#8dc4a7",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "datealive",
+    "titulo": "Date A Live",
+    "descripcion": "Shido Itsuka, que tiene que enamorar a los espíritus que asolan el mundo para sellar su poder, del arco «Tohka» hasta «La guerra contra DEM y Mio».",
+    "animeTotal": 58,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 15583,
+    "tema": {
+      "claro": {
+        "accent": "#70571f",
+        "accentRgb": "112, 87, 31",
+        "accentDeep": "#3e3011",
+        "accent2": "#b78f10",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f1bb43",
+        "accentRgb": "241, 187, 67",
+        "accentDeep": "#795e22",
+        "accent2": "#f8d15e",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "theapothecarydiaries",
+    "titulo": "The Apothecary Diaries",
+    "descripcion": "Maomao, una boticaria vendida como criada al palacio imperial que resuelve sus misterios con venenos y medicinas, del arco «El palacio interior» hasta «Rumbo a la capital del oeste».",
+    "animeTotal": 54,
+    "mangaTotal": 0,
+    "enEmision": true,
+    "temporadas": 4,
+    "anilistId": 161645,
+    "tema": {
+      "claro": {
+        "accent": "#915038",
+        "accentRgb": "145, 80, 56",
+        "accentDeep": "#4f2c1f",
+        "accent2": "#c88c1c",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f1865d",
+        "accentRgb": "241, 134, 93",
+        "accentDeep": "#79432f",
+        "accent2": "#f8b66b",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "kaijuno8",
+    "titulo": "Kaiju No. 8",
+    "descripcion": "Kafka Hibino, un limpiador de cadáveres de kaiju que se convierte en uno y sigue soñando con entrar en las Fuerzas de Defensa, del arco «El hombre que se convirtió en kaiju» hasta «La gran oleada de kaijus».",
+    "animeTotal": 23,
+    "mangaTotal": 129,
+    "temporadas": 2,
+    "anilistId": 153288,
+    "tema": {
+      "claro": {
+        "accent": "#625d47",
+        "accentRgb": "98, 93, 71",
+        "accentDeep": "#363327",
+        "accent2": "#b19324",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f1e4ae",
+        "accentRgb": "241, 228, 174",
+        "accentDeep": "#797257",
+        "accent2": "#f8e593",
+        "onAccent": "#0b0b10"
+      }
+    }
+  },
+  {
+    "id": "witchhatatelier",
+    "titulo": "Witch Hat Atelier",
+    "descripcion": "Coco, una niña que descubre el secreto de la magia y se convierte en aprendiza de brujo junto a Qifrey, del arco «La magia que lo empezó todo» hasta «La segunda prueba y la magia prohibida».",
+    "animeTotal": 13,
+    "mangaTotal": 99,
+    "temporadas": 1,
+    "anilistId": 147105,
+    "tema": {
+      "claro": {
+        "accent": "#0b7681",
+        "accentRgb": "11, 118, 129",
+        "accentDeep": "#064147",
+        "accent2": "#859f41",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#3198a3",
+        "accentRgb": "49, 152, 163",
+        "accentDeep": "#194c52",
+        "accent2": "#98bf8e",
+        "onAccent": "#0b0b10"
+      }
+    }
   }
 ]
 // @@fin
