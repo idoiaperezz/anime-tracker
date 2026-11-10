@@ -1483,6 +1483,32 @@
       }
     },
     "banner": "banners/killlakill.jpg"
+  },
+  {
+    "id": "gurrenlagann",
+    "titulo": "Gurren Lagann",
+    "descripcion": "Simon, un chico que excava túneles en una aldea subterránea y que, junto a Kamina, sale a la superficie pilotando un mecha con su taladro, del arco «De la aldea subterránea a la superficie» hasta «La batalla final contra los Antiespirales».",
+    "animeTotal": 27,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 2001,
+    "tema": {
+      "claro": {
+        "accent": "#bb4829",
+        "accentRgb": "187, 72, 41",
+        "accentDeep": "#672817",
+        "accent2": "#dd8815",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#f15d35",
+        "accentRgb": "241, 93, 53",
+        "accentDeep": "#792f1b",
+        "accent2": "#f8a257",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/gurrenlagann.jpg"
   }
 ]
 // @@fin
@@ -1492,4 +1518,4 @@
   window.CATALOGO.forEach(function (s) { ya[s.id] = true; });
   auto.forEach(function (s) { if (!ya[s.id]) window.CATALOGO.push(s); });
 })();
-window.VERSION_IMAGENES = "mwbb9qpp";
+window.VERSION_IMAGENES = "mwbbeszp";
