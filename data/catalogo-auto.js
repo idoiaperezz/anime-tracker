@@ -821,7 +821,8 @@
         "accent2": "#f89b86",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/inuyasha.jpg"
   },
   {
     "id": "akamegakill",
@@ -846,7 +847,8 @@
         "accent2": "#f2a25e",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/akamegakill.jpg"
   },
   {
     "id": "noragami",
@@ -871,7 +873,8 @@
         "accent2": "#dde5b5",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/noragami.jpg"
   },
   {
     "id": "thesevendeadlysins",
@@ -896,7 +899,8 @@
         "accent2": "#f2b649",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/thesevendeadlysins.jpg"
   },
   {
     "id": "konosubagodsblessingonthiswonderfulworld",
@@ -921,7 +925,8 @@
         "accent2": "#aecaae",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/konosubagodsblessingonthiswonderfulworld.jpg"
   },
   {
     "id": "codegeasslelouchoftherebellion",
@@ -946,7 +951,8 @@
         "accent2": "#e4de78",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/codegeasslelouchoftherebellion.jpg"
   },
   {
     "id": "darlinginthefranxx",
@@ -971,7 +977,8 @@
         "accent2": "#f9a86c",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/darlinginthefranxx.jpg"
   },
   {
     "id": "parasytethemaxim",
@@ -996,7 +1003,8 @@
         "accent2": "#b1b390",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/parasytethemaxim.jpg"
   },
   {
     "id": "neongenesisevangelion",
@@ -1021,7 +1029,8 @@
         "accent2": "#f8af5e",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/neongenesisevangelion.jpg"
   },
   {
     "id": "frierenbeyondjourneysend",
@@ -1046,7 +1055,8 @@
         "accent2": "#ddec8d",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "banner": "banners/frierenbeyondjourneysend.jpg"
   }
 ]
 // @@fin
@@ -1056,4 +1066,4 @@
   window.CATALOGO.forEach(function (s) { ya[s.id] = true; });
   auto.forEach(function (s) { if (!ya[s.id]) window.CATALOGO.push(s); });
 })();
-window.VERSION_IMAGENES = "mw9qnp9e";
+window.VERSION_IMAGENES = "mwawg8m8";

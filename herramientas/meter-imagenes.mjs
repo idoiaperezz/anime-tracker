@@ -44,16 +44,33 @@ const ids = new Set(series.map((s) => s.id));
 let hechas = 0;
 
 for (const f of fs.readdirSync(DIR)) {
-  const m = f.toLowerCase().match(/^(.+)-(banner|tarjeta|icono)\.(png|jpe?g|webp)$/);
+  if (fs.statSync(path.join(DIR, f)).isDirectory() || f.startsWith(".")) continue;
+  // Acepta extensiones dobles como «inuyasha-banner.png.jpg» (Windows oculta la última)
+  const m = f.toLowerCase().match(/^(.+?)-(banner|tarjeta|icono)(\.(png|jpe?g|webp))+$/);
   if (!m) { if (!/\.(html|md|txt)$/i.test(f)) console.log(`? ${f}: nombre no reconocido (debe ser <id>-banner, <id>-tarjeta o <id>-icono)`); continue; }
   const [, id, tipo] = m;
   if (!ids.has(id)) { console.log(`✗ ${f}: no hay ninguna serie con el id «${id}»`); continue; }
   const t = TIPOS[tipo];
   const destino = path.join(ROOT, t.carpeta, id + t.ext);
   fs.mkdirSync(path.dirname(destino), { recursive: true });
-  let img = sharp(path.join(DIR, f)).resize(t.w, t.h, { fit: "cover", position: "centre" });
-  img = t.ext === ".png" ? img.png({ compressionLevel: 9 }) : img.jpeg({ quality: 88, mozjpeg: true });
-  await img.toFile(destino);
+  const origen = path.join(DIR, f);
+  const meta = await sharp(origen).metadata();
+  const ratio = meta.width / meta.height, objetivo = t.w / t.h;
+  if (tipo === "banner" && ratio < objetivo * 0.85) {
+    // La app de Gemini no hace imágenes tan panorámicas como el banner (5:1). Recortar tanto
+    // cortaría las caras, así que: recorte suave (a 3:1, por la zona con más detalle) y la imagen
+    // entera en el centro, con los lados rellenos con una copia desenfocada de la misma imagen.
+    let buf = await sharp(origen).toBuffer();
+    if (ratio < 3) buf = await sharp(buf).resize(meta.width, Math.round(meta.width / 3), { fit: "cover", position: "attention" }).toBuffer();
+    const fondo = await sharp(buf).resize(t.w, t.h, { fit: "cover" }).blur(30).modulate({ brightness: 0.6, saturation: 1.15 }).toBuffer();
+    const frente = await sharp(buf).resize(t.w, t.h, { fit: "inside" }).toBuffer();
+    const fm = await sharp(frente).metadata();
+    await sharp(fondo).composite([{ input: frente, left: Math.round((t.w - fm.width) / 2), top: 0 }]).jpeg({ quality: 88, mozjpeg: true }).toFile(destino);
+  } else {
+    let img = sharp(origen).resize(t.w, t.h, { fit: "cover", position: "centre" });
+    img = t.ext === ".png" ? img.png({ compressionLevel: 9 }) : img.jpeg({ quality: 88, mozjpeg: true });
+    await img.toFile(destino);
+  }
   hechas++;
   console.log(`✓ ${f} → ${t.carpeta}/${id}${t.ext}`);
 }

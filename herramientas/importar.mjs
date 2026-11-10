@@ -289,7 +289,8 @@ const ESTILO_SERIE = {
   parasytethemaxim: "realistic modern Japanese city, cold grey and blue-grey palette with accents of blood red, overcast sky and city streets, " +
     "uneasy body-horror tension, NO fantasy glow, NO magic effects",
   codegeasslelouchoftherebellion: "dramatic mecha political thriller: imperial purple, black and gold palette, a futuristic Tokyo settlement skyline at dusk, " +
-    "giant humanoid Knightmare Frame mechs in the background, the glowing red bird-shaped Geass sigil, chessboard motifs",
+    "giant humanoid Knightmare Frame mechs in the background, the glowing red bird-shaped Geass sigil, chessboard motifs. " +
+    "LOGO: write only the English words CODE GEASS (big) and Lelouch of the Rebellion (small, below) — absolutely NO Japanese characters, no katakana line: do NOT copy the logo of the attached official artwork, design a clean English-only logo",
   neongenesisevangelion: "1990s cel-animation look: Tokyo-3 city under an orange sunset, power lines and skyscrapers, the giant purple-and-green Eva Unit-01 towering in the background, " +
     "orange, purple and red palette, quiet melancholic mood, NO glowing energy auras",
   konosubagodsblessingonthiswonderfulworld: "bright, comedic fantasy: the medieval European town of Axel under a clear blue sky, green fields, " +
@@ -344,7 +345,7 @@ const REPARTO_BANNER = {
   frierenbeyondjourneysend: ["Frieren (elf with long silver-white hair in twin pigtails, pointed ears, green eyes, white-and-gold cape, wooden staff), Fern (long straight purple hair, black coat-dress, staff)",
     "Stark (short spiky red hair, young warrior, holding a big axe); and in faded golden light in the far background, the old hero party seen ONCE each: Himmel (light-blue hair, hero cape), Heiter (tall priest with brown hair), Eisen (bearded dwarf with an axe)"],
   thesevendeadlysins: ["Meliodas (short boy with messy blond hair, green eyes, black vest over a white shirt, broken sword on his back), Elizabeth Liones (very long silver hair covering one eye, blue eyes, tavern waitress outfit), Hawk (small talking pink pig with two black spots on his forehead)",
-    "Ban (spiky white hair, red eyes, red leather jacket, scars on his chest), King (boy with brown hair, green hoodie, sitting on a floating pillow), Diane (giant girl with brown twin pigtails, standing tall behind them)"],
+    "Ban (spiky white hair, red eyes, red leather jacket, scars on his chest), King (boy with brown hair, green hoodie, sitting on a floating pillow — King appears ONLY ONCE), Diane (giant girl with brown twin pigtails, standing tall behind them)"],
   noragami: ["Yato (messy black hair, blue eyes, black tracksuit with a white scarf), Yukine (golden-blond hair, amber eyes, white hoodie)",
     "Hiyori Iki (long brown hair, violet eyes, school uniform with a red bow, a translucent cat-like spirit tail), Kofuku (cheerful goddess with short pink hair)"],
   akamegakill: ["Tatsumi (short messy brown hair, green eyes, light travel clothes, a sword), Leone (wild blonde hair, yellow eyes, black top and scarf, human form with no beast ears), Lubbock (green hair, aviator goggles on his forehead, green coat)",
@@ -605,7 +606,7 @@ async function iconoGemini(id, titulo) {
     `STYLE: match the attached icons (the Bleach hollow-skull emblem and the glowing Black Clover four-leaf clover): ` +
     `one single bold, simple, instantly recognizable emblem, centered, filling about 80% of the canvas, thick clean shapes, strong contrast, ` +
     `subtle glow in the series' signature colors, on a dark rounded-square tile. It must still be readable at 16×16 pixels. ` +
-    `No text, no letters, no characters' faces, no watermark.`;
+    `ONE single icon only, filling the whole image: no mockups, no multiple sizes or previews, no small extra badges or symbols in the corners. No text, no letters, no characters' faces, no watermark.`;
   if (VER_PROMPT) return mostrarPrompt("ICONO", id, prompt);
   const r = await gemini(IMAGE_MODELS, {
     contents: [{ role: "user", parts: [{ text: prompt }, ...parts] }],
