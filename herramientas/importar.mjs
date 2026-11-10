@@ -395,7 +395,7 @@ const REPARTO_BANNER = {
     "Yukio Okumura (neat black hair, glasses, a mole under his left eye and one on his chin, long black exorcist coat, two pistols), Ryuji 'Bon' Suguro (tall, black hair with a bleached-blond crest, goatee, several earrings), Izumo Kamiki (dark purple hair in two low pigtails, red eyes, two dot eyebrows). NO cat anywhere"],
   kakegurui: ["Yumeko Jabami (long straight black hime-cut hair with blunt bangs, glowing red eyes, red school blazer with black lapels), Ryota Suzui (plain boy, short messy brown hair, brown eyes, same red blazer)",
     "Mary Saotome (blonde twin tails tied with black ribbons, amber eyes, red blazer), Itsuki Sumeragi (wavy shoulder-length brown hair with a patterned headband, blue eyes, red blazer), Yuriko Nishinotouin (long dark-brown hair with a red bow, eyes always closed, white kimono with lilies and red hakama)"],
-  sololeveling: ["Jin-U Seong (Sung Jinwoo, the protagonist, drawn ONLY ONCE: short messy dark-brown hair, grey-blue eyes, fierce DETERMINED look — NOT tired, blue zip hoodie over an orange T-shirt, holding one short dagger, NO glowing eyes, NO black coat), Jin-Ho Yu (Yoo Jinho: young man with short brown hair, big cheerful grin, white-and-gold armour over an orange tunic)",
+  sololeveling: ["Jin-U Seong (Sung Jinwoo, the protagonist, as he is LATER in the series, drawn ONLY ONCE, exactly as in the attached official character sheet: short messy black hair, calm sharp blue eyes, tall and lean, plain white T-shirt under a long open black hooded coat, black trousers, a faint dark-violet shadow aura, holding one black dagger), Jin-Ho Yu (Yoo Jinho: young man with short brown hair, big cheerful grin, white-and-gold armour over an orange tunic)",
     "Hae-In Cha (Cha Hae-in, S-rank hunter: short straight blonde bob, violet eyes, fitted red jacket uniform with black clasps and white-and-gold epaulettes, white trousers, holding one sword), Jong-In Choi (Choi Jong-in, guild master: short RED hair, black rectangular glasses, white double-breasted suit with a black tie, red-lined cape with gold shoulder armour, a small flame on his fingertip), Jin-Cheol U (Woo Jinchul, inspector: short black hair, dark sunglasses, black suit). NO shadow soldiers, NO monsters in front of the characters"],
   mushokutenseijoblessreincarnation: ["Rudeus Greyrat as a 7-year-old CHILD (messy light-brown hair, green eyes, white shirt with a dark vest, red trousers, small mage staff), Sylphie as a 7-year-old child (short messy green hair, pointed ears, reddish eyes, white hooded jacket)",
     "Roxy Migurdia (petite young woman, blue hair in two long braids, blue eyes, big black witch hat with a white-and-gold band, white and brown robe), Paul Greyrat (shoulder-length light-brown hair in a low ponytail, green eyes, NO beard, swordsman clothes), Zenith Greyrat (blonde hair in a ponytail, blue eyes, maroon high-collared dress)"],
@@ -522,7 +522,8 @@ async function bannerGemini(id, titulo, m) {
     (REPARTO_BANNER[id]
       ? `CHARACTERS — LEFT side: ${REPARTO_BANNER[id][0]}. RIGHT side: ${REPARTO_BANNER[id][1]}. Nobody else. Use the remaining attached official artwork only to check what they look like (faces, hair, outfits, colors). Draw them in the series' own art style.\n`
       : `CHARACTERS: the main cast of "${titulo}" as they look at the beginning of the story; use the remaining attached official artwork to check what they look like. Draw them in the series' own art style.\n`) +
-    `NO SPOILERS: everyone in their normal, early-series form and outfit — no transformations, power-up modes (e.g. Gear forms, titan forms, masks, demon forms), no later-season looks.\n` +
+    (TARJETA_ASPECTO_AVANZADO.has(id) ? `Draw every character exactly as described above (this look was chosen on purpose).\n`
+      : `NO SPOILERS: everyone in their normal, early-series form and outfit — no transformations, power-up modes (e.g. Gear forms, titan forms, masks, demon forms), no later-season looks.\n`) +
     `HARD RULE — NO DUPLICATES: every character appears EXACTLY ONCE in the whole image. Never draw the same person twice, no clones, no twins, no repeated faces, ` +
     `not even small in the background. If there is empty space, fill it with background and effects, not with copies. Do not copy the characters of the style-reference banners.\n` +
     `FRAMING: the image will be cropped to a thin 5:1 strip, so keep the logo and every face inside the middle 80% of the height. ` +
@@ -556,7 +557,7 @@ async function bannerGemini(id, titulo, m) {
 const TARJETA_DIR = path.join(ROOT, "tarjetas");
 const TARJETA_W = 960, TARJETA_H = 540;
 // Reparto permitido en la tarjeta (todos aparecen en los primeros capítulos)
-// Series en las que la usuaria ha pedido el aspecto avanzado del protagonista en la tarjeta (se omiten las reglas anti-spoiler)
+// Series en las que la usuaria ha pedido el aspecto avanzado del protagonista en el banner y la tarjeta (se omiten las reglas anti-spoiler)
 const TARJETA_ASPECTO_AVANZADO = new Set(["sololeveling"]);
 const REPARTO_SIN_SPOILERS = {
   bleach: "Ichigo Kurosaki in his plain black Soul Reaper robe with the big Zangetsu cleaver sword (NO hollow mask, no bankai) on the left, and Rukia Kuchiki in a plain black Soul Reaper robe with NO armband, NO badge, NO lieutenant insignia on the right; optionally Orihime, Chad and Uryu small in the back. Setting: Karakura Town at night. FORBIDDEN effects: no ice dragon, no cherry-blossom petals, no other Soul Reapers' powers — only Ichigo's blue spiritual energy",
