@@ -2,6 +2,13 @@
 // Numeración del anime seguida: SAO = 1–25, SAO II = 26–49, Alicization = 50–73, War of Underworld = 74–96.
 registrarSerie({
   id: "swordartonline",
+  // Temporadas (para la barra de temporadas del rastreador): [nombre, primer capítulo, último capítulo]
+  temporadas: [
+    ["Temporada 1", 1, 25],
+    ["Sword Art Online II", 26, 49],
+    ["Alicization", 50, 73],
+    ["War of Underworld", 74, 96]
+  ],
   // Colores de la serie en su rastreador (claro / oscuro)
   tema: {
     claro:  { accent: "#1f6fd1", accentRgb: "31, 111, 209", accentDeep: "#0f3a73", accent2: "#d92b2b", onAccent: "#ffffff" },

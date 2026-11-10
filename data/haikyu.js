@@ -1,6 +1,13 @@
 // Detalles de Haikyu!! (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "haikyu",
+  // Temporadas (para la barra de temporadas del rastreador): [nombre, primer capítulo, último capítulo]
+  temporadas: [
+    ["Temporada 1", 1, 25],
+    ["Temporada 2", 26, 50],
+    ["Temporada 3: Karasuno vs. Shiratorizawa", 51, 60],
+    ["Temporada 4: To the Top", 61, 85]
+  ],
   // Colores de la serie en su rastreador (claro / oscuro): naranja y negro del Karasuno, azul de cielo de fondo
   tema: {
     claro:  { accent: "#c2410c", accentRgb: "194, 65, 12", accentDeep: "#7c2d12", accent2: "#1e3a5f", onAccent: "#ffffff" },

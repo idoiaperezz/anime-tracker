@@ -1,6 +1,12 @@
 // Detalles de Kaguya-sama: Love is War (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "kaguyasamaloveiswar",
+  // Temporadas (para la barra de temporadas del rastreador): [nombre, primer capítulo, último capítulo]
+  temporadas: [
+    ["Temporada 1", 1, 12],
+    ["Temporada 2", 13, 24],
+    ["Temporada 3: Ultra Romantic", 25, 37]
+  ],
   // Colores de la serie en su rastreador (claro / oscuro): rojo rosado romántico y dorado de la academia Shuchiin
   tema: {
     claro:  { accent: "#be185d", accentRgb: "190, 24, 93", accentDeep: "#831843", accent2: "#a16207", onAccent: "#ffffff" },

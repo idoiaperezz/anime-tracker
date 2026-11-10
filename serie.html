@@ -292,6 +292,19 @@ button:active { transform: scale(.96); }
 .sw.fill { border-style: dashed; border-color: var(--muted); }
 
 .arcs { display: grid; gap: 14px; }
+/* Barra de temporadas */
+.temps { display: flex; gap: 8px; flex-wrap: wrap; }
+.temps button {
+  display: grid; gap: 1px; text-align: left; padding: 8px 12px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit;
+  transition: border-color .15s ease, transform .15s ease;
+}
+.temps button:hover { border-color: var(--accent); transform: translateY(-2px); }
+.temps button b { font-size: .82rem; }
+.temps button span { font-family: var(--font-mono); font-size: .68rem; color: var(--muted); }
+.temps button.cur { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.temps button.done span { color: var(--accent); }
+.pill.temp { border-style: solid; border-color: var(--accent); color: var(--accent); }
 .arc {
   position: relative;
   background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
@@ -502,6 +515,8 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
     <h2>Mapa de capítulos</h2>
     <p>Toca un capítulo para actualizar tu progreso</p>
   </div>
+  <!-- Temporadas: atajos para saltar a cada una (solo si la serie las tiene) -->
+  <nav class="temps" id="temps" hidden aria-label="Temporadas"></nav>
   <div class="arcs" id="arcs"></div>
   <div class="arcs" id="marcs" hidden></div>
   <p class="skipnote" id="skipnote" hidden></p>
@@ -520,6 +535,7 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
   window.NOCACHE = "?t=" + Math.floor(Date.now() / 60000);
   document.write('<script src="data/catalogo.js' + NOCACHE + '"><\/script>');
   document.write('<script src="data/catalogo-auto.js' + NOCACHE + '"><\/script>');
+  document.write('<script src="data/temporadas.js' + NOCACHE + '"><\/script>');
 </script>
 <script>
 /* =====================================================================
@@ -751,6 +767,18 @@ function iniciarSerie(D) {
     }
   } catch (e) {}
 
+  // ---------- Temporadas ----------
+  // [nombre, desde, hasta]: de la ficha o de data/temporadas.js (en el catálogo «temporadas» es solo un número)
+  var TEMPS = Array.isArray(D.temporadas) ? D.temporadas : ((window.TEMPORADAS || {})[D.id] || null);
+  if (TEMPS && TEMPS.length < 2) TEMPS = null;
+  function tempIndex(n) { if (!TEMPS) return -1; for (var i = 0; i < TEMPS.length; i++) if (n >= TEMPS[i][1] && n <= TEMPS[i][2]) return i; return -1; }
+  // Etiqueta corta para el arco: la temporada en la que cae (o «T1 → T2» si cruza)
+  function tempLabel(desde, hasta) {
+    var a = tempIndex(desde), b = tempIndex(hasta);
+    if (a < 0) return "";
+    return a === b ? TEMPS[a][0] : TEMPS[a][0] + " → " + TEMPS[b][0];
+  }
+
   // ---------- Construir rejilla ----------
   var arcsEl = $("arcs"), epBtns = {}, arcEls = [];
   ARCS.forEach(function (a) {
@@ -758,6 +786,7 @@ function iniciarSerie(D) {
     var head = document.createElement("div"); head.className = "arc-head";
     var h = document.createElement("h2"); h.textContent = a[0];
     var meta = document.createElement("div"); meta.className = "arc-meta";
+    if (TEMPS) { var tp = document.createElement("span"); tp.className = "pill temp"; tp.textContent = tempLabel(a[1], a[2]); meta.appendChild(tp); }
     var pill = document.createElement("span"); pill.className = "pill" + (a[3] ? " fil" : ""); pill.textContent = a[3] ? "Relleno" : "Canon";
     pill.hidden = !(D.arcos && D.arcos.length); // en los bloques automáticos no se sabe
     var rng = document.createElement("span"); rng.textContent = "Caps. " + a[1] + "–" + a[2];
@@ -775,6 +804,35 @@ function iniciarSerie(D) {
     sec.appendChild(head); sec.appendChild(grid); arcsEl.appendChild(sec);
     arcEls.push({ sec: sec, cnt: cnt, arc: a });
   });
+
+  // Barra de temporadas: cada botón lleva al primer capítulo de su temporada
+  var tempBtns = [];
+  if (TEMPS) {
+    TEMPS.forEach(function (t) {
+      var b = document.createElement("button"); b.type = "button";
+      var nb = document.createElement("b"); nb.textContent = t[0];
+      var sp = document.createElement("span");
+      b.appendChild(nb); b.appendChild(sp);
+      b.title = "Ir al capítulo " + t[1];
+      b.addEventListener("click", function () {
+        var el = epBtns[t[1]]; if (!el) return;
+        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        el.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
+        el.focus({ preventScroll: true });
+      });
+      $("temps").appendChild(b);
+      tempBtns.push({ b: b, sp: sp, t: t });
+    });
+  }
+  function paintTemps(c) {
+    var cur = tempIndex(Math.min(TOTAL, c + 1)); // la temporada del siguiente capítulo que te toca
+    tempBtns.forEach(function (o, i) {
+      var total = o.t[2] - o.t[1] + 1, vistos = Math.max(0, Math.min(total, c - o.t[1] + 1));
+      o.sp.textContent = "Caps. " + o.t[1] + "–" + o.t[2] + " · " + (vistos >= total ? "vista ✓" : vistos + "/" + total);
+      o.b.classList.toggle("cur", i === cur && vistos < total);
+      o.b.classList.toggle("done", vistos >= total);
+    });
+  }
 
   // ---------- Películas ----------
   // { titulo, anio, despues (capítulo tras el que verla; 0 = antes del 1), tipo, manga: [desde, hasta], nota }
@@ -953,7 +1011,8 @@ function iniciarSerie(D) {
       $("kick").textContent = isA ? "Último capítulo visto" : "Último capítulo leído";
       $("arcname").textContent = "Todavía no has empezado";
     } else if (isA) {
-      $("kick").textContent = "Último capítulo visto · " + (a && a[3] ? "relleno" : "canon");
+      var ti = tempIndex(c);
+      $("kick").textContent = "Último capítulo visto · " + (ti >= 0 ? TEMPS[ti][0] + " · " : "") + (a && a[3] ? "relleno" : "canon");
       $("arcname").textContent = a ? a[0] : "";
     } else {
       $("kick").textContent = "Último capítulo leído del manga";
@@ -962,7 +1021,12 @@ function iniciarSerie(D) {
     }
 
     if (nx > max) $("nextline").textContent = isA ? "Has llegado al último capítulo de esta lista." : "Has terminado el manga.";
-    else if (isA) { var na = arcOf(nx); $("nextline").textContent = "Siguiente: capítulo " + nx + (na ? " · " + na[0] : ""); }
+    else if (isA) {
+      var na = arcOf(nx), tn = tempIndex(nx);
+      // Aviso de cambio de temporada: «Siguiente: capítulo 25 · empieza Temporada 2 · …»
+      var cambia = tn >= 0 && tn !== tempIndex(c) && c > 0;
+      $("nextline").textContent = "Siguiente: capítulo " + nx + (cambia ? " · empieza " + TEMPS[tn][0] : "") + (na ? " · " + na[0] : "");
+    }
     else $("nextline").textContent = "Siguiente: capítulo " + nx + " del manga";
     $("other").textContent = otherLine();
 
@@ -991,6 +1055,8 @@ function iniciarSerie(D) {
       ? "Toca cualquier cuadro para marcar que ya has visto hasta ahí. Si vuelves a tocar el capítulo actual, retrocedes uno. Al pasar el cursor por un capítulo ves el del manga que equivale."
       : "Toca cualquier cuadro para marcar que ya has leído hasta ahí. Si vuelves a tocar el capítulo actual, retrocedes uno. Al pasar el cursor por un capítulo ves el del anime que equivale.";
     $("arcs").hidden = !isA;
+    $("temps").hidden = !isA || !TEMPS;
+    paintTemps(c);
     $("marcs").hidden = isA;
     $("legfill").hidden = !isA || !HAS_FILLER;
 

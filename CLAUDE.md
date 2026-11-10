@@ -24,6 +24,7 @@ Formato de arco: `[nombre, anime desde, hasta, relleno 0/1, manga desde, manga h
 - Siempre debe pasar `node herramientas/validar.mjs <id>` sin ✗.
 - Si la serie no viene de un manga (novela ligera, novela visual, original): `mangaTotal: 0` y arcos sin manga; el rastreador queda en modo solo anime.
 - `tema`: colores representativos de la serie (solo se usan dentro de su página).
+- **Temporadas** (capa por encima de los arcos: barra para saltar, etiqueta en cada arco y aviso «empieza Temporada N»): `node herramientas/importar.mjs --temporadas` las saca de AniList a `data/temporadas.js`, solo si la suma cuadra con el `animeTotal` de la ficha. Si no cuadra, pon `temporadas: [[nombre, desde, hasta], …]` en la ficha con los datos verificados. Ejecútalo después de añadir series nuevas.
 - **Películas** (`peliculas`, en orden de visionado): `{ titulo, anio, despues, tipo, manga?: [desde, hasta], nota? }`. `despues` = capítulo del anime tras el que conviene verla (0 = antes del 1). `tipo`: `canon`, `no-canon`, `recopilatorio` o `precuela`. Solo películas de anime de cine (sin imagen real, OVAs ni especiales de TV). Salen como 🎬 en el mapa de capítulos y en una lista con botón de «vista».
 - Las series nuevas se añaden con `node herramientas/importar.mjs --nuevas N --banners ninguno` (las N más populares que falten).
 

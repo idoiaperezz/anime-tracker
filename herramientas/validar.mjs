@@ -13,7 +13,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ctx = { window: {} };
 ctx.window = ctx;
 vm.createContext(ctx);
-for (const f of ["catalogo.js", "catalogo-auto.js"]) {
+for (const f of ["catalogo.js", "catalogo-auto.js", "temporadas.js"]) {
   const p = path.join(ROOT, "data", f);
   if (fs.existsSync(p)) vm.runInContext(fs.readFileSync(p, "utf8"), ctx);
 }
@@ -77,6 +77,18 @@ for (const ficha of CATALOGO) {
       seen.add(n);
     });
     if (!D.nota) warns.push("falta la nota del pie (fuentes y aclaraciones)");
+    // 5) Temporadas: [nombre, desde, hasta], seguidas de 1 a animeTotal (de la ficha o de data/temporadas.js)
+    // (en el catálogo, «temporadas» es solo un número: la lista va en la ficha o en data/temporadas.js)
+    const temps = Array.isArray(det.temporadas) ? det.temporadas : (ctx.TEMPORADAS || {})[ficha.id];
+    if (temps) {
+      let sig = 1;
+      temps.forEach((x, i) => {
+        if (!Array.isArray(x) || typeof x[0] !== "string" || !Number.isInteger(x[1]) || !Number.isInteger(x[2]) || x[1] > x[2]) { errs.push(`temporada ${i + 1}: formato no válido`); return; }
+        if (x[1] !== sig) errs.push(`temporada «${x[0]}»: empieza en ${x[1]} y debería empezar en ${sig}`);
+        sig = x[2] + 1;
+      });
+      if (sig - 1 !== T) errs.push(`las temporadas acaban en el ${sig - 1} pero animeTotal es ${T}`);
+    }
     // 4) Películas: { titulo, anio, despues, tipo, manga?: [desde, hasta], nota? }
     const TIPOS = ["canon", "no-canon", "recopilatorio", "precuela"];
     const vistos = new Set();
