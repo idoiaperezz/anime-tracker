@@ -1457,6 +1457,32 @@
       }
     },
     "banner": "banners/witchhatatelier.jpg"
+  },
+  {
+    "id": "killlakill",
+    "titulo": "Kill la Kill",
+    "descripcion": "Ryūko Matoi, que llega a la Academia Honnōji con media tijera gigante buscando al asesino de su padre y se enfrenta a Satsuki Kiryūin, del arco «Llegada a la Academia Honnōji» hasta «La batalla final».",
+    "animeTotal": 24,
+    "mangaTotal": 0,
+    "temporadas": 1,
+    "anilistId": 18679,
+    "tema": {
+      "claro": {
+        "accent": "#e40d0d",
+        "accentRgb": "228, 13, 13",
+        "accentDeep": "#7d0707",
+        "accent2": "#f26b07",
+        "onAccent": "#ffffff"
+      },
+      "oscuro": {
+        "accent": "#ee6a6a",
+        "accentRgb": "238, 106, 106",
+        "accentDeep": "#773535",
+        "accent2": "#f7a871",
+        "onAccent": "#0b0b10"
+      }
+    },
+    "banner": "banners/killlakill.jpg"
   }
 ]
 // @@fin
@@ -1466,4 +1492,4 @@
   window.CATALOGO.forEach(function (s) { ya[s.id] = true; });
   auto.forEach(function (s) { if (!ya[s.id]) window.CATALOGO.push(s); });
 })();
-window.VERSION_IMAGENES = "mwbaryn8";
+window.VERSION_IMAGENES = "mwbaw1a8";

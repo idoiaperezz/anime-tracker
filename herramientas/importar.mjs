@@ -315,6 +315,7 @@ const ESTILO_SERIE = {
   theapothecarydiaries: "elegant historical Chinese imperial palace (Tang style): vermilion pavilions, hanging lanterns, plum blossoms and medicinal herbs, soft pastel pink, jade green and gold palette, warm diffuse light, calm and graceful, NOT dark and NOT a battle. LOGO: only the English words The Apothecary Diaries — absolutely NO Japanese or Chinese characters; do NOT copy the logo of the attached official artwork",
   kaijuno8: "gritty military kaiju action in the cool, desaturated look of the attached official key visual: a cracked grey asphalt and a destroyed Tokyo street, smoke, grey, black and olive-green palette with teal light, orange embers only in the far background. LOGO: copy the white, thin, angular split-stroke lettering of the KAIJU No. 8 logo in the attached key visual (Latin letters only, NO small text like ANIMATION SERIES)",
   witchhatatelier: "painterly storybook fantasy with fine ink linework: a cozy European fantasy village and a wooden atelier, delicate glowing ink-line magic circles in the air, soft warm pastels, teal, cream and gold palette, gentle sunlight, NOT dark. LOGO: only the English words Witch Hat Atelier — absolutely NO Japanese or Chinese characters; do NOT copy the logo of the attached official artwork",
+  killlakill: "bold, high-energy Studio Trigger look: thick black outlines, flat saturated colors, bright red, black and white palette with yellow accents, dramatic speed lines and red sparks; Honnouji Academy behind the logo, a towering fortress school on top of a mountain under a bright sky. Everyone fully clothed in their normal school uniforms. LOGO: only the English words KILL la KILL in bold red-and-white blocky lettering — absolutely NO Japanese characters or katakana; do NOT copy the logo of the attached official artwork",
 };
 
 // Reparto del banner: lado izquierdo / lado derecho, todos personajes DISTINTOS (y sin spoilers)
@@ -415,6 +416,8 @@ const REPARTO_BANNER = {
     "Mina Ashiro (long straight black hair with bangs, serious face, same suit, a huge cannon), Kikoru Shinomiya (blonde hair in two twin tails, determined look, same suit), Soushirou Hoshina (straight dark-violet bob with blunt bangs, eyes closed in a thin smile, same suit, two short swords). EVERYONE wears exactly this same black suit — NO grey coveralls, NO cleaner uniforms. A huge dark kaiju silhouette far behind the logo (NOT a humanoid monster, NOT a skull face)"],
   witchhatatelier: ["Coco (girl, chin-length blondish-green bob, golden eyes, NO eyepatch and NO scar, teal pointed apprentice hat with a white triangular front panel and a gold tassel, matching teal hooded cape over a cream dress, drawing a glowing magic circle in the air with a dip pen), Qifrey (man, short white-silver hair hanging over his RIGHT eye, small round gold pince-nez glasses whose RIGHT lens is dark, tall white pointed hat with a black band, off-white cloak over a black top)",
     "Agott (girl, short curly dark-purple hair, dark purple eyes, haughty look), Tetia (girl, long pink curly hair in half-up pigtails, cheerful smile), Richeh (girl, long straight sky-blue hair, sky-blue eyes, bored look) — all three in the same teal pointed apprentice hats and teal capes"],
+  killlakill: ["Ryuuko Matoi (short messy black hair with ONE red streak on the left of her bangs, blue eyes, fierce grin, a fully covering black sailor school uniform with a red neckerchief, holding ONE giant red half-scissor blade with BOTH hands), Mako Mankanshoku (short brown bob, big cheerful smile, plain navy sailor school uniform)",
+    "Satsuki Kiryuuin (very long straight black hair, thick eyebrows, blue eyes, proud stare, long white uniform with gold epaulettes, holding a katana in its sheath), Ira Gamagoori (huge tall young man, spiky blond hair, stern face, white uniform with gold trim), Nonon Jakuzure (short pink hair, tall pink band-major hat, smug smile, white uniform)"],
 };
 
 // Motivo por el que Gemini no devuelve imagen (filtro de seguridad, etc.)
@@ -602,6 +605,7 @@ const REPARTO_SIN_SPOILERS = {
   theapothecarydiaries: "Maomao (dark green hair in two small buns, purple eyes, light freckles, green hanfu and burgundy skirt, holding medicinal herbs) on the left and Jinshi (beautiful young man, long dark hair with a small crown, purple robes) on the right, in a palace garden with lanterns and plum blossoms",
   kaijuno8: "Kafka Hibino (spiky black hair, thick eyebrows, big round eyes, the black Defense Force combat suit of the attached key visual (black bodysuit with white-grey armor plates on the shoulders, forearms and shins, and olive-green chest and arm panels)) on the left and Mina Ashiro (long straight black hair with bangs, same black suit, huge cannon) on the right, on cracked grey asphalt with smoke, in the look of the attached key visual",
   witchhatatelier: "Coco (chin-length blondish-green bob, golden eyes, NO eyepatch, teal pointed apprentice hat with a white front panel and gold tassel, teal cape, drawing a glowing magic circle with a dip pen) on the left and Qifrey (white-silver hair over his right eye, round gold pince-nez with a dark right lens, tall white pointed hat, off-white cloak) on the right, in a cozy wooden atelier",
+  killlakill: "Ryuuko Matoi (short messy black hair with one red streak, blue eyes, fully covering black sailor school uniform with a red neckerchief, holding one giant red half-scissor blade with both hands) on the left and Satsuki Kiryuuin (very long straight black hair, thick eyebrows, long white uniform with gold epaulettes, katana in its sheath) on the right, in front of the mountain-top Honnouji Academy",
 };
 async function tarjetaGemini(id, titulo, bannerFile, m) {
   const parts = [];
@@ -722,6 +726,7 @@ const SIMBOLOS = {
   theapothecarydiaries: "a small jade-green medicine pouch with a red tassel and a herb sprig",
   kaijuno8: "a dark kaiju skull mask with two hooked white horns and glowing cyan eyes",
   witchhatatelier: "a teal pointed witch hat with a gold tassel over a glowing ink magic circle",
+  killlakill: "one giant red half-scissor blade with a black handle",
 };
 async function iconoGemini(id, titulo) {
   const parts = [];
