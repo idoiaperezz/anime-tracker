@@ -3,15 +3,6 @@
 // Diamond is Unbreakable = 75–113, Golden Wind = 114–152, Stone Ocean = 153–190, Steel Ball Run = 191 en adelante.
 registrarSerie({
   id: "jojosbizarreadventuretv",
-  // Temporadas (para la barra de temporadas del rastreador): [nombre, primer capítulo, último capítulo]
-  temporadas: [
-    ["Phantom Blood y Battle Tendency", 1, 26],
-    ["Stardust Crusaders", 27, 74],
-    ["Diamond is Unbreakable", 75, 113],
-    ["Golden Wind", 114, 152],
-    ["Stone Ocean", 153, 190],
-    ["Steel Ball Run", 191, 198]
-  ],
   titulo: "JoJo's Bizarre Adventure", // sin el «(TV)» de AniList
   // Colores de la serie en su rastreador (claro / oscuro): morado y dorado
   tema: {

@@ -47,7 +47,7 @@ const IMAGE_MODELS = (process.env.GEMINI_IMAGE_MODEL || "gemini-3.1-flash-image,
 const args = process.argv.slice(2);
 // --ver-prompt: enseña las instrucciones de cada imagen sin llamar a Gemini (gratis); úsalo antes de generar
 const VER_PROMPT = args.includes("--ver-prompt");
-let top = 0, bannerMode = GEMINI_KEY ? "gemini" : "anilist", redoBanners = false, sync = false, nuevas = 0, pendingBanners = false, pendingCards = false, pendingIcons = false, temporadasMode = false;
+let top = 0, bannerMode = GEMINI_KEY ? "gemini" : "anilist", redoBanners = false, sync = false, nuevas = 0, pendingBanners = false, pendingCards = false, pendingIcons = false;
 const searches = [], removeIds = [], onlyIds = [];
 for (let i = 0; i < args.length; i++) {
   const a = args[i];
@@ -61,7 +61,6 @@ for (let i = 0; i < args.length; i++) {
   else if (a === "--solo") onlyIds.push(args[++i]);
   else if (a === "--tarjetas-pendientes") pendingCards = true;
   else if (a === "--iconos-pendientes") pendingIcons = true;
-  else if (a === "--temporadas") temporadasMode = true;
   else if (a === "--ver-prompt") { /* ver VER_PROMPT */ }
   else if (a.startsWith("--")) { console.error("Opción desconocida: " + a); process.exit(1); }
   else searches.push(a);
@@ -93,7 +92,7 @@ if (removeIds.length) {
   console.log("Quitadas del catálogo automático: " + removeIds.join(", "));
   if (!top && !searches.length) process.exit(0);
 }
-if (!top && !searches.length && !nuevas && !pendingBanners && !pendingCards && !pendingIcons && !temporadasMode) {
+if (!top && !searches.length && !nuevas && !pendingBanners && !pendingCards && !pendingIcons) {
   console.log('Uso: node herramientas/importar.mjs --top 50   ó   node herramientas/importar.mjs "One Piece" "Naruto"');
   process.exit(1);
 }
@@ -745,61 +744,6 @@ async function main() {
   const byId = new Map(auto.map((s) => [s.id, s]));
 
   const popularPage = async (page) => (await anilist(`query ($page: Int) { Page(page: $page, perPage: 50) { media(type: ANIME, sort: POPULARITY_DESC, format_in: [TV], isAdult: false) { ${FIELDS} } } }`, { page })).Page.media;
-
-  // --temporadas: saca de AniList las temporadas de cada serie y las guarda en data/temporadas.js,
-  // SOLO si la suma de capítulos cuadra exactamente con el total verificado de la ficha
-  if (temporadasMode) {
-    const file = path.join(ROOT, "data", "temporadas.js");
-    let previas = {};
-    try { const m = fs.readFileSync(file, "utf8").match(/\/\/ @@datos\r?\n([\s\S]*?)\r?\n\/\/ @@fin/); if (m) previas = JSON.parse(m[1]); } catch {}
-    const out = { ...previas };
-    const nombre = (base, m, i, anterior) => {
-      if (i === 0) return "Temporada 1";
-      let s = String(m.title.english || m.title.romaji || "").replace(/[’]/g, "'");
-      const b = String(base).replace(/[’]/g, "'").replace(/\s*\(.*?\)\s*/g, " ").trim();
-      if (b && s.toLowerCase().startsWith(b.toLowerCase())) s = s.slice(b.length);
-      s = s.replace(/^[\s:\-–—!.]+/, "").replace(/[\s\-–—]+$/, "").replace(/\s+-([^-]+)-?\s*$/, ": $1").trim();
-      // «Cour 2» = segunda mitad de la temporada anterior
-      const cour = s.match(/^Cour (\d+)$/i);
-      if (cour && anterior) return `${anterior.replace(/ – Parte \d+$/, "")} – Parte ${cour[1]}`;
-      s = s
-        .replace(/\bThe Final Season\b|\bFinal Season\b/i, "Temporada final")
-        .replace(/\b(\d+)(?:st|nd|rd|th) Season\b/i, "Temporada $1")
-        .replace(/\bSeason (\d+)\b/i, "Temporada $1")
-        .replace(/\bPart (\d+)\b/i, "Parte $1")
-        .replace(/\bArc\b/i, "").replace(/\s+/g, " ").trim();
-      if (!s) s = `Temporada ${i + 1}`;
-      return s.length > 42 ? s.slice(0, 40).trim() + "…" : s;
-    };
-    for (const s of readManual().concat(auto)) {
-      if (onlyIds.length && !onlyIds.includes(s.id)) continue;
-      const total = detailTotals(s.id).animeTotal || s.animeTotal;
-      try {
-        let m = s.anilistId ? await getMedia(s.anilistId) : null;
-        if (!m) {
-          const d = await anilist(`query ($q: String) { Page(perPage: 8) { media(search: $q, type: ANIME, format_in: [TV], isAdult: false) { ${FIELDS} } } }`, { q: s.titulo });
-          m = d.Page.media.slice().sort((a, b) => (b.popularity || 0) - (a.popularity || 0))[0];
-        }
-        if (!m) { console.log(`- ${s.titulo}: no encontrado en AniList`); continue; }
-        const chain = await seasonChain(m);
-        if (chain.length < 2) { delete out[s.id]; console.log(`- ${s.titulo}: una sola temporada en AniList (solo arcos)`); continue; }
-        let desde = 1; const lista = [];
-        chain.forEach((x, i) => {
-          const eps = x.episodes || (x.nextAiringEpisode ? x.nextAiringEpisode.episode - 1 : 0);
-          if (eps > 0) { lista.push([nombre(s.titulo, x, i, lista.length ? lista[lista.length - 1][0] : ""), desde, desde + eps - 1]); desde += eps; }
-        });
-        const suma = desde - 1;
-        if (suma !== total) { delete out[s.id]; console.log(`✗ ${s.titulo}: AniList suma ${suma} y la ficha tiene ${total} (no se usan temporadas)`); continue; }
-        out[s.id] = lista;
-        console.log(`✓ ${s.titulo}: ${lista.map((t) => `${t[0]} ${t[1]}-${t[2]}`).join(" · ")}`);
-      } catch (e) { console.log(`✗ ${s.titulo}: ${e.message}`); }
-    }
-    fs.writeFileSync(file, `// GENERADO por herramientas/importar.mjs --temporadas: temporadas de cada serie según AniList,\n` +
-      `// solo cuando cuadran con el total de capítulos de la ficha. Una ficha puede poner las suyas en «temporadas».\n` +
-      `// Formato: [nombre, primer capítulo, último capítulo]\nwindow.TEMPORADAS =\n// @@datos\n${JSON.stringify(out, null, 1)}\n// @@fin\n;\n`);
-    console.log(`\nListo: ${Object.keys(out).length} series con temporadas → data/temporadas.js`);
-    return;
-  }
 
   // --iconos-pendientes: crea con Gemini el icono de la pestaña de las series que no lo tengan
   if (pendingIcons) {

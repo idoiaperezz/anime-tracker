@@ -1,16 +1,6 @@
 // Detalles de Attack on Titan / Shingeki no Kyojin (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "attackontitan",
-  // Temporadas (para la barra de temporadas del rastreador): [nombre, primer capítulo, último capítulo]
-  temporadas: [
-    ["Temporada 1", 1, 25],
-    ["Temporada 2", 26, 37],
-    ["Temporada 3", 38, 49],
-    ["Temporada 3 – Parte 2", 50, 59],
-    ["Temporada final", 60, 75],
-    ["Temporada final – Parte 2", 76, 87],
-    ["The Final Chapters", 88, 89]
-  ],
   // Colores de la serie en su rastreador (claro / oscuro)
   tema: {
     claro:  { accent: "#4d6b2f", accentRgb: "77, 107, 47", accentDeep: "#2a3d18", accent2: "#a8742a", onAccent: "#ffffff" },

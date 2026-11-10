@@ -2,14 +2,6 @@
 // Numeración del anime seguida: T1 = 1–24, T2 = 25–48 (parte 1: 25–36, parte 2: 37–48), T3 = 49–72, T4 = 73–96.
 registrarSerie({
   id: "thattimeigotreincarnatedasaslime",
-  // Temporadas (para la barra de temporadas del rastreador): [nombre, primer capítulo, último capítulo]
-  temporadas: [
-    ["Temporada 1", 1, 24],
-    ["Temporada 2", 25, 36],
-    ["Temporada 2 – Parte 2", 37, 48],
-    ["Temporada 3", 49, 72],
-    ["Temporada 4", 73, 96]
-  ],
   // Colores de la serie en su rastreador (claro / oscuro): azul de Rimuru y dorado de sus ojos
   tema: {
     claro:  { accent: "#1c7cc4", accentRgb: "28, 124, 196", accentDeep: "#0c426e", accent2: "#b8860b", onAccent: "#ffffff" },

@@ -2,12 +2,6 @@
 // Numeración del anime seguida: temporada 1 = 1–10, temporada 2 = 11–20, temporada 3 = 21–31.
 registrarSerie({
   id: "konosubagodsblessingonthiswonderfulworld",
-  // Temporadas (para la barra de temporadas del rastreador): [nombre, primer capítulo, último capítulo]
-  temporadas: [
-    ["Temporada 1", 1, 10],
-    ["Temporada 2", 11, 20],
-    ["Temporada 3", 21, 31]
-  ],
   // Colores de la serie en su rastreador (claro / oscuro): azul de Aqua y carmesí de Megumin
   tema: {
     claro:  { accent: "#1e74c9", accentRgb: "30, 116, 201", accentDeep: "#0d3d70", accent2: "#c2272d", onAccent: "#ffffff" },

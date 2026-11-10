@@ -1,13 +1,6 @@
 // Detalles de Dr. STONE (la ficha básica está en data/catalogo-auto.js)
 registrarSerie({
   id: "drstone",
-  // Temporadas (para la barra de temporadas del rastreador): [nombre, primer capítulo, último capítulo]
-  temporadas: [
-    ["Temporada 1", 1, 24],
-    ["Temporada 2: Stone Wars", 25, 35],
-    ["Temporada 3: New World", 36, 57],
-    ["Temporada 4: Science Future", 58, 94]
-  ],
   // Colores de la serie en su rastreador (claro / oscuro): verde de la petrificación y del pelo de Senku, naranja del fuego de la ciencia
   tema: {
     claro:  { accent: "#2b8a3e", accentRgb: "43, 138, 62", accentDeep: "#1b5e2a", accent2: "#d9480f", onAccent: "#ffffff" },
