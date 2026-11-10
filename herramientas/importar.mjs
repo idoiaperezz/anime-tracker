@@ -331,7 +331,8 @@ const REPARTO_BANNER = {
   onepunchman: ["Saitama, Genos", "Speed-o'-Sound Sonic, Mumen Rider"],
   tokyoghoul: ["Ken Kaneki with BLACK hair (NOT white hair), wearing his black ghoul mask with the zipper mouth, Hideyoshi Nagachika", "Touka Kirishima (rabbit mask in hand), Nishiki Nishio"],
   swordartonline: ["Kirito in his black Aincrad coat with one black sword, Klein", "Asuna in her white-and-red Knights of the Blood uniform, Lisbeth"],
-  chainsawman: ["Denji holding Pochita (the small orange chainsaw-dog) in his arms — ONLY ONE Pochita in the whole image", "Power (blood devil horns), Aki Hayakawa, Makima"],
+  chainsawman: ["Denji (messy blond hair, sharp teeth, white shirt, loose black tie, black trousers) hugging Pochita (the small orange chainsaw-dog) against his chest with BOTH of his arms — Denji has exactly TWO arms, both wrapped around Pochita, he holds NOTHING else and there is NO chainsaw anywhere on him; ONLY ONE Pochita in the whole image",
+    "Power (long pink-blonde hair, two small red devil horns, white shirt, blue jacket), Aki Hayakawa (black hair tied in a small topknot, black suit, one katana held with both hands), Makima (red hair in a long braid, ringed yellow eyes, white shirt, black tie)"],
   thepromisedneverland: ["Emma, Norman", "Ray, Mom Isabella (caretaker of Grace Field House)"],
   assassinationclassroom: ["Koro-sensei (yellow round-faced tentacled teacher), Nagisa Shiota", "Karma Akabane, Tadaomi Karasuma"],
   mobpsycho100: ["Shigeo 'Mob' Kageyama (the ONLY boy with a black bowl haircut), Arataka Reigen (grey suit, pink tie)", "Teruki Hanazawa alone (blond, black school uniform with a fancy collar). NO green spirits or mascots anywhere in the image"],
@@ -404,14 +405,14 @@ const REPARTO_BANNER = {
     "Stephanie Dola (long red hair, princess dress, flustered), Jibril (long hair fading from pink to blue, angel halo and white wings, cross-shaped pupils)"],
   thefuturediary: ["Yukiteru Amano (boy, short slightly messy black hair, blue eyes, plain school uniform, holding a flip cell phone), Yuno Gasai (girl, long pink hair in pigtails with the two front locks tied with small red bows, pink eyes, blue school shirt with a chest ribbon and blue skirt, holding a pink flip phone, gentle smile — NO knife)",
     "Minene Uryuu (long purple hair tied back in a ponytail, purple eyes, BOTH eyes visible and NO eyepatch, black sleeveless vest over a tank top, military cargo trousers), Aru Akise (boy, ear-length grey-silver hair, reddish eyes, calm detective smile, school uniform). NO giant god figure, NO knives, NO blood"],
-  umamusumecinderellagray: ["Oguri Cap (horse girl: horse ears on top of her head and a horse tail; very long light-grey hair with a darker grey patch on top, a black-and-yellow diamond-pattern hairband in her bangs, blue eyes, a blue ear cover with a yellow stripe on her RIGHT ear, white school blazer with black sleeves and a red ribbon), Kitahara Jo (her trainer, a HUMAN man with NO horse ears and NO tail, short salt-and-pepper hair flared at the sides, flat newsboy cap, plain jacket)",
+  umamusumecinderellagray: ["Oguri Cap (horse girl: horse ears on top of her head and a horse tail; very long light-grey hair with a darker grey patch on top, a black-and-yellow diamond-pattern hairband in her bangs, blue eyes, a blue ear cover with a yellow stripe on her RIGHT ear, white school blazer with black sleeves and a red ribbon), Jou Kitahara (her trainer, a HUMAN man with NO horse ears and NO tail, short salt-and-pepper hair flared at the sides, flat newsboy cap, plain jacket)",
     "Belno Light (horse girl: horse ears and tail; short fluffy brown hair with a large white patch of bangs swept to her left, two gold B-shaped hair clips, brown eyes, a small red ribbon bow on her LEFT ear, the same white school blazer), Tamamo Cross (horse girl: horse ears and tail; long SPIKY grey-white hair, clearly spikier and whiter than Oguri's, blue eyes, red headband across her forehead, blue jacket with red trim, white gloves with a blue lightning pattern)"],
   datealive: ["Shido Itsuka (boy, short dark navy-blue hair, brown eyes, black school blazer, white shirt, blue striped tie), Tohka Yatogami (long dark purple hair, purple eyes, purple ballgown-like dress with purple-and-cream plate armour, holding a large broadsword)",
     "Kotori Itsuka (long red twin tails tied with BLACK ribbons, red eyes, a lollipop stick in her mouth, crimson military jacket worn over her shoulders like a cape), Kurumi Tokisaki (black twin tails with the left one longer, red right eye and a GOLD CLOCK-FACE left eye, red-and-black frilled gothic dress with a headdress, NO guns), Yoshino (long blue hair, blue eyes, green rabbit-eared hooded outfit, with a rabbit hand puppet on her LEFT hand — the rabbit puppet appears ONLY ONCE)"],
   theapothecarydiaries: ["Maomao (young woman, dark green hair tied in two small buns, purple eyes, light freckles across her nose, bright green hanfu top and long burgundy skirt, holding a small bundle of medicinal herbs), Xiaolan (girl, brown hair in braided buns, brown eyes, simple light-coloured servant clothes, cheerful smile)",
     "Jinshi (strikingly beautiful young man, long dark hair partly tied up in a topknot with a small crown and hairpin, purple eyes, elegant purple court robes), Gaoshun (stern older male attendant, black hair tied up under a dark official's hat, short neat beard, plain dark robes), Consort Gyokuyou (bright red hair with gold hair sticks, jade-green eyes, red hanfu)"],
   kaijuno8: ["Kafka Hibino (man, spiky dark hair, big eyes, grey cleaner coverall with a small red patch on the chest that has NO readable text) — ONLY in human form, Reno Ichikawa (young man, short silver-white hair, violet eyes, the same grey cleaner coverall)",
-    "Mina Ashiro (waist-length black hair in a ponytail with a hair clip, dark orange eyes, Defense Force combat suit, holding a large cannon), Kikoru Shinomiya (long blonde twin tails with black bows, green eyes, combat suit, giant axe), Soshiro Hoshina (short dark-violet bowl cut, eyes closed, a small fang, two katanas). A huge dark generic kaiju silhouette behind the logo (NOT a humanoid monster, NOT a skull face)"],
+    "Mina Ashiro (waist-length black hair in a ponytail with a hair clip, dark orange eyes, Defense Force combat suit, holding a large cannon), Kikoru Shinomiya (long blonde twin tails with black bows, green eyes, combat suit, giant axe), Soushirou Hoshina (short dark-violet bowl cut, eyes closed, a small fang, two katanas). A huge dark generic kaiju silhouette behind the logo (NOT a humanoid monster, NOT a skull face)"],
   witchhatatelier: ["Coco (girl, chin-length blondish-green bob, golden eyes, NO eyepatch and NO scar, teal pointed apprentice hat with a white triangular front panel and a gold tassel, matching teal hooded cape over a cream dress, drawing a glowing magic circle in the air with a dip pen), Qifrey (man, short white-silver hair hanging over his RIGHT eye, small round gold pince-nez glasses whose RIGHT lens is dark, tall white pointed hat with a black band, off-white cloak over a black top)",
     "Agott (girl, short curly dark-purple hair, dark purple eyes, haughty look), Tetia (girl, long pink curly hair in half-up pigtails, cheerful smile), Richeh (girl, long straight sky-blue hair, sky-blue eyes, bored look) — all three in the same teal pointed apprentice hats and teal capes"],
 };
@@ -440,6 +441,27 @@ function exigir(tabla, nombreTabla, id, que) {
   if (!tabla[id]) throw new Error(`falta ${que} de «${id}» en ${nombreTabla} (importar.mjs): escribe quién sale y cómo es cada personaje antes de generar`);
 }
 
+// Retratos oficiales de AniList de los personajes que se nombran en el reparto (máx. 6)
+async function retratosReparto(m, reparto) {
+  if (!m?.id) return [];
+  let nodes = [];
+  try {
+    const d = await anilist(`query($id:Int){Media(id:$id){characters(sort:[ROLE,RELEVANCE],perPage:50){nodes{name{full} image{large}}}}}`, { id: m.id });
+    nodes = d.Media?.characters?.nodes || [];
+  } catch { return []; }
+  const txt = reparto.toLowerCase(), out = [];
+  for (const c of nodes) {
+    const full = (c.name?.full || "").trim(); if (!full || !c.image?.large) continue;
+    const partes = full.toLowerCase().split(/\s+/);
+    const aparece = txt.includes(full.toLowerCase()) || txt.includes(partes.slice().reverse().join(" "));
+    if (!aparece || out.some((o) => o.nombre === full)) continue;
+    try { const img = await download(c.image.large); out.push({ nombre: full, img: { inlineData: { mimeType: img.mime.split(";")[0], data: img.data.toString("base64") } } }); } catch {}
+    if (out.length >= 6) break;
+  }
+  if (VER_PROMPT) console.log(`  retratos de AniList: ${out.map((o) => o.nombre).join(", ") || "ninguno"}`);
+  return out;
+}
+
 async function bannerGemini(id, titulo, m) {
   exigir(REPARTO_BANNER, "REPARTO_BANNER", id, "el reparto del banner");
   const parts = [];
@@ -453,6 +475,9 @@ async function bannerGemini(id, titulo, m) {
   for (const u of [m.coverImage?.extraLarge, m.bannerImage].filter(Boolean)) {
     try { const img = await download(u); parts.push({ inlineData: { mimeType: img.mime.split(";")[0], data: img.data.toString("base64") } }); } catch {}
   }
+  // 3) Retrato oficial (AniList) de cada personaje del reparto, con su nombre: así salen con su cara de verdad
+  const retratos = await retratosReparto(m, REPARTO_BANNER[id].join(" "));
+  for (const r of retratos) parts.push({ text: `Official anime portrait of ${r.nombre} (match this face, hair and colors exactly):` }, r.img);
   const prompt =
     REGLA_NO_REPETIR +
     `Create an ultra-wide banner for the anime "${titulo}".\n` +
@@ -829,7 +854,7 @@ async function main() {
     for (const { s, manual } of all) {
       if (onlyIds.length && !onlyIds.includes(s.id)) continue;
       if (manual && s.banner) continue;          // las de catalogo.js con banner propio no se tocan
-      if (!VER_PROMPT && existingBanner(s.id)) continue;
+      if (!VER_PROMPT && !redoBanners && existingBanner(s.id)) continue; // --rehacer-banners (con --solo) los vuelve a hacer
       let m = null;
       try {
         if (s.anilistId) m = await getMedia(s.anilistId);
