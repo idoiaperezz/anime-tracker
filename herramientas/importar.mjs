@@ -395,8 +395,8 @@ const REPARTO_BANNER = {
     "Yukio Okumura (neat black hair, glasses, a mole under his left eye and one on his chin, long black exorcist coat, two pistols), Ryuji 'Bon' Suguro (tall, black hair with a bleached-blond crest, goatee, several earrings), Izumo Kamiki (dark purple hair in two low pigtails, red eyes, two dot eyebrows). NO cat anywhere"],
   kakegurui: ["Yumeko Jabami (long straight black hime-cut hair with blunt bangs, glowing red eyes, red school blazer with black lapels), Ryota Suzui (plain boy, short messy brown hair, brown eyes, same red blazer)",
     "Mary Saotome (blonde twin tails tied with black ribbons, amber eyes, red blazer), Itsuki Sumeragi (wavy shoulder-length brown hair with a patterned headband, blue eyes, red blazer), Yuriko Nishinotouin (long dark-brown hair with a red bow, eyes always closed, white kimono with lilies and red hakama)"],
-  sololeveling: ["Jin-U Seong (Sung Jinwoo, the protagonist, drawn ONLY ONCE: short messy dark-brown hair, grey-blue eyes, fierce DETERMINED look — NOT tired, blue zip hoodie over an orange T-shirt, holding one short dagger, NO glowing eyes, NO black coat), Jin-Ho Yu (Yoo Jinho: young man with short light-brown hair, cheerful loyal look, light jacket; exactly as in his attached portrait)",
-    "Hae-In Cha (Cha Hae-in, S-rank hunter: long light-blonde hair, calm eyes, light hunter armour, holding one sword; exactly as in her attached portrait), Jong-In Choi (Choi Jong-in, guild master: short neat dark hair, glasses, white suit), Jin-Cheol U (Woo Jinchul, inspector: short black hair, dark sunglasses, black suit). NO shadow soldiers, NO monsters in front of the characters"],
+  sololeveling: ["Jin-U Seong (Sung Jinwoo, the protagonist, drawn ONLY ONCE: short messy dark-brown hair, grey-blue eyes, fierce DETERMINED look — NOT tired, blue zip hoodie over an orange T-shirt, holding one short dagger, NO glowing eyes, NO black coat), Jin-Ho Yu (Yoo Jinho: young man with short brown hair, big cheerful grin, white-and-gold armour over an orange tunic)",
+    "Hae-In Cha (Cha Hae-in, S-rank hunter: short straight blonde bob, violet eyes, fitted red jacket uniform with black clasps and white-and-gold epaulettes, white trousers, holding one sword), Jong-In Choi (Choi Jong-in, guild master: short RED hair, black rectangular glasses, white double-breasted suit with a black tie, red-lined cape with gold shoulder armour, a small flame on his fingertip), Jin-Cheol U (Woo Jinchul, inspector: short black hair, dark sunglasses, black suit). NO shadow soldiers, NO monsters in front of the characters"],
   mushokutenseijoblessreincarnation: ["Rudeus Greyrat as a 7-year-old CHILD (messy light-brown hair, green eyes, white shirt with a dark vest, red trousers, small mage staff), Sylphie as a 7-year-old child (short messy green hair, pointed ears, reddish eyes, white hooded jacket)",
     "Roxy Migurdia (petite young woman, blue hair in two long braids, blue eyes, big black witch hat with a white-and-gold band, white and brown robe), Paul Greyrat (shoulder-length light-brown hair in a low ponytail, green eyes, NO beard, swordsman clothes), Zenith Greyrat (blonde hair in a ponytail, blue eyes, maroon high-collared dress)"],
   deathparade: ["Decim (messy white hair with long bangs covering his right eye, light-blue eyes, very pale skin, expressionless, white shirt, black vest, maroon bow tie) standing behind the bar",
@@ -420,7 +420,7 @@ const REPARTO_BANNER = {
   killlakill: ["Ryuuko Matoi (short messy black hair with ONE red streak in her bangs, blue eyes, fierce determined look; black sailor crop top with a big red neckerchief and red trim, short black pleated skirt, ONE red fingerless glove on her LEFT hand; resting ONE single giant red half-scissor blade on her shoulder, gripping its looped handle with BOTH hands; there is ONLY ONE blade in the whole image — NOT a pair of scissors, NO second blade anywhere, not even in the background or in Mako's hands; exactly two arms), Mako Mankanshoku (short brown bob with blunt bangs, big round eyes, wide open-mouthed happy grin, navy-blue sailor school uniform)",
     "Satsuki Kiryuuin (very long straight black hair, very thick eyebrows, cold blue eyes, regal stare; white high-collared uniform with blue lines and gold epaulettes, both hands resting on the hilt of a sheathed katana planted in front of her), Ira Gamagoori (enormous tall young man, LIGHT skin, short spiky blond hair, tiny stern eyes, white uniform with gold trim), Nonon Jakuzure (small, short pink hair, very tall pink band-major hat, smug grin, white-and-pink uniform)"],
   gurrenlagann: ["Simon (short boy, messy dark-blue hair, big round eyes, red goggles with yellow lenses on his forehead, blue jacket with a red stripe, small golden drill on a cord around his neck, determined face), Kamina (spiky blue hair, red pointed triangular sunglasses, bare chest with blue tribal tattoos, red-lined white cape, ONE arm raised high pointing to the sky with his index finger and the OTHER arm relaxed at his side, big grin, NO sword), Youko Littner (long red hair in a high ponytail with a small skull hairpin, yellow eyes, pink scarf, holding ONE long rifle with both hands; her outfit exactly as in her attached portrait)",
-    "Nia Teppelin (long wavy pale-blonde hair with pink and turquoise tints, flower-shaped pupils, white frilly dress, gentle surprised look), Viral (drawn ONLY ONCE, beastman with a shark-like grin, spiky blond hair, red cat-like eyes, dark armour, holding one sword). NO other people"],
+    "Nia Teppelin (long wavy pale-blonde hair with pink and turquoise tints, flower-shaped pupils, white frilly dress, gentle surprised look), Viral (drawn ONLY ONCE, exactly as in his attached official look: a HUMAN-looking face — NOT a shark, NOT an ogre, NOT a monster —, long straight pale-blond hair falling over his face and covering one eye, a scar across his cheek, sharp pointed teeth in a scowl, slit cat-like eye, dark red scarf around his neck, dark armour, holding one sword). NO other people"],
 };
 
 // Motivo por el que Gemini no devuelve imagen (filtro de seguridad, etc.)
@@ -448,15 +448,23 @@ function exigir(tabla, nombreTabla, id, que) {
 }
 
 // Key visual oficial guardado a mano en herramientas/referencias/<id>.png|jpg (diseños, trajes y logo de verdad)
+// Además, herramientas/referencias/<id>--<Nombre>.png es el aspecto oficial de ese personaje (o personajes)
 function keyVisual(id) {
-  for (const ext of ["png", "jpg", "jpeg", "webp"]) {
-    const p = path.join(ROOT, "herramientas", "referencias", `${id}.${ext}`);
-    if (fs.existsSync(p)) return [
-      { text: "OFFICIAL KEY VISUAL of the anime (most important reference): copy EXACTLY the character designs, faces, hairstyles, uniforms, colors and art style from this image:" },
-      { inlineData: { mimeType: ext === "png" ? "image/png" : ext === "webp" ? "image/webp" : "image/jpeg", data: fs.readFileSync(p).toString("base64") } },
-    ];
+  const dir = path.join(ROOT, "herramientas", "referencias");
+  if (!fs.existsSync(dir)) return [];
+  const mime = (f) => /\.png$/i.test(f) ? "image/png" : /\.webp$/i.test(f) ? "image/webp" : "image/jpeg";
+  const out = [];
+  for (const f of fs.readdirSync(dir).sort()) {
+    const m = f.match(/^(.+?)(?:--(.+))?\.(png|jpe?g|webp)$/i);
+    if (!m || m[1] !== id) continue;
+    out.push(
+      { text: m[2]
+        ? `OFFICIAL LOOK of ${m[2]} (most important reference): copy EXACTLY the face, hairstyle, outfit and colors. Do NOT copy any text, names or logos from this image:`
+        : "OFFICIAL KEY VISUAL of the anime (most important reference): copy EXACTLY the character designs, faces, hairstyles, uniforms, colors and art style from this image. Do NOT copy any text from it except as stated for the logo:" },
+      { inlineData: { mimeType: mime(f), data: fs.readFileSync(path.join(dir, f)).toString("base64") } },
+    );
   }
-  return [];
+  return out;
 }
 
 // Retratos oficiales de AniList de los personajes que se nombran en el reparto (máx. 6)
@@ -599,7 +607,7 @@ const REPARTO_SIN_SPOILERS = {
   therisingoftheshieldhero: "Naofumi Iwatani (short spiky black hair, green eyes, green cloak with white fur trim, silver shield with a green gem) on the left and young Raphtalia (long light-brown hair, red eyes, raccoon-dog ears and tail, light armor, NO katana) on the right, at the edge of a forest",
   blueexorcist: "Rin Okumura (messy blue-black hair, pointed ears, black academy uniform, sword in a red sheath, NO blue flames) on the left and his twin Yukio Okumura (neat black hair, glasses, moles, long black exorcist coat) on the right, True Cross Academy towers behind",
   kakegurui: "Yumeko Jabami (long straight black hime-cut hair, glowing red eyes, red blazer, fanning playing cards in her hands) on the left and Mary Saotome (blonde twin tails with black ribbons, amber eyes, red blazer) on the right, across a casino gambling table",
-  sololeveling: "Jin-U Seong (Sung Jinwoo) as he is LATER in the series, the Shadow Monarch: tall and strong, short messy black hair, glowing violet-blue eyes, long black hooded coat over black clothes, a dark violet shadow aura around him, holding two black daggers (one in each hand) — drawn ONLY ONCE, exactly as in his attached portrait, on the left; and Hae-In Cha (Cha Hae-in: long light-blonde hair, light hunter armour, holding one sword; exactly as in her attached portrait) on the right; in front of a huge glowing blue dungeon gate at night. NO shadow soldiers",
+  sololeveling: "Jin-U Seong (Sung Jinwoo) as he is LATER in the series, exactly as in the attached official character sheet: short messy black hair, calm sharp blue eyes, tall and lean, plain white T-shirt under a long open black hooded coat, black trousers, a faint dark-violet shadow aura around him, holding one black dagger — drawn ONLY ONCE, on the left; and Hae-In Cha (Cha Hae-in), exactly as in the attached official character sheet: short straight blonde bob, violet eyes, serious face, fitted red jacket uniform with black clasps and white-and-gold epaulettes with fringes, white trousers, holding one sword — on the right; in front of a huge glowing blue dungeon gate at night. NO shadow soldiers, NO text other than the logo",
   mushokutenseijoblessreincarnation: "Rudeus Greyrat as a 7-year-old child (messy light-brown hair, green eyes, white shirt, dark vest, small mage staff) on the left and his tutor Roxy Migurdia (blue hair in two long braids, big black witch hat) on the right, in a green meadow by a wooden village",
   deathparade: "Decim (messy white hair with bangs over his right eye, pale, black vest, maroon bow tie) on the left behind the bar and the young woman with long black hair with one white streak and violet eyes on the right, in the dark art-deco bar",
   bluelock: "Yoichi Isagi (short dark navy-black hair with two spiky forehead strands, big blue eyes) kicking a soccer ball on the left and Meguru Bachira (black bob hair with yellow tips, golden eyes, playful grin) dribbling on the right, both in black-and-blue Blue Lock bodysuits, on a floodlit pitch",
