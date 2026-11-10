@@ -313,7 +313,7 @@ const ESTILO_SERIE = {
   umamusumecinderellagray: "gritty, grounded sports drama: a small rural dirt racetrack with wooden grandstands and dust in the air, warm late-afternoon light, earthy brown, grey and blue palette with golden highlights, NOT a cute idol look. LOGO: only the English words Umamusume: Cinderella Gray — absolutely NO Japanese or Chinese characters; do NOT copy the logo of the attached official artwork",
   datealive: "bright, saturated sci-fi romantic comedy: a modern city at dusk with a glowing violet spacequake sphere in the sky, purple, pink and cyan palette, sparkles of light, NOT gloomy. LOGO: only the English words DATE A LIVE — absolutely NO Japanese or Chinese characters; do NOT copy the logo of the attached official artwork",
   theapothecarydiaries: "elegant historical Chinese imperial palace (Tang style): vermilion pavilions, hanging lanterns, plum blossoms and medicinal herbs, soft pastel pink, jade green and gold palette, warm diffuse light, calm and graceful, NOT dark and NOT a battle. LOGO: only the English words The Apothecary Diaries — absolutely NO Japanese or Chinese characters; do NOT copy the logo of the attached official artwork",
-  kaijuno8: "gritty kaiju action: a destroyed Tokyo street at dusk, smoke and rubble, grey and teal palette with orange explosion light, tokusatsu monster-movie feel. LOGO: only the English words KAIJU No. 8 — absolutely NO Japanese or Chinese characters; do NOT copy the logo of the attached official artwork",
+  kaijuno8: "gritty military kaiju action in the cool, desaturated look of the attached official key visual: a cracked grey asphalt and a destroyed Tokyo street, smoke, grey, black and olive-green palette with teal light, orange embers only in the far background. LOGO: copy the white, thin, angular split-stroke lettering of the KAIJU No. 8 logo in the attached key visual (Latin letters only, NO small text like ANIMATION SERIES)",
   witchhatatelier: "painterly storybook fantasy with fine ink linework: a cozy European fantasy village and a wooden atelier, delicate glowing ink-line magic circles in the air, soft warm pastels, teal, cream and gold palette, gentle sunlight, NOT dark. LOGO: only the English words Witch Hat Atelier — absolutely NO Japanese or Chinese characters; do NOT copy the logo of the attached official artwork",
 };
 
@@ -411,8 +411,8 @@ const REPARTO_BANNER = {
     "Kotori Itsuka (long red twin tails tied with BLACK ribbons, red eyes, a lollipop stick in her mouth, crimson military jacket worn over her shoulders like a cape), Kurumi Tokisaki (black twin tails with the left one longer, red right eye and a GOLD CLOCK-FACE left eye, red-and-black frilled gothic dress with a headdress, NO guns), Yoshino (long blue hair, blue eyes, green rabbit-eared hooded outfit, with a rabbit hand puppet on her LEFT hand — the rabbit puppet appears ONLY ONCE)"],
   theapothecarydiaries: ["Maomao (young woman, dark green hair tied in two small buns, purple eyes, light freckles across her nose, bright green hanfu top and long burgundy skirt, holding a small bundle of medicinal herbs), Xiaolan (girl, brown hair in braided buns, brown eyes, simple light-coloured servant clothes, cheerful smile)",
     "Jinshi (strikingly beautiful young man, long dark hair partly tied up in a topknot with a small crown and hairpin, purple eyes, elegant purple court robes), Gaoshun (stern older male attendant, black hair tied up under a dark official's hat, short neat beard, plain dark robes), Consort Gyokuyou (bright red hair with gold hair sticks, jade-green eyes, red hanfu)"],
-  kaijuno8: ["Kafka Hibino (man, spiky dark hair, big eyes, grey cleaner coverall with a small red patch on the chest that has NO readable text) — ONLY in human form, Reno Ichikawa (young man, short silver-white hair, violet eyes, the same grey cleaner coverall)",
-    "Mina Ashiro (waist-length black hair in a ponytail with a hair clip, dark orange eyes, Defense Force combat suit, holding a large cannon), Kikoru Shinomiya (long blonde twin tails with black bows, green eyes, combat suit, giant axe), Soushirou Hoshina (short dark-violet bowl cut, eyes closed, a small fang, two katanas). A huge dark generic kaiju silhouette behind the logo (NOT a humanoid monster, NOT a skull face)"],
+  kaijuno8: ["Kafka Hibino (spiky black hair, thick eyebrows, big round eyes, stubble-free, the black Defense Force combat suit of the attached key visual (black bodysuit with white-grey armor plates on the shoulders, forearms and shins, and olive-green chest and arm panels)), Reno Ichikawa (short white hair with a pale mint tint, calm sharp eyes, same suit, rifle)",
+    "Mina Ashiro (long straight black hair with bangs, serious face, same suit, a huge cannon), Kikoru Shinomiya (blonde hair in two twin tails, determined look, same suit), Soushirou Hoshina (straight dark-violet bob with blunt bangs, eyes closed in a thin smile, same suit, two short swords). EVERYONE wears exactly this same black suit — NO grey coveralls, NO cleaner uniforms. A huge dark kaiju silhouette far behind the logo (NOT a humanoid monster, NOT a skull face)"],
   witchhatatelier: ["Coco (girl, chin-length blondish-green bob, golden eyes, NO eyepatch and NO scar, teal pointed apprentice hat with a white triangular front panel and a gold tassel, matching teal hooded cape over a cream dress, drawing a glowing magic circle in the air with a dip pen), Qifrey (man, short white-silver hair hanging over his RIGHT eye, small round gold pince-nez glasses whose RIGHT lens is dark, tall white pointed hat with a black band, off-white cloak over a black top)",
     "Agott (girl, short curly dark-purple hair, dark purple eyes, haughty look), Tetia (girl, long pink curly hair in half-up pigtails, cheerful smile), Richeh (girl, long straight sky-blue hair, sky-blue eyes, bored look) — all three in the same teal pointed apprentice hats and teal capes"],
 };
@@ -439,6 +439,18 @@ function mostrarPrompt(tipo, id, prompt) {
 // Para no gastar en repeticiones: sin reparto detallado no se genera nada (Gemini no debe improvisar)
 function exigir(tabla, nombreTabla, id, que) {
   if (!tabla[id]) throw new Error(`falta ${que} de «${id}» en ${nombreTabla} (importar.mjs): escribe quién sale y cómo es cada personaje antes de generar`);
+}
+
+// Key visual oficial guardado a mano en herramientas/referencias/<id>.png|jpg (diseños, trajes y logo de verdad)
+function keyVisual(id) {
+  for (const ext of ["png", "jpg", "jpeg", "webp"]) {
+    const p = path.join(ROOT, "herramientas", "referencias", `${id}.${ext}`);
+    if (fs.existsSync(p)) return [
+      { text: "OFFICIAL KEY VISUAL of the anime (most important reference): copy EXACTLY the character designs, faces, hairstyles, uniforms, colors and art style from this image:" },
+      { inlineData: { mimeType: ext === "png" ? "image/png" : ext === "webp" ? "image/webp" : "image/jpeg", data: fs.readFileSync(p).toString("base64") } },
+    ];
+  }
+  return [];
 }
 
 // Retratos oficiales de AniList de los personajes que se nombran en el reparto (máx. 6)
@@ -475,7 +487,9 @@ async function bannerGemini(id, titulo, m) {
   for (const u of [m.coverImage?.extraLarge, m.bannerImage].filter(Boolean)) {
     try { const img = await download(u); parts.push({ inlineData: { mimeType: img.mime.split(";")[0], data: img.data.toString("base64") } }); } catch {}
   }
-  // 3) Retrato oficial (AniList) de cada personaje del reparto, con su nombre: así salen con su cara de verdad
+  // 3) Key visual oficial elegido a mano (herramientas/referencias/<id>.png|jpg), si lo hay: manda sobre todo lo demás
+  parts.push(...keyVisual(id));
+  // 4) Retrato oficial (AniList) de cada personaje del reparto, con su nombre: así salen con su cara de verdad
   const retratos = await retratosReparto(m, REPARTO_BANNER[id].join(" "));
   for (const r of retratos) parts.push({ text: `Official anime portrait of ${r.nombre} (match this face, hair and colors exactly):` }, r.img);
   const prompt =
@@ -586,7 +600,7 @@ const REPARTO_SIN_SPOILERS = {
   umamusumecinderellagray: "Oguri Cap (horse ears and horse tail, very long light-grey hair, black-and-yellow diamond hairband, blue eyes, blue ear cover on her RIGHT ear, white blazer with black sleeves) running on the left and Belno Light (horse ears and tail, short fluffy brown hair with a white patch of bangs, gold B-shaped clips, small red bow on her LEFT ear) cheering on the right, at a small rural dirt racetrack",
   datealive: "Shido Itsuka (short dark navy-blue hair, black school blazer, blue striped tie) on the left and Tohka Yatogami (long dark purple hair, purple eyes, purple-and-cream armoured ballgown, broadsword) on the right, in a city at dusk under a glowing violet sky",
   theapothecarydiaries: "Maomao (dark green hair in two small buns, purple eyes, light freckles, green hanfu and burgundy skirt, holding medicinal herbs) on the left and Jinshi (beautiful young man, long dark hair with a small crown, purple robes) on the right, in a palace garden with lanterns and plum blossoms",
-  kaijuno8: "Kafka Hibino in human form (spiky dark hair, grey cleaner coverall) on the left and Mina Ashiro (long black ponytail, orange eyes, Defense Force combat suit, large cannon) on the right, on a destroyed street with a huge kaiju silhouette in the smoke",
+  kaijuno8: "Kafka Hibino (spiky black hair, thick eyebrows, big round eyes, the black Defense Force combat suit of the attached key visual (black bodysuit with white-grey armor plates on the shoulders, forearms and shins, and olive-green chest and arm panels)) on the left and Mina Ashiro (long straight black hair with bangs, same black suit, huge cannon) on the right, on cracked grey asphalt with smoke, in the look of the attached key visual",
   witchhatatelier: "Coco (chin-length blondish-green bob, golden eyes, NO eyepatch, teal pointed apprentice hat with a white front panel and gold tassel, teal cape, drawing a glowing magic circle with a dip pen) on the left and Qifrey (white-silver hair over his right eye, round gold pince-nez with a dark right lens, tall white pointed hat, off-white cloak) on the right, in a cozy wooden atelier",
 };
 async function tarjetaGemini(id, titulo, bannerFile, m) {
@@ -613,6 +627,9 @@ async function tarjetaGemini(id, titulo, bannerFile, m) {
   }
   exigir(REPARTO_SIN_SPOILERS, "REPARTO_SIN_SPOILERS", id, "el reparto de la tarjeta");
   const reparto = REPARTO_SIN_SPOILERS[id];
+  // Key visual elegido a mano y retratos oficiales de AniList de los personajes de la tarjeta
+  parts.push(...keyVisual(id));
+  for (const r of await retratosReparto(m, reparto)) parts.push({ text: `Official anime portrait of ${r.nombre} (match this face, hair and colors exactly):` }, r.img);
   const prompt =
     REGLA_NO_REPETIR +
     `Create a 16:9 card illustration for the anime "${titulo}". It will be displayed as a small thumbnail, so keep it simple and readable.\n` +
