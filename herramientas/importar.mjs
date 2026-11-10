@@ -246,7 +246,8 @@ const BANNER_W = 2048, BANNER_H = 410;
 const REGLA_NO_REPETIR =
   `RULE #1 (most important, overrides everything else): NO CHARACTER MAY APPEAR MORE THAN ONCE. ` +
   `Each person, creature, pet or mascot is drawn exactly ONE time in the whole image — never twice, no clones, no twins, ` +
-  `no mirrored copies, no second smaller version in the background. Before finishing, check every figure: if any character appears twice, remove the copy.\n\n`;
+  `no mirrored copies, no second smaller version in the background. Before finishing, check every figure: if any character appears twice, remove the copy.\n` +
+  `RULE #2: correct anatomy — every person has exactly TWO arms, TWO hands and five fingers per hand, no extra or missing limbs, no hands floating on their own; objects (swords, ladles, bows…) are held by that character's own hands.\n\n`;
 
 // Estética propia de cada serie cuando NO es oscura y de acción como Bleach o Black Clover.
 // Manda sobre el estilo oscuro por defecto en el banner y en la imagen de tarjeta.
