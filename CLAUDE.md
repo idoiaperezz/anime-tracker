@@ -27,6 +27,8 @@ Formato de arco: `[nombre, anime desde, hasta, relleno 0/1, manga desde, manga h
 - **Sin temporadas:** la división es solo por arcos. Se probó una capa de temporadas (barra, etiquetas) y la usuaria pidió quitarla: no la vuelvas a proponer.
 - **Películas** (`peliculas`, en orden de visionado): `{ titulo, anio, despues, tipo, manga?: [desde, hasta], nota? }`. `despues` = capítulo del anime tras el que conviene verla (0 = antes del 1). `tipo`: `canon`, `no-canon`, `recopilatorio` o `precuela`. Solo películas de anime de cine (sin imagen real, OVAs ni especiales de TV). Salen como 🎬 en el mapa de capítulos y en una lista con botón de «vista».
 - Las series nuevas se añaden con `node herramientas/importar.mjs --nuevas N --banners ninguno` (las N más populares que falten).
+- **Géneros** (`generos` del catálogo, para el filtro de la portada): salen de AniList traducidos al español (`GENEROS_ES` en `importar.mjs`) al importar; `--generos` los vuelve a pedir para todo el catálogo. Las de `catalogo.js` los llevan a mano.
+- **Portada sin recuentos:** no muestres cuántas series hay (ni junto a «Seguir viendo» / «Todos los animes» ni en los botones de género).
 
 ## Preferencias de la usuaria
 - **Publicación:** ella sube los cambios con «Push origin» en GitHub Desktop, a menudo en cuanto se los preparas. Por eso **nunca hagas `git commit --amend` ni reescribas commits**: si hay que corregir algo, haz un commit nuevo. Después de cada commit dile cuántos cambios hay pendientes de subir.

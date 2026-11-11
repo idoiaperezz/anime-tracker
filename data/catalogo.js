@@ -18,6 +18,7 @@
 //    icono        icono de la pestaña y del rastreador (opcional)
 //    tema         colores (opcional): { claro: {...}, oscuro: {...} }
 //    storageKey   clave del progreso en el navegador (por defecto <id>-tracker-v1)
+//    generos      géneros en español, para el filtro de la portada (opcional)
 //
 //  Los arcos, el relleno y las equivalencias con el manga van aparte, en
 //  data/<id>.js (opcional: sin ese archivo los capítulos se agrupan de 25 en 25).
@@ -32,6 +33,7 @@ var CATALOGO = [
     bannerAlt: "Bleach: Ichigo y los Shinigami en batalla",
     icono: "bleach-icon.png",
     storageKey: "bleach-tracker-v2",
+    generos: ["Acción", "Aventura", "Sobrenatural"],
     tema: {
       claro:  { accent: "#d9480f", accentRgb: "217, 72, 15",  accentDeep: "#7a2410", accent2: "#ffb703", onAccent: "#ffffff" },
       oscuro: { accent: "#ff8a3d", accentRgb: "255, 138, 61", accentDeep: "#c2491f", accent2: "#ffd166", onAccent: "#160b03" }
@@ -46,6 +48,7 @@ var CATALOGO = [
     bannerAlt: "Black Clover: Asta, Yuno y los Toros Negros",
     icono: "blackclover-icon.png",
     storageKey: "blackclover-tracker-v1",
+    generos: ["Acción", "Comedia", "Fantasía"],
     tema: {
       claro:  { accent: "#2b8a3e", accentRgb: "43, 138, 62",  accentDeep: "#14532d", accent2: "#d4a017", onAccent: "#ffffff" },
       oscuro: { accent: "#51cf66", accentRgb: "81, 207, 102", accentDeep: "#2b8a3e", accent2: "#ffd43b", onAccent: "#06140a" }

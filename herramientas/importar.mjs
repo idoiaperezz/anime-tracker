@@ -49,6 +49,7 @@ const args = process.argv.slice(2);
 const VER_PROMPT = args.includes("--ver-prompt");
 let top = 0, bannerMode = GEMINI_KEY ? "gemini" : "anilist", redoBanners = false, sync = false, nuevas = 0, pendingBanners = false, pendingCards = false, pendingIcons = false;
 const searches = [], removeIds = [], onlyIds = [];
+let generosMode = false; // --generos: rellena los géneros (de AniList, en español) de todas las series del catálogo
 for (let i = 0; i < args.length; i++) {
   const a = args[i];
   if (a === "--top") top = parseInt(args[++i], 10) || 0;
@@ -62,6 +63,7 @@ for (let i = 0; i < args.length; i++) {
   else if (a === "--tarjetas-pendientes") pendingCards = true;
   else if (a === "--iconos-pendientes") pendingIcons = true;
   else if (a === "--ver-prompt") { /* ver VER_PROMPT */ }
+  else if (a === "--generos") generosMode = true;
   else if (a.startsWith("--")) { console.error("Opción desconocida: " + a); process.exit(1); }
   else searches.push(a);
 }
@@ -92,7 +94,7 @@ if (removeIds.length) {
   console.log("Quitadas del catálogo automático: " + removeIds.join(", "));
   if (!top && !searches.length) process.exit(0);
 }
-if (!top && !searches.length && !nuevas && !pendingBanners && !pendingCards && !pendingIcons) {
+if (!top && !searches.length && !nuevas && !pendingBanners && !pendingCards && !pendingIcons && !generosMode) {
   console.log('Uso: node herramientas/importar.mjs --top 50   ó   node herramientas/importar.mjs "One Piece" "Naruto"');
   process.exit(1);
 }
@@ -127,9 +129,17 @@ async function anilist(query, variables) {
   throw new Error("AniList no responde (demasiadas peticiones)");
 }
 
-const FIELDS = `id format episodes status title { romaji english } nextAiringEpisode { episode }
+const FIELDS = `id format episodes status genres title { romaji english } nextAiringEpisode { episode }
   coverImage { extraLarge color } bannerImage description(asHtml: false) popularity
   relations { edges { relationType node { id type format chapters status } } }`;
+// Géneros de AniList traducidos (los que no están aquí se descartan)
+const GENEROS_ES = {
+  Action: "Acción", Adventure: "Aventura", Comedy: "Comedia", Drama: "Drama", Ecchi: "Ecchi", Fantasy: "Fantasía",
+  Horror: "Terror", "Mahou Shoujo": "Chicas mágicas", Mecha: "Mecha", Music: "Música", Mystery: "Misterio",
+  Psychological: "Psicológico", Romance: "Romance", "Sci-Fi": "Ciencia ficción", "Slice of Life": "Recuentos de la vida",
+  Sports: "Deportes", Supernatural: "Sobrenatural", Thriller: "Suspense",
+};
+const generosEs = (g) => { const out = (g || []).map((x) => GENEROS_ES[x]).filter(Boolean); return out.length ? out : undefined; };
 const getMedia = async (id) => (await anilist(`query ($id: Int) { Media(id: $id) { ${FIELDS} } }`, { id })).Media;
 
 // Temporadas = entradas del mismo tipo (TV con TV; las series web solo si la de partida es web).
@@ -838,6 +848,20 @@ async function main() {
   const auto = readAuto();
   const byId = new Map(auto.map((s) => [s.id, s]));
 
+  // --generos: pide a AniList los géneros de todas las series (de 25 en 25) y los guarda en el catálogo
+  if (generosMode) {
+    const conId = auto.filter((s) => s.anilistId);
+    for (let i = 0; i < conId.length; i += 25) {
+      const lote = conId.slice(i, i + 25);
+      const q = "query { " + lote.map((s, j) => `m${j}: Media(id: ${s.anilistId}) { genres }`).join(" ") + " }";
+      const d = await anilist(q, {});
+      lote.forEach((s, j) => { const g = generosEs(d["m" + j]?.genres); if (g) s.generos = g; });
+    }
+    writeAuto(auto);
+    for (const s of auto) console.log(`${s.generos ? "✓" : "✗"} ${s.titulo}: ${(s.generos || []).join(", ")}`);
+    return;
+  }
+
   const popularPage = async (page) => (await anilist(`query ($page: Int) { Page(page: $page, perPage: 50) { media(type: ANIME, sort: POPULARITY_DESC, format_in: [TV], isAdult: false) { ${FIELDS} } } }`, { page })).Page.media;
 
   // --iconos-pendientes: crea con Gemini el icono de la pestaña de las series que no lo tengan
@@ -981,6 +1005,7 @@ async function main() {
       anilistId: root.id,
       banner: prev.banner,
       tema: themeFrom(root.coverImage?.color || m.coverImage?.color),
+      generos: generosEs(root.genres) || prev.generos,
     };
     Object.assign(entry, detailTotals(id)); // si ya tiene ficha, sus totales mandan
 

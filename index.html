@@ -160,6 +160,19 @@ h1 {
   border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px;
 }
 .search:focus-within kbd { display: none; }
+/* Filtro por género: una fila de botones bajo el buscador */
+.genres { display: flex; flex-wrap: wrap; gap: 8px; margin-top: -18px; animation: rise .6s .06s cubic-bezier(.2, .8, .2, 1) both; }
+.genres button {
+  font: inherit; font-size: .8rem; color: var(--muted); cursor: pointer;
+  padding: 6px 12px; border-radius: 999px; background: rgba(18, 18, 40, .9); border: 1px solid var(--line);
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+.genres button:hover { color: var(--ink); border-color: rgba(var(--accent-2-rgb), .5); }
+.genres button[aria-pressed="true"] {
+  color: #fff; border-color: transparent;
+  background: linear-gradient(95deg, rgba(var(--accent-2-rgb), .85), rgba(var(--accent-rgb), .85));
+}
+.genres button:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
 .noresults { margin: -18px 0 0; color: var(--muted); }
 .noresults span { color: var(--ink); }
 
@@ -190,7 +203,6 @@ h1 {
   background: linear-gradient(95deg, #fff 10%, var(--accent-2) 60%, var(--accent));
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
-.shelf-count { font-family: var(--font-mono); font-size: .75rem; color: var(--muted); }
 /* 4 por fila en pantallas anchas, 3, 2 y 1 según se estrecha */
 .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 @media (max-width: 1180px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -360,7 +372,8 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
     <input id="q" type="search" placeholder="Buscar anime… (Bleach, Black Clover, Ichigo, Asta…)" autocomplete="off" aria-label="Buscar anime">
     <kbd aria-hidden="true">/</kbd>
   </div>
-  <p class="noresults" id="noresults" hidden>No hay ningún anime que coincida con «<span id="qtext"></span>».</p>
+  <div class="genres" id="genres" role="group" aria-label="Filtrar por género"></div>
+  <p class="noresults" id="noresults" hidden>No hay ningún anime que coincida con <span id="qtext"></span>.</p>
 
   <div class="stats" aria-label="Resumen">
     <div class="stat"><b id="sDone">0</b><span>Animes vistos</span></div>
@@ -371,13 +384,13 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
 
   <!-- Series empezadas y sin terminar (la última que tocaste, primero) -->
   <section class="shelf" id="shelfSeguir" hidden aria-labelledby="hSeguir">
-    <div class="shelf-head"><h2 id="hSeguir">Seguir viendo</h2><span class="shelf-count" id="seguirCount"></span></div>
+    <div class="shelf-head"><h2 id="hSeguir">Seguir viendo</h2></div>
     <div class="grid" id="gridSeguir"></div>
   </section>
 
   <!-- Catálogo completo en orden alfabético (las tarjetas se crean desde data/catalogo.js) -->
   <section class="shelf" aria-labelledby="hTodos">
-    <div class="shelf-head"><h2 id="hTodos">Todos los animes</h2><span class="shelf-count" id="todosCount"></span></div>
+    <div class="shelf-head"><h2 id="hTodos">Todos los animes</h2></div>
     <main class="grid" id="grid">
       <div class="card soon">
         <div>
@@ -461,7 +474,7 @@ function buildCard(S, i) {
     cta.insertAdjacentHTML("beforeend", ARROW);
     body.appendChild(cta);
     a.appendChild(body);
-    a.setAttribute("data-search", norm(s.titulo + " " + (s.descripcion || "") + " " + tags.textContent));
+    a.setAttribute("data-search", norm(s.titulo + " " + (s.descripcion || "") + " " + tags.textContent + " " + (s.generos || []).join(" ")));
     return { el: a, refs: refs };
 }
 // Pinta en una tarjeta el progreso calculado de su serie
@@ -485,7 +498,6 @@ function norm(s) { return String(s).toLowerCase().normalize("NFD").replace(/[̀-
     grid.insertBefore(S.cardAll.el, soon);
   });
   soon.style.setProperty("--i", Math.min(SERIES.length, 8));
-  document.getElementById("todosCount").textContent = SERIES.length;
 })();
 function readLocal(key) {
   try { return JSON.parse(localStorage.getItem(key) || "null"); } catch (e) { return null; }
@@ -528,31 +540,57 @@ function renderSeguir() {
     applyProgress(card, s.P);
     grid.appendChild(card.el);
   });
-  document.getElementById("seguirCount").textContent = list.length;
-  document.getElementById("shelfSeguir").hidden = !list.length || !!(document.getElementById("q") && document.getElementById("q").value.trim());
+  document.getElementById("shelfSeguir").hidden = !list.length || !!window.FILTRANDO;
 }
 renderSeries(null);
 
-// Buscador: filtra las tarjetas por nombre, descripción o etiquetas (sin distinguir mayúsculas ni tildes)
-// Mientras buscas se oculta «Seguir viendo» y se filtra «Todos los animes»
+// Buscador y filtro por género: filtran las tarjetas por nombre, descripción, etiquetas o géneros
+// (sin distinguir mayúsculas ni tildes). Mientras filtras se oculta «Seguir viendo» y se filtra «Todos los animes»
 (function () {
   var q = document.getElementById("q");
-  var cards = SERIES.map(function (s) { return s.cardAll.el; });
   var soon = document.querySelector("#grid .card.soon");
+  var genero = ""; // género elegido ("" = todos)
+
+  // Botones de género: «Todos» y cada género que tenga alguna serie, por orden alfabético
+  var cuenta = {};
+  SERIES.forEach(function (s) { (s.ficha.generos || []).forEach(function (g) { cuenta[g] = (cuenta[g] || 0) + 1; }); });
+  var box = document.getElementById("genres");
+  var nombres = Object.keys(cuenta).sort(function (a, b) { return a.localeCompare(b, "es"); });
+  if (!nombres.length) box.hidden = true;
+  [""].concat(nombres).forEach(function (g) {
+    var b = document.createElement("button");
+    b.type = "button"; b.setAttribute("data-g", g);
+    b.textContent = g || "Todos";
+    b.addEventListener("click", function () { genero = genero === g ? "" : g; guardar(); filter(); });
+    box.appendChild(b);
+  });
+  // El género elegido se recuerda en este navegador
+  function guardar() { try { localStorage.setItem("portada-genero", genero); } catch (e) {} }
+  try { var g0 = localStorage.getItem("portada-genero") || ""; if (cuenta[g0]) genero = g0; } catch (e) {}
+
   function filter() {
     var words = norm(q.value.trim()).split(/\s+/).filter(Boolean);
+    var filtering = window.FILTRANDO = words.length > 0 || !!genero;
     var shown = 0;
-    cards.forEach(function (c) {
+    SERIES.forEach(function (s) {
+      var c = s.cardAll.el;
       // Cada palabra buscada tiene que ser el principio de alguna palabra de la tarjeta («asta» no coincide con «hasta»)
       var hay = c.getAttribute("data-search").split(/[^a-z0-9]+/);
-      var ok = words.every(function (w) { return hay.some(function (h) { return h.indexOf(w) === 0; }); });
+      var ok = words.every(function (w) { return hay.some(function (h) { return h.indexOf(w) === 0; }); })
+        && (!genero || (s.ficha.generos || []).indexOf(genero) >= 0);
       c.hidden = !ok; if (ok) shown++;
     });
-    soon.hidden = words.length > 0;
-    document.getElementById("shelfSeguir").hidden = words.length > 0 || !document.getElementById("gridSeguir").children.length;
+    box.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-g") === genero)); });
+    soon.hidden = filtering;
+    document.getElementById("shelfSeguir").hidden = filtering || !document.getElementById("gridSeguir").children.length;
+    document.getElementById("hTodos").textContent = genero ? "Animes de " + genero.toLowerCase() : "Todos los animes";
     document.getElementById("noresults").hidden = shown > 0;
-    document.getElementById("qtext").textContent = q.value.trim();
+    var partes = [];
+    if (words.length) partes.push("«" + q.value.trim() + "»");
+    if (genero) partes.push("el género «" + genero + "»");
+    document.getElementById("qtext").textContent = partes.join(" y ");
   }
+  filter();
   q.addEventListener("input", filter);
   q.addEventListener("keydown", function (e) { if (e.key === "Escape") { q.value = ""; filter(); q.blur(); } });
   // Pulsa "/" en cualquier parte para ir al buscador

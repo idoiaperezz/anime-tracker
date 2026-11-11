@@ -31,7 +31,15 @@
         "accent2": "#f2af64",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Comedia",
+      "Drama",
+      "Fantasía",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "onepiece",
@@ -58,7 +66,14 @@
         "accent2": "#f2bd57",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Comedia",
+      "Drama",
+      "Fantasía"
+    ]
   },
   {
     "id": "attackontitan",
@@ -84,7 +99,13 @@
         "accent2": "#f8c45e",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "generos": [
+      "Acción",
+      "Drama",
+      "Fantasía",
+      "Misterio"
+    ]
   },
   {
     "id": "jujutsukaisen",
@@ -110,7 +131,12 @@
         "accent2": "#f2a26b",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "generos": [
+      "Acción",
+      "Drama",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "myheroacademia",
@@ -136,7 +162,12 @@
         "accent2": "#f8de5e",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Comedia"
+    ]
   },
   {
     "id": "hunterxhunter2011",
@@ -162,7 +193,12 @@
         "accent2": "#f8de6b",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Fantasía"
+    ]
   },
   {
     "id": "deathnote",
@@ -172,7 +208,13 @@
     "mangaTotal": 108,
     "temporadas": 1,
     "anilistId": 1535,
-    "banner": "banners/deathnote.jpg"
+    "banner": "banners/deathnote.jpg",
+    "generos": [
+      "Misterio",
+      "Psicológico",
+      "Sobrenatural",
+      "Suspense"
+    ]
   },
   {
     "id": "fullmetalalchemistbrotherhood",
@@ -198,7 +240,13 @@
         "accent2": "#f2d886",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Drama",
+      "Fantasía"
+    ]
   },
   {
     "id": "onepunchman",
@@ -224,7 +272,13 @@
         "accent2": "#f2ca6b",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "generos": [
+      "Acción",
+      "Comedia",
+      "Ciencia ficción",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "demonslayerkimetsunoyaiba",
@@ -250,7 +304,14 @@
         "accent2": "#f8d893",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Drama",
+      "Fantasía",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "tokyoghoul",
@@ -276,7 +337,15 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/tokyoghoul.jpg"
+    "banner": "banners/tokyoghoul.jpg",
+    "generos": [
+      "Acción",
+      "Drama",
+      "Terror",
+      "Misterio",
+      "Psicológico",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "swordartonline",
@@ -302,7 +371,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/swordartonline.jpg"
+    "banner": "banners/swordartonline.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Fantasía",
+      "Romance"
+    ]
   },
   {
     "id": "chainsawman",
@@ -328,7 +403,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/chainsawman.jpg"
+    "banner": "banners/chainsawman.jpg",
+    "generos": [
+      "Acción",
+      "Drama",
+      "Terror",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "thepromisedneverland",
@@ -354,7 +435,15 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/thepromisedneverland.jpg"
+    "banner": "banners/thepromisedneverland.jpg",
+    "generos": [
+      "Drama",
+      "Fantasía",
+      "Terror",
+      "Misterio",
+      "Psicológico",
+      "Suspense"
+    ]
   },
   {
     "id": "assassinationclassroom",
@@ -380,7 +469,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/assassinationclassroom.jpg"
+    "banner": "banners/assassinationclassroom.jpg",
+    "generos": [
+      "Acción",
+      "Comedia",
+      "Drama",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "mobpsycho100",
@@ -406,7 +501,15 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/mobpsycho100.jpg"
+    "banner": "banners/mobpsycho100.jpg",
+    "generos": [
+      "Acción",
+      "Comedia",
+      "Drama",
+      "Psicológico",
+      "Recuentos de la vida",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "rezerostartinglifeinanotherworld",
@@ -432,7 +535,16 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/rezerostartinglifeinanotherworld.jpg"
+    "banner": "banners/rezerostartinglifeinanotherworld.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Drama",
+      "Fantasía",
+      "Psicológico",
+      "Romance",
+      "Suspense"
+    ]
   },
   {
     "id": "yourlieinapril",
@@ -458,7 +570,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/yourlieinapril.jpg"
+    "banner": "banners/yourlieinapril.jpg",
+    "generos": [
+      "Drama",
+      "Música",
+      "Romance",
+      "Recuentos de la vida"
+    ]
   },
   {
     "id": "erased",
@@ -484,7 +602,14 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/erased.jpg"
+    "banner": "banners/erased.jpg",
+    "generos": [
+      "Drama",
+      "Misterio",
+      "Psicológico",
+      "Sobrenatural",
+      "Suspense"
+    ]
   },
   {
     "id": "steinsgate",
@@ -510,7 +635,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/steinsgate.jpg"
+    "banner": "banners/steinsgate.jpg",
+    "generos": [
+      "Drama",
+      "Psicológico",
+      "Ciencia ficción",
+      "Suspense"
+    ]
   },
   {
     "id": "haikyu",
@@ -536,7 +667,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/haikyu.jpg"
+    "banner": "banners/haikyu.jpg",
+    "generos": [
+      "Comedia",
+      "Drama",
+      "Deportes"
+    ]
   },
   {
     "id": "rascaldoesnotdreamofbunnygirlsenpai",
@@ -562,7 +698,15 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/rascaldoesnotdreamofbunnygirlsenpai.jpg"
+    "banner": "banners/rascaldoesnotdreamofbunnygirlsenpai.jpg",
+    "generos": [
+      "Comedia",
+      "Drama",
+      "Misterio",
+      "Psicológico",
+      "Romance",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "spyxfamily",
@@ -588,7 +732,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/spyxfamily.jpg"
+    "banner": "banners/spyxfamily.jpg",
+    "generos": [
+      "Acción",
+      "Comedia",
+      "Recuentos de la vida",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "kaguyasamaloveiswar",
@@ -614,7 +764,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/kaguyasamaloveiswar.jpg"
+    "banner": "banners/kaguyasamaloveiswar.jpg",
+    "generos": [
+      "Comedia",
+      "Psicológico",
+      "Romance",
+      "Recuentos de la vida"
+    ]
   },
   {
     "id": "drstone",
@@ -640,7 +796,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/drstone.jpg"
+    "banner": "banners/drstone.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Comedia",
+      "Ciencia ficción"
+    ]
   },
   {
     "id": "vinlandsaga",
@@ -666,7 +828,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/vinlandsaga.jpg"
+    "banner": "banners/vinlandsaga.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Drama"
+    ]
   },
   {
     "id": "violetevergarden",
@@ -692,7 +859,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/violetevergarden.jpg"
+    "banner": "banners/violetevergarden.jpg",
+    "generos": [
+      "Drama",
+      "Fantasía",
+      "Recuentos de la vida"
+    ]
   },
   {
     "id": "horimiya",
@@ -718,7 +890,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/horimiya.jpg"
+    "banner": "banners/horimiya.jpg",
+    "generos": [
+      "Comedia",
+      "Romance",
+      "Recuentos de la vida"
+    ]
   },
   {
     "id": "toradora",
@@ -744,7 +921,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/toradora.jpg"
+    "banner": "banners/toradora.jpg",
+    "generos": [
+      "Comedia",
+      "Drama",
+      "Romance",
+      "Recuentos de la vida"
+    ]
   },
   {
     "id": "nogamenolife",
@@ -770,7 +953,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/nogamenolife.jpg"
+    "banner": "banners/nogamenolife.jpg",
+    "generos": [
+      "Aventura",
+      "Comedia",
+      "Ecchi",
+      "Fantasía"
+    ]
   },
   {
     "id": "bluelock",
@@ -796,7 +985,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/bluelock.jpg"
+    "banner": "banners/bluelock.jpg",
+    "generos": [
+      "Acción",
+      "Drama",
+      "Deportes"
+    ]
   },
   {
     "id": "inuyasha",
@@ -822,7 +1016,14 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/inuyasha.jpg"
+    "banner": "banners/inuyasha.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Comedia",
+      "Fantasía",
+      "Romance"
+    ]
   },
   {
     "id": "akamegakill",
@@ -848,7 +1049,16 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/akamegakill.jpg"
+    "banner": "banners/akamegakill.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Drama",
+      "Fantasía",
+      "Terror",
+      "Psicológico",
+      "Suspense"
+    ]
   },
   {
     "id": "noragami",
@@ -874,7 +1084,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/noragami.jpg"
+    "banner": "banners/noragami.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Comedia",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "thesevendeadlysins",
@@ -900,7 +1116,15 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/thesevendeadlysins.jpg"
+    "banner": "banners/thesevendeadlysins.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Comedia",
+      "Ecchi",
+      "Fantasía",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "konosubagodsblessingonthiswonderfulworld",
@@ -926,7 +1150,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/konosubagodsblessingonthiswonderfulworld.jpg"
+    "banner": "banners/konosubagodsblessingonthiswonderfulworld.jpg",
+    "generos": [
+      "Aventura",
+      "Comedia",
+      "Ecchi",
+      "Fantasía"
+    ]
   },
   {
     "id": "codegeasslelouchoftherebellion",
@@ -952,7 +1182,14 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/codegeasslelouchoftherebellion.jpg"
+    "banner": "banners/codegeasslelouchoftherebellion.jpg",
+    "generos": [
+      "Acción",
+      "Drama",
+      "Mecha",
+      "Ciencia ficción",
+      "Suspense"
+    ]
   },
   {
     "id": "darlinginthefranxx",
@@ -978,7 +1215,15 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/darlinginthefranxx.jpg"
+    "banner": "banners/darlinginthefranxx.jpg",
+    "generos": [
+      "Acción",
+      "Drama",
+      "Mecha",
+      "Psicológico",
+      "Romance",
+      "Ciencia ficción"
+    ]
   },
   {
     "id": "parasytethemaxim",
@@ -1004,7 +1249,14 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/parasytethemaxim.jpg"
+    "banner": "banners/parasytethemaxim.jpg",
+    "generos": [
+      "Acción",
+      "Drama",
+      "Terror",
+      "Psicológico",
+      "Ciencia ficción"
+    ]
   },
   {
     "id": "neongenesisevangelion",
@@ -1030,7 +1282,15 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/neongenesisevangelion.jpg"
+    "banner": "banners/neongenesisevangelion.jpg",
+    "generos": [
+      "Acción",
+      "Drama",
+      "Mecha",
+      "Misterio",
+      "Psicológico",
+      "Ciencia ficción"
+    ]
   },
   {
     "id": "frierenbeyondjourneysend",
@@ -1056,7 +1316,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/frierenbeyondjourneysend.jpg"
+    "banner": "banners/frierenbeyondjourneysend.jpg",
+    "generos": [
+      "Aventura",
+      "Drama",
+      "Fantasía"
+    ]
   },
   {
     "id": "fireforce",
@@ -1082,7 +1347,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/fireforce.jpg"
+    "banner": "banners/fireforce.jpg",
+    "generos": [
+      "Acción",
+      "Drama",
+      "Ciencia ficción",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "jojosbizarreadventuretv",
@@ -1108,7 +1379,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/jojosbizarreadventuretv.jpg"
+    "banner": "banners/jojosbizarreadventuretv.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "cowboybebop",
@@ -1133,7 +1409,13 @@
         "accent2": "#f8a964",
         "onAccent": "#0b0b10"
       }
-    }
+    },
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Drama",
+      "Ciencia ficción"
+    ]
   },
   {
     "id": "thattimeigotreincarnatedasaslime",
@@ -1159,7 +1441,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/thattimeigotreincarnatedasaslime.jpg"
+    "banner": "banners/thattimeigotreincarnatedasaslime.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Comedia",
+      "Fantasía"
+    ]
   },
   {
     "id": "deathparade",
@@ -1185,7 +1473,14 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/deathparade.jpg"
+    "banner": "banners/deathparade.jpg",
+    "generos": [
+      "Drama",
+      "Misterio",
+      "Psicológico",
+      "Sobrenatural",
+      "Suspense"
+    ]
   },
   {
     "id": "mushokutenseijoblessreincarnation",
@@ -1211,7 +1506,13 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/mushokutenseijoblessreincarnation.jpg"
+    "banner": "banners/mushokutenseijoblessreincarnation.jpg",
+    "generos": [
+      "Aventura",
+      "Drama",
+      "Ecchi",
+      "Fantasía"
+    ]
   },
   {
     "id": "therisingoftheshieldhero",
@@ -1237,7 +1538,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/therisingoftheshieldhero.jpg"
+    "banner": "banners/therisingoftheshieldhero.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Fantasía"
+    ]
   },
   {
     "id": "blueexorcist",
@@ -1263,7 +1569,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/blueexorcist.jpg"
+    "banner": "banners/blueexorcist.jpg",
+    "generos": [
+      "Acción",
+      "Fantasía",
+      "Sobrenatural"
+    ]
   },
   {
     "id": "kakegurui",
@@ -1289,7 +1600,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/kakegurui.jpg"
+    "banner": "banners/kakegurui.jpg",
+    "generos": [
+      "Drama",
+      "Misterio",
+      "Psicológico"
+    ]
   },
   {
     "id": "sololeveling",
@@ -1315,7 +1631,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/sololeveling.jpg"
+    "banner": "banners/sololeveling.jpg",
+    "generos": [
+      "Acción",
+      "Aventura",
+      "Fantasía"
+    ]
   },
   {
     "id": "thefuturediary",
@@ -1325,7 +1646,15 @@
     "mangaTotal": 59,
     "temporadas": 1,
     "anilistId": 10620,
-    "banner": "banners/thefuturediary.jpg"
+    "banner": "banners/thefuturediary.jpg",
+    "generos": [
+      "Acción",
+      "Terror",
+      "Misterio",
+      "Psicológico",
+      "Sobrenatural",
+      "Suspense"
+    ]
   },
   {
     "id": "umamusumecinderellagray",
@@ -1351,7 +1680,11 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/umamusumecinderellagray.jpg"
+    "banner": "banners/umamusumecinderellagray.jpg",
+    "generos": [
+      "Drama",
+      "Deportes"
+    ]
   },
   {
     "id": "datealive",
@@ -1377,7 +1710,16 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/datealive.jpg"
+    "banner": "banners/datealive.jpg",
+    "generos": [
+      "Acción",
+      "Comedia",
+      "Ecchi",
+      "Fantasía",
+      "Mecha",
+      "Romance",
+      "Ciencia ficción"
+    ]
   },
   {
     "id": "theapothecarydiaries",
@@ -1404,7 +1746,11 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/theapothecarydiaries.jpg"
+    "banner": "banners/theapothecarydiaries.jpg",
+    "generos": [
+      "Drama",
+      "Misterio"
+    ]
   },
   {
     "id": "kaijuno8",
@@ -1430,7 +1776,11 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/kaijuno8.jpg"
+    "banner": "banners/kaijuno8.jpg",
+    "generos": [
+      "Acción",
+      "Ciencia ficción"
+    ]
   },
   {
     "id": "witchhatatelier",
@@ -1456,7 +1806,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/witchhatatelier.jpg"
+    "banner": "banners/witchhatatelier.jpg",
+    "generos": [
+      "Aventura",
+      "Drama",
+      "Fantasía"
+    ]
   },
   {
     "id": "killlakill",
@@ -1482,7 +1837,12 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/killlakill.jpg"
+    "banner": "banners/killlakill.jpg",
+    "generos": [
+      "Acción",
+      "Comedia",
+      "Ecchi"
+    ]
   },
   {
     "id": "gurrenlagann",
@@ -1508,7 +1868,15 @@
         "onAccent": "#0b0b10"
       }
     },
-    "banner": "banners/gurrenlagann.jpg"
+    "banner": "banners/gurrenlagann.jpg",
+    "generos": [
+      "Acción",
+      "Comedia",
+      "Drama",
+      "Mecha",
+      "Romance",
+      "Ciencia ficción"
+    ]
   }
 ]
 // @@fin
