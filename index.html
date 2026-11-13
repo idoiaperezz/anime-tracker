@@ -218,6 +218,27 @@ h1 {
   transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s ease, border-color .35s ease;
 }
 .card.feature { min-height: 0; justify-content: flex-start; }
+/* «Seguir viendo»: botón para quitar la serie de esa sección */
+.card-drop {
+  position: absolute; top: 8px; right: 8px; z-index: 3;
+  width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  font: inherit; font-size: 1.1rem; line-height: 1; color: #fff; cursor: pointer;
+  background: rgba(10, 10, 14, .78); border: 1px solid rgba(255, 255, 255, .25);
+  opacity: .75; transition: opacity .2s ease, background .2s ease, transform .2s ease;
+}
+.card:hover .card-drop, .card-drop:focus-visible { opacity: 1; }
+.card-drop:hover { background: rgba(var(--accent-rgb), .9); transform: scale(1.08); }
+.card-drop:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 50;
+  display: flex; align-items: center; gap: 14px; max-width: calc(100% - 32px);
+  padding: 10px 12px 10px 16px; border-radius: 12px; color: var(--ink); font-size: .9rem;
+  background: rgba(18, 18, 40, .97); border: 1px solid var(--line); box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .9);
+}
+.toast button {
+  font: inherit; font-size: .85rem; font-weight: 600; color: var(--accent-2); cursor: pointer;
+  background: none; border: 1px solid rgba(var(--accent-2-rgb), .5); border-radius: 8px; padding: 4px 10px;
+}
 .card:hover, .card:focus-visible {
   transform: translateY(-6px);
   border-color: rgba(var(--accent-rgb), .7);
@@ -405,6 +426,8 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
     </main>
   </section>
 
+  <div class="toast" id="toast" role="status" hidden><span id="toastText"></span><button type="button" id="toastUndo">Deshacer</button></div>
+
   <footer id="foot">Tu progreso se guarda en este navegador · Inicia sesión para guardarlo en tu cuenta</footer>
 </div>
 
@@ -493,6 +516,31 @@ function applyProgress(card, P) {
     : P.isManga ? "Empezar a leer" : "Empezar a ver";
   setTimeout(function () { r.fill.style.width = (P.cur / P.max * 100) + "%"; }, 300);
 }
+// Series quitadas de «Seguir viendo»: { id: cuándo se quitó }. Si después avanzas en esa serie, vuelve a salir.
+// Se guardan en este navegador y, con sesión iniciada, en tu cuenta (user_metadata.seguirQuitados)
+var QUITADOS = {};
+try { QUITADOS = JSON.parse(localStorage.getItem("seguir-quitados") || "{}") || {}; } catch (e) {}
+function guardarQuitados() {
+  try { localStorage.setItem("seguir-quitados", JSON.stringify(QUITADOS)); } catch (e) {}
+  if (window.guardarQuitadosNube) window.guardarQuitadosNube(QUITADOS);
+}
+function quitadaDeSeguir(s) { var q = QUITADOS[s.ficha.id]; return !!q && q >= (s.P.t || 0); }
+var toastTimer = null;
+function quitarDeSeguir(s) {
+  var antes = QUITADOS[s.ficha.id];
+  QUITADOS[s.ficha.id] = Date.now();
+  guardarQuitados(); renderSeguir();
+  document.getElementById("toastText").textContent = "«" + s.ficha.titulo + "» ya no sale en Seguir viendo.";
+  var toast = document.getElementById("toast");
+  toast.hidden = false;
+  document.getElementById("toastUndo").onclick = function () {
+    if (antes) QUITADOS[s.ficha.id] = antes; else delete QUITADOS[s.ficha.id];
+    guardarQuitados(); renderSeguir(); toast.hidden = true;
+  };
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { toast.hidden = true; }, 6000);
+}
+
 // Valoraciones (tabla «valoraciones» de Supabase, lectura pública): nota media de cada anime y las tuyas
 var VALS = { media: {}, mias: null };
 function pintarNotas(card, S) {
@@ -525,6 +573,13 @@ function readLocal(key) {
 // Para el aviso de grupos de bleach.html al cambiar de cuenta
 function readLocalBleach() { return readLocal("bleach-tracker-v2"); }
 function renderSeries(meta) {
+  if (meta && meta.seguirQuitados && typeof meta.seguirQuitados === "object") {
+    Object.keys(meta.seguirQuitados).forEach(function (id) {
+      var v = Number(meta.seguirQuitados[id]) || 0;
+      if (v > (QUITADOS[id] || 0)) QUITADOS[id] = v;
+    });
+    try { localStorage.setItem("seguir-quitados", JSON.stringify(QUITADOS)); } catch (e) {}
+  }
   var totalEps = 0, totalChs = 0, animesVistos = 0, mangasLeidos = 0;
   SERIES.forEach(function (s) {
     var d = readLocal(s.key) || {}, c = (meta && meta[s.cloud]) || {};
@@ -555,13 +610,19 @@ function renderSeries(meta) {
 // «Seguir viendo»: empezadas y sin terminar; la última que tocaste, primero (las que no tienen fecha, por orden alfabético)
 function renderSeguir() {
   var grid = document.getElementById("gridSeguir");
-  var list = SERIES.filter(function (s) { return s.P.started && !s.P.done; });
+  var list = SERIES.filter(function (s) { return s.P.started && !s.P.done && !quitadaDeSeguir(s); });
   list.sort(function (x, y) { return (y.P.t - x.P.t); }); // sort estable: a igual fecha se mantiene el orden alfabético
   grid.textContent = "";
   list.forEach(function (s, i) {
     var card = buildCard(s, i);
     applyProgress(card, s.P);
     pintarNotas(card, s);
+    var x = el("button", "card-drop", "×");
+    x.type = "button";
+    x.title = "Quitar de Seguir viendo";
+    x.setAttribute("aria-label", "Quitar " + s.ficha.titulo + " de Seguir viendo");
+    x.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); quitarDeSeguir(s); });
+    card.el.appendChild(x);
     grid.appendChild(card.el);
   });
   document.getElementById("shelfSeguir").hidden = !list.length || !!window.FILTRANDO;
@@ -661,6 +722,13 @@ renderSeries(null);
 
   function isRealUser(u) { return !!(u && !u.is_anonymous && u.email); }
   function cloudOf(u) { return u && u.user_metadata; }
+  // Guarda en tu cuenta las series quitadas de «Seguir viendo» (para verlo igual en otros dispositivos)
+  window.guardarQuitadosNube = function (q) {
+    if (!account) return;
+    sb.auth.updateUser({ data: { seguirQuitados: q } }).then(function (r) {
+      if (r && r.data && r.data.user) account = r.data.user;
+    }).catch(function () {});
+  };
 
   function authError(err) {
     var m = String(err && err.message || "");
