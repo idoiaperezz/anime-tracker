@@ -266,6 +266,9 @@ h1 {
   background: rgba(10, 10, 14, .78); border: 1px solid rgba(255, 255, 255, .18);
 }
 .tag.hot { background: var(--accent); color: var(--on-accent); border-color: transparent; font-weight: 500; }
+/* Nota media de todos los usuarios y «Calificado» si tú ya le has puesto nota */
+.tag.rate { color: #ffd166; border-color: rgba(255, 209, 102, .45); }
+.tag.mine { background: linear-gradient(95deg, rgba(var(--accent-2-rgb), .9), rgba(var(--accent-rgb), .9)); color: #fff; border-color: transparent; }
 .card h2 {
   margin: 0; font-family: var(--font-display); font-weight: 400; text-transform: uppercase;
   font-size: 1.3rem; line-height: 1.05; letter-spacing: .02em; overflow-wrap: anywhere;
@@ -460,6 +463,8 @@ function buildCard(S, i) {
 
     var body = el("div", "card-body"), tags = el("div", "tags");
     refs.state = el("span", "tag hot", "Empezar"); tags.appendChild(refs.state);
+    refs.mine = el("span", "tag mine"); refs.mine.hidden = true; tags.appendChild(refs.mine);
+    refs.media = el("span", "tag rate"); refs.media.hidden = true; tags.appendChild(refs.media);
     if (S.animeMax) tags.appendChild(el("span", "tag", S.animeMax + " caps. anime" + (s.enEmision ? " · en emisión" : "")));
     if (S.mangaMax) tags.appendChild(el("span", "tag", S.mangaMax + " caps. manga"));
     body.appendChild(tags);
@@ -487,6 +492,21 @@ function applyProgress(card, P) {
     : P.started ? "Continuar por el " + (P.cur + 1)
     : P.isManga ? "Empezar a leer" : "Empezar a ver";
   setTimeout(function () { r.fill.style.width = (P.cur / P.max * 100) + "%"; }, 300);
+}
+// Valoraciones (tabla «valoraciones» de Supabase, lectura pública): nota media de cada anime y las tuyas
+var VALS = { media: {}, mias: null };
+function pintarNotas(card, S) {
+  var r = card.refs, id = S.ficha.id, m = VALS.media[id];
+  r.media.hidden = !m;
+  if (m) { r.media.textContent = "★ " + (m.suma / m.n).toFixed(1).replace(".", ",") + " media"; r.media.title = "Nota media de los usuarios"; }
+  // Tu nota: la de tu cuenta si has iniciado sesión; si no, la guardada en este navegador
+  var mia = VALS.mias ? VALS.mias[id] : S.miNota;
+  r.mine.hidden = !mia;
+  if (mia) { r.mine.textContent = "Calificado · " + mia; r.mine.title = "Le has puesto un " + mia; }
+}
+function pintarTodasLasNotas() {
+  SERIES.forEach(function (s) { if (s.cardAll) pintarNotas(s.cardAll, s); });
+  if (SERIES.length && SERIES[0].P) renderSeguir();
 }
 function norm(s) { return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
 
@@ -518,9 +538,12 @@ function renderSeries(meta) {
     if (s.animeMax > 0 && anime >= s.animeMax) animesVistos++;
     if (s.mangaMax > 0 && manga >= s.mangaMax) mangasLeidos++;
     // t: cuándo tocaste esta serie por última vez (lo guarda su rastreador)
+    var nl = Number(d.nota) || Number(c.nota) || 0;
+    s.miNota = nl >= 1 && nl <= 10 ? nl : 0;
     s.P = { isManga: isManga, cur: cur, max: max, started: anime > 0 || manga > 0, done: cur >= max,
             t: Math.max(Number(d.t) || 0, Number(c.t) || 0) };
     applyProgress(s.cardAll, s.P);
+    pintarNotas(s.cardAll, s);
   });
   document.getElementById("sEps").textContent = totalEps;
   document.getElementById("sChs").textContent = totalChs;
@@ -538,18 +561,19 @@ function renderSeguir() {
   list.forEach(function (s, i) {
     var card = buildCard(s, i);
     applyProgress(card, s.P);
+    pintarNotas(card, s);
     grid.appendChild(card.el);
   });
   document.getElementById("shelfSeguir").hidden = !list.length || !!window.FILTRANDO;
 }
 renderSeries(null);
 
-// Buscador y filtro por género: filtran las tarjetas por nombre, descripción, etiquetas o géneros
+// Buscador y filtro por géneros (se pueden elegir varios a la vez): filtran las tarjetas por nombre, descripción, etiquetas o géneros
 // (sin distinguir mayúsculas ni tildes). Mientras filtras se oculta «Seguir viendo» y se filtra «Todos los animes»
 (function () {
   var q = document.getElementById("q");
   var soon = document.querySelector("#grid .card.soon");
-  var genero = ""; // género elegido ("" = todos)
+  var elegidos = []; // géneros elegidos (vacío = todos); el anime tiene que tenerlos TODOS
 
   // Botones de género: «Todos» y cada género que tenga alguna serie, por orden alfabético
   var cuenta = {};
@@ -561,33 +585,45 @@ renderSeries(null);
     var b = document.createElement("button");
     b.type = "button"; b.setAttribute("data-g", g);
     b.textContent = g || "Todos";
-    b.addEventListener("click", function () { genero = genero === g ? "" : g; guardar(); filter(); });
+    b.addEventListener("click", function () {
+      if (!g) elegidos = [];
+      else if (elegidos.indexOf(g) >= 0) elegidos = elegidos.filter(function (x) { return x !== g; });
+      else elegidos = elegidos.concat(g);
+      guardar(); filter();
+    });
     box.appendChild(b);
   });
-  // El género elegido se recuerda en este navegador
-  function guardar() { try { localStorage.setItem("portada-genero", genero); } catch (e) {} }
-  try { var g0 = localStorage.getItem("portada-genero") || ""; if (cuenta[g0]) genero = g0; } catch (e) {}
+  // Los géneros elegidos se recuerdan en este navegador
+  function guardar() { try { localStorage.setItem("portada-generos", JSON.stringify(elegidos)); } catch (e) {} }
+  try {
+    var g0 = JSON.parse(localStorage.getItem("portada-generos") || "[]");
+    if (Array.isArray(g0)) elegidos = g0.filter(function (g) { return cuenta[g]; });
+  } catch (e) {}
+  function lista(xs) { return xs.length < 2 ? xs.join("") : xs.slice(0, -1).join(", ") + " y " + xs[xs.length - 1]; }
 
   function filter() {
     var words = norm(q.value.trim()).split(/\s+/).filter(Boolean);
-    var filtering = window.FILTRANDO = words.length > 0 || !!genero;
+    var filtering = window.FILTRANDO = words.length > 0 || elegidos.length > 0;
     var shown = 0;
     SERIES.forEach(function (s) {
       var c = s.cardAll.el;
       // Cada palabra buscada tiene que ser el principio de alguna palabra de la tarjeta («asta» no coincide con «hasta»)
       var hay = c.getAttribute("data-search").split(/[^a-z0-9]+/);
       var ok = words.every(function (w) { return hay.some(function (h) { return h.indexOf(w) === 0; }); })
-        && (!genero || (s.ficha.generos || []).indexOf(genero) >= 0);
+        && elegidos.every(function (g) { return (s.ficha.generos || []).indexOf(g) >= 0; });
       c.hidden = !ok; if (ok) shown++;
     });
-    box.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-g") === genero)); });
+    box.querySelectorAll("button").forEach(function (b) {
+      var g = b.getAttribute("data-g");
+      b.setAttribute("aria-pressed", String(g ? elegidos.indexOf(g) >= 0 : !elegidos.length));
+    });
     soon.hidden = filtering;
     document.getElementById("shelfSeguir").hidden = filtering || !document.getElementById("gridSeguir").children.length;
-    document.getElementById("hTodos").textContent = genero ? "Animes de " + genero.toLowerCase() : "Todos los animes";
+    document.getElementById("hTodos").textContent = elegidos.length ? "Animes de " + lista(elegidos).toLowerCase() : "Todos los animes";
     document.getElementById("noresults").hidden = shown > 0;
     var partes = [];
     if (words.length) partes.push("«" + q.value.trim() + "»");
-    if (genero) partes.push("el género «" + genero + "»");
+    if (elegidos.length) partes.push((elegidos.length > 1 ? "los géneros " : "el género ") + lista(elegidos.map(function (g) { return "«" + g + "»"; })));
     document.getElementById("qtext").textContent = partes.join(" y ");
   }
   filter();
@@ -650,8 +686,25 @@ renderSeries(null);
     } catch (e) {}
   }
 
+  // Lee todas las valoraciones (cualquiera puede leerlas) y calcula la media de cada anime y tus notas
+  async function cargarValoraciones() {
+    try {
+      var r = await sb.from("valoraciones").select("serie,nota,user_id");
+      if (r.error || !r.data) return;
+      var media = {}, mias = account ? {} : null;
+      r.data.forEach(function (v) {
+        var m = media[v.serie] || (media[v.serie] = { suma: 0, n: 0 });
+        m.suma += v.nota; m.n++;
+        if (mias && v.user_id === account.id) mias[v.serie] = v.nota;
+      });
+      VALS.media = media; VALS.mias = mias;
+      pintarTodasLasNotas();
+    } catch (e) {}
+  }
+
   function signedIn(u) {
     account = u; resetMode = 0;
+    cargarValoraciones();
     $("apass").value = $("acode").value = $("anewpass").value = "";
     renderSeries(cloudOf(u));
     openPop(false);
@@ -681,6 +734,7 @@ renderSeries(null);
     await dropAnonGroupRow();
     try { await sb.auth.signOut(); } catch (e) {}
     account = null; amsg = ""; abusy = false;
+    VALS.mias = null;
     renderSeries(null); openPop(false); render();
   }
 
@@ -774,6 +828,7 @@ renderSeries(null);
         renderSeries(cloudOf(account));
       }
     } catch (e) {}
+    cargarValoraciones();
     if (NEXT && account && !resetMode) { location.href = NEXT; return; }
     if (NEXT && !account && !amsg) amsg = "Para unirte al grupo de tu amigo, crea una cuenta o entra con la tuya. Después volverás a Bleach.";
     render();
