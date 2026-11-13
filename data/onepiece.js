@@ -7,6 +7,8 @@ registrarSerie({
     oscuro: { accent: "#ff6b6b", accentRgb: "255, 107, 107", accentDeep: "#c92a2a", accent2: "#ffd43b", onAccent: "#1a0505" }
   },
   animeTotal: 1180,  // último capítulo emitido: 1180 (27-09-2026); el anime vuelve en 2027
+  // En emisión (vuelve en 2027): la web pregunta a AniList cuántos capítulos van
+  emision: [{ anilistId: 21, desde: 1 }],
   mangaTotal: 1197,  // último capítulo publicado: 1197 (1-11-2026)
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]
   arcos: [

@@ -520,6 +520,7 @@ a.glogin { display: inline-flex; align-items: center; justify-content: center; t
   window.NOCACHE = "?t=" + Math.floor(Date.now() / 60000);
   document.write('<script src="data/catalogo.js' + NOCACHE + '"><\/script>');
   document.write('<script src="data/catalogo-auto.js' + NOCACHE + '"><\/script>');
+  document.write('<script src="emision.js' + NOCACHE + '"><\/script>');
 </script>
 <script>
 /* =====================================================================
@@ -557,6 +558,17 @@ function arrancar(detalles) {
   var D = {}, k;
   for (k in FICHA) D[k] = FICHA[k];
   if (detalles) for (k in detalles) D[k] = detalles[k];
+  // En emisión: se pinta ya con los capítulos guardados y se pregunta a AniList si hay más;
+  // si los hay, se recarga la página una vez con el total nuevo
+  var EM = window.EMISION, emision = D.emision;
+  if (EM && emision && emision.length) {
+    var antes = Math.max(D.animeTotal || 0, EM.cacheado(D.id));
+    EM.ampliar(D, antes);
+    if (EM.caducado(D.id)) {
+      var q = {}; q[D.id] = emision;
+      EM.consultar(q).then(function (r) { if ((r[D.id] || 0) > antes) location.reload(); }).catch(function () {});
+    }
+  }
   iniciarSerie(D);
 }
 window.registrarSerie = function (det) { arrancar(det && det.id === SERIE_ID ? det : null); };

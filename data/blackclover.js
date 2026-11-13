@@ -2,6 +2,8 @@
 registrarSerie({
   id: "blackclover",
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]
+  // En emisión: temporada 2 (su capítulo 1 es aquí el 171). La web pregunta a AniList cuántos van
+  emision: [{ anilistId: 195604, desde: 171 }],
   arcos: [
     ["Magic Knights Entrance", 1, 13, 0, 1, 10],
     ["Dungeon Exploration", 14, 19, 0, 11, 21],

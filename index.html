@@ -439,12 +439,15 @@ footer { text-align: center; font-family: var(--font-mono); font-size: .72rem; l
   window.NOCACHE = "?t=" + Math.floor(Date.now() / 60000);
   document.write('<script src="data/catalogo.js' + NOCACHE + '"><\/script>');
   document.write('<script src="data/catalogo-auto.js' + NOCACHE + '"><\/script>');
+  document.write('<script src="emision.js' + NOCACHE + '"><\/script>');
 </script>
 <script>
 // Progreso de cada serie: lo que guarda su página en este navegador y, con sesión iniciada, lo de tu cuenta
 // id: prefijo de los elementos de su tarjeta · key: localStorage de su página · cloud: clave dentro de tu cuenta
 var SERIES = (window.CATALOGO || []).map(function (s) {
-  return { id: "s-" + s.id + "-", key: s.storageKey || (s.id + "-tracker-v1"), cloud: s.id, animeMax: s.animeTotal || 0, mangaMax: s.mangaTotal || 0, ficha: s };
+  // En emisión: los capítulos emitidos que se guardaron la última vez que se preguntó a AniList
+  var anime = Math.max(s.animeTotal || 0, (window.EMISION && s.emision) ? window.EMISION.cacheado(s.id) : 0);
+  return { id: "s-" + s.id + "-", key: s.storageKey || (s.id + "-tracker-v1"), cloud: s.id, animeMax: anime, mangaMax: s.mangaTotal || 0, ficha: s };
 });
 
 // «Todos los animes» va en orden alfabético
@@ -488,7 +491,7 @@ function buildCard(S, i) {
     refs.state = el("span", "tag hot", "Empezar"); tags.appendChild(refs.state);
     refs.mine = el("span", "tag mine"); refs.mine.hidden = true; tags.appendChild(refs.mine);
     refs.media = el("span", "tag rate"); refs.media.hidden = true; tags.appendChild(refs.media);
-    if (S.animeMax) tags.appendChild(el("span", "tag", S.animeMax + " caps. anime" + (s.enEmision ? " · en emisión" : "")));
+    if (S.animeMax) { refs.caps = el("span", "tag", S.animeMax + " caps. anime" + (s.enEmision ? " · en emisión" : "")); tags.appendChild(refs.caps); }
     if (S.mangaMax) tags.appendChild(el("span", "tag", S.mangaMax + " caps. manga"));
     body.appendChild(tags);
     body.appendChild(el("h2", null, s.titulo));
@@ -572,7 +575,9 @@ function readLocal(key) {
 }
 // Para el aviso de grupos de bleach.html al cambiar de cuenta
 function readLocalBleach() { return readLocal("bleach-tracker-v2"); }
+var ULTIMA_META = null;
 function renderSeries(meta) {
+  ULTIMA_META = meta;
   if (meta && meta.seguirQuitados && typeof meta.seguirQuitados === "object") {
     Object.keys(meta.seguirQuitados).forEach(function (id) {
       var v = Number(meta.seguirQuitados[id]) || 0;
@@ -628,6 +633,26 @@ function renderSeguir() {
   document.getElementById("shelfSeguir").hidden = !list.length || !!window.FILTRANDO;
 }
 renderSeries(null);
+
+// Series en emisión: pregunta a AniList cuántos capítulos van y actualiza las tarjetas
+(function () {
+  if (!window.EMISION) return;
+  var q = {};
+  SERIES.forEach(function (s) { if (s.ficha.emision && window.EMISION.caducado(s.ficha.id)) q[s.ficha.id] = s.ficha.emision; });
+  if (!Object.keys(q).length) return;
+  window.EMISION.consultar(q).then(function (r) {
+    var cambia = false;
+    SERIES.forEach(function (s) {
+      var n = r[s.ficha.id] || 0;
+      if (n > s.animeMax) {
+        s.animeMax = n; cambia = true;
+        var c = s.cardAll.refs.caps;
+        if (c) c.textContent = n + " caps. anime" + (s.ficha.enEmision ? " · en emisión" : "");
+      }
+    });
+    if (cambia) renderSeries(ULTIMA_META);
+  }).catch(function () {});
+})();
 
 // Buscador y filtro por géneros (se pueden elegir varios a la vez): filtran las tarjetas por nombre, descripción, etiquetas o géneros
 // (sin distinguir mayúsculas ni tildes). Mientras filtras se oculta «Seguir viendo» y se filtra «Todos los animes»

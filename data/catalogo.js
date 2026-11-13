@@ -13,6 +13,7 @@
 //    animeTotal   capítulos del anime (0 si solo es manga)
 //    mangaTotal   capítulos del manga (0 si no tiene manga)
 //    enEmision    true si el anime sigue saliendo
+//    emision      [{ anilistId, desde }]: temporada que se emite y su capítulo 1 en nuestra numeración (ver emision.js)
 //    banner       ruta del banner (por defecto banners/<id>.png)
 //    bannerAjuste "cover" (rellena, por defecto) o "contain" (se ve entero)
 //    icono        icono de la pestaña y del rastreador (opcional)
@@ -44,6 +45,7 @@ var CATALOGO = [
     titulo: "Black Clover",
     descripcion: "Asta y Yuno, dos huérfanos que sueñan con ser el Rey Mago, del arco «Magic Knights Entrance» hasta «Spade Kingdom Raid».",
     animeTotal: 176, mangaTotal: 392, enEmision: true,
+    emision: [{ anilistId: 195604, desde: 171 }], // temporada 2: la web pregunta a AniList cuántos capítulos van
     banner: "blackclover-banner.jpg",
     bannerAlt: "Black Clover: Asta, Yuno y los Toros Negros",
     icono: "blackclover-icon.png",

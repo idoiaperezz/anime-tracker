@@ -73,6 +73,12 @@
       "Comedia",
       "Drama",
       "Fantasía"
+    ],
+    "emision": [
+      {
+        "anilistId": 21,
+        "desde": 1
+      }
     ]
   },
   {
@@ -1359,7 +1365,7 @@
     "id": "jojosbizarreadventuretv",
     "titulo": "JoJo's Bizarre Adventure",
     "descripcion": "La saga de la familia Joestar a lo largo de las generaciones, de Phantom Blood hasta Steel Ball Run.",
-    "animeTotal": 198,
+    "animeTotal": 199,
     "mangaTotal": 998,
     "temporadas": 1,
     "anilistId": 14719,
@@ -1384,7 +1390,14 @@
       "Acción",
       "Aventura",
       "Sobrenatural"
-    ]
+    ],
+    "emision": [
+      {
+        "anilistId": 210482,
+        "desde": 192
+      }
+    ],
+    "enEmision": true
   },
   {
     "id": "cowboybebop",
@@ -1725,7 +1738,7 @@
     "id": "theapothecarydiaries",
     "titulo": "The Apothecary Diaries",
     "descripcion": "Maomao, una boticaria vendida como criada al palacio imperial que resuelve sus misterios con venenos y medicinas, del arco «El palacio interior» hasta «Rumbo a la capital del oeste».",
-    "animeTotal": 54,
+    "animeTotal": 55,
     "mangaTotal": 0,
     "enEmision": true,
     "temporadas": 4,
@@ -1750,6 +1763,16 @@
     "generos": [
       "Drama",
       "Misterio"
+    ],
+    "emision": [
+      {
+        "anilistId": 195516,
+        "desde": 49
+      },
+      {
+        "anilistId": 200927,
+        "desde": 61
+      }
     ]
   },
   {

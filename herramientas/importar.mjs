@@ -77,6 +77,7 @@ function detailTotals(id) {
   if (Number.isInteger(det.animeTotal)) out.animeTotal = det.animeTotal;
   if (Number.isInteger(det.mangaTotal)) out.mangaTotal = det.mangaTotal;
   if (typeof det.titulo === "string" && det.titulo) out.titulo = det.titulo; // título corregido a mano en la ficha
+  if (Array.isArray(det.emision) && det.emision.length) { out.emision = det.emision; out.enEmision = true; } // en emisión: la web pregunta a AniList (emision.js)
   // Los colores de la ficha (det.tema) solo se usan dentro de la página de la serie: el catálogo no se toca
   return out;
 }

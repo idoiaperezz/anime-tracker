@@ -9,7 +9,9 @@ registrarSerie({
     claro:  { accent: "#7b2fbe", accentRgb: "123, 47, 190", accentDeep: "#4a1a75", accent2: "#b7791f", onAccent: "#ffffff" },
     oscuro: { accent: "#c084fc", accentRgb: "192, 132, 252", accentDeep: "#7b2fbe", accent2: "#ffd43b", onAccent: "#1a0a26" }
   },
-  animeTotal: 198,   // 190 (partes 1–6, terminadas) + 8 de Steel Ball Run (en emisión, a 10-11-2026)
+  animeTotal: 199,   // 190 (partes 1–6) + 1 (1st Stage) + 8 del 2nd Stage (en emisión, a 13-11-2026); la web lo amplía sola con «emision»
+  // En emisión: Steel Ball Run 2nd & 3rd Stage (su capítulo 1 es aquí el 192). La web pregunta a AniList cuántos van
+  emision: [{ anilistId: 210482, desde: 192 }],
   mangaTotal: 998,   // numeración continua: partes 1–6 = 1–752, SBR = 753–847, JoJolion = 848–957, The JOJOLands = 958–998 (en publicación)
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]
   arcos: [
@@ -21,7 +23,7 @@ registrarSerie({
     ["Parte 5: Golden Wind", 114, 152, 0, 440, 594],
     ["Parte 6: Stone Ocean", 153, 190, 0, 595, 752],
     ["Parte 7: Steel Ball Run – 1st Stage", 191, 191, 0, 753, 763],            // SBR 1 (episodio de 47 min)
-    ["Parte 7: Steel Ball Run – 2nd Stage (en emisión)", 192, 198, 0, 764, 780] // SBR 2–8
+    ["Parte 7: Steel Ball Run – 2nd Stage (en emisión)", 192, 199, 0, 764, 780] // SBR 2–8
   ],
   soloManga: [
     ["Parte 7: Steel Ball Run (resto)", null, null, 0, 781, 847],
