@@ -93,6 +93,26 @@ h1 {
 .moves button:hover:not(:disabled) { border-color: var(--accent-2); }
 .moves button:disabled { opacity: .2; cursor: default; }
 .empty { color: var(--muted); text-align: center; padding: 30px 10px; }
+
+.comments h2 { margin: 0; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; font-size: 1.15rem; }
+.comments textarea {
+  font: inherit; width: 100%; min-height: 80px; resize: vertical; padding: 10px 12px; border-radius: 10px;
+  border: 1px solid var(--line); background: rgba(255, 255, 255, .04); color: var(--ink);
+}
+.comments textarea:focus { outline: none; border-color: var(--accent-2); }
+.cform { display: grid; gap: 8px; }
+.cform .row { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+.cform .count { font-family: var(--font-mono); font-size: .72rem; color: var(--muted); }
+.clist { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.com { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255, 255, 255, .03); display: grid; gap: 4px; }
+.com.own { border-color: rgba(var(--accent-rgb), .45); }
+.com header { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.com header a { color: var(--accent-2); text-decoration: none; font-weight: 700; }
+.com header a:hover { text-decoration: underline; }
+.com time { font-family: var(--font-mono); font-size: .7rem; color: var(--muted); }
+.com .del { margin-left: auto; border: 0; background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: .78rem; }
+.com .del:hover { color: #fca5a5; }
+.com p { white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 560px) {
   .item { grid-template-columns: 34px 84px 1fr; }
   .thumb { width: 84px; }
@@ -135,6 +155,18 @@ h1 {
   <p class="msg" id="msg"></p>
   <ol class="list" id="list"></ol>
   <p class="empty" id="empty" hidden></p>
+
+  <!-- Comentarios del ranking -->
+  <section class="panel comments" id="comments" hidden>
+    <h2>💬 Comentarios</h2>
+    <form class="cform" id="cform" hidden>
+      <textarea id="ctexto" maxlength="500" placeholder="Escribe un comentario sobre este ranking…" aria-label="Comentario"></textarea>
+      <div class="row"><span class="count" id="ccount">0/500</span><button class="btn" type="submit" id="csend">Comentar</button></div>
+    </form>
+    <p class="msg" id="cnote" hidden></p>
+    <p class="msg" id="cmsg"></p>
+    <ul class="clist" id="clist"></ul>
+  </section>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -158,6 +190,7 @@ h1 {
   function msg(t) { $("msg").textContent = t || ""; }
   function hint(err) {
     var m = String(err && err.message || err || "");
+    if (/comentarios_ranking/i.test(m)) return "Falta crear la tabla de comentarios en Supabase (ejecuta herramientas/ranking.sql).";
     if (/relation|does not exist|schema cache|not find the table/i.test(m)) return "Falta crear las tablas del ranking en Supabase (perfiles y valoraciones).";
     return m || "revisa la conexión";
   }
@@ -255,6 +288,91 @@ h1 {
     };
   }
 
+  // ----- Comentarios -----
+  var MI_PERFIL = null; // tu perfil (para poder comentar)
+
+  function fecha(iso) {
+    var d = new Date(iso);
+    return d.toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }) + " · " +
+      d.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  async function cargarComentarios() {
+    var box = $("comments"), lista = $("clist");
+    box.hidden = false;
+    var r = await sb.from("comentarios_ranking").select("id,autor,texto,created_at").eq("ranking", PERFIL.user_id).order("created_at", { ascending: true });
+    if (r.error) { $("cmsg").textContent = "No se pudieron cargar los comentarios: " + hint(r.error); return; }
+    var coms = r.data || [];
+    var ids = coms.map(function (c) { return c.autor; }).filter(function (v, i, a) { return a.indexOf(v) === i; });
+    var nombres = {};
+    if (ids.length) {
+      var p = await sb.from("perfiles").select("user_id,usuario,nombre").in("user_id", ids);
+      (p.data || []).forEach(function (x) { nombres[x.user_id] = x; });
+    }
+    lista.textContent = "";
+    if (!coms.length) {
+      var vacio = document.createElement("li"); vacio.className = "msg"; vacio.textContent = "Todavía no hay comentarios.";
+      lista.appendChild(vacio);
+    }
+    coms.forEach(function (c) {
+      var autor = nombres[c.autor];
+      var li = document.createElement("li"); li.className = "com" + (ME && c.autor === ME.id ? " own" : "");
+      var h = document.createElement("header");
+      var who;
+      if (autor) { who = document.createElement("a"); who.href = "ranking.html?u=" + encodeURIComponent(autor.usuario); who.textContent = autor.nombre || autor.usuario; }
+      else { who = document.createElement("b"); who.textContent = "Alguien"; }
+      var t = document.createElement("time"); t.dateTime = c.created_at; t.textContent = fecha(c.created_at);
+      h.appendChild(who); h.appendChild(t);
+      if (ME && (c.autor === ME.id || PERFIL.user_id === ME.id)) {
+        var del = document.createElement("button"); del.type = "button"; del.className = "del"; del.textContent = "Borrar";
+        del.addEventListener("click", async function () {
+          if (!confirm("¿Borrar este comentario?")) return;
+          var d = await sb.from("comentarios_ranking").delete().eq("id", c.id);
+          if (d.error) $("cmsg").textContent = "No se pudo borrar: " + hint(d.error);
+          else cargarComentarios();
+        });
+        h.appendChild(del);
+      }
+      var p2 = document.createElement("p"); p2.textContent = c.texto;
+      li.appendChild(h); li.appendChild(p2);
+      lista.appendChild(li);
+    });
+  }
+
+  async function prepararComentarios() {
+    if (!PERFIL) return;
+    var note = $("cnote");
+    if (!ME) {
+      note.innerHTML = 'Para comentar, <a href="index.html?next=' + encodeURIComponent("ranking.html?u=" + PERFIL.usuario) + '" style="color:var(--accent-2)">inicia sesión</a>.';
+      note.hidden = false;
+    } else {
+      if (!MI_PERFIL) {
+        var m = await sb.from("perfiles").select("user_id,usuario,nombre").eq("user_id", ME.id).maybeSingle();
+        MI_PERFIL = m.data || null;
+      }
+      if (MI_PERFIL) $("cform").hidden = false;
+      else {
+        note.innerHTML = 'Para comentar, primero elige tu nombre de usuario en <a href="ranking.html" style="color:var(--accent-2)">tu ranking</a>.';
+        note.hidden = false;
+      }
+    }
+    await cargarComentarios();
+  }
+
+  $("ctexto").addEventListener("input", function () { $("ccount").textContent = $("ctexto").value.length + "/500"; });
+  $("cform").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var texto = $("ctexto").value.trim();
+    if (!texto) return;
+    $("csend").disabled = true;
+    var r = await sb.from("comentarios_ranking").insert({ ranking: PERFIL.user_id, autor: ME.id, texto: texto.slice(0, 500) });
+    $("csend").disabled = false;
+    if (r.error) { $("cmsg").textContent = "No se pudo publicar: " + hint(r.error); return; }
+    $("cmsg").textContent = "";
+    $("ctexto").value = ""; $("ccount").textContent = "0/500";
+    cargarComentarios();
+  });
+
   async function iniciar() {
     var u = (new URLSearchParams(location.search).get("u") || "").toLowerCase();
     if (!sb) { msg("No se pudo conectar con el servidor."); ROWS = rankingLocal(); render(); return; }
@@ -277,6 +395,7 @@ h1 {
         if (EDITABLE) mostrarCompartir();
         ROWS = await cargarDe(PERFIL.user_id);
         render();
+        prepararComentarios();
         return;
       }
       if (!ME) {
@@ -299,6 +418,7 @@ h1 {
       EDITABLE = true;
       ROWS = await cargarDe(ME.id);
       render();
+      if (PERFIL) { MI_PERFIL = PERFIL; prepararComentarios(); }
     } catch (e) {
       msg("No se pudo cargar el ranking: " + hint(e));
       if (!u) { ROWS = rankingLocal(); EDITABLE = false; render(); }
@@ -319,6 +439,7 @@ h1 {
     PERFIL = { user_id: ME.id, usuario: v, nombre: v };
     $("userbox").hidden = true;
     mostrarCompartir();
+    MI_PERFIL = PERFIL; prepararComentarios();
   });
 
   iniciar();

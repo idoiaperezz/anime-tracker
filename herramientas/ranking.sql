@@ -46,3 +46,30 @@ drop policy if exists "valoraciones: editar las mías" on public.valoraciones;
 create policy "valoraciones: editar las mías" on public.valoraciones for update using (auth.uid() = user_id);
 drop policy if exists "valoraciones: borrar las mías" on public.valoraciones;
 create policy "valoraciones: borrar las mías" on public.valoraciones for delete using (auth.uid() = user_id);
+
+-- =====================================================================
+--  COMENTARIOS EN LOS RANKINGS
+--  Cualquiera con cuenta y nombre de usuario puede comentar el ranking
+--  de otra persona (o el suyo). Todos pueden leerlos.
+--  Puede borrar un comentario quien lo escribió o el dueño del ranking.
+-- =====================================================================
+
+create table if not exists public.comentarios_ranking (
+  id         bigint generated always as identity primary key,
+  ranking    uuid not null references auth.users (id) on delete cascade,  -- dueño del ranking comentado
+  autor      uuid not null references auth.users (id) on delete cascade,  -- quien escribe
+  texto      text not null check (char_length(texto) between 1 and 500),
+  created_at timestamptz not null default now()
+);
+create index if not exists comentarios_ranking_ranking_idx on public.comentarios_ranking (ranking, created_at);
+
+alter table public.comentarios_ranking enable row level security;
+
+drop policy if exists "comentarios: leer todos" on public.comentarios_ranking;
+create policy "comentarios: leer todos" on public.comentarios_ranking for select using (true);
+drop policy if exists "comentarios: escribir como yo" on public.comentarios_ranking;
+create policy "comentarios: escribir como yo" on public.comentarios_ranking for insert
+  with check (auth.uid() = autor and exists (select 1 from public.perfiles p where p.user_id = auth.uid()));
+drop policy if exists "comentarios: borrar los míos o los de mi ranking" on public.comentarios_ranking;
+create policy "comentarios: borrar los míos o los de mi ranking" on public.comentarios_ranking for delete
+  using (auth.uid() = autor or auth.uid() = ranking);

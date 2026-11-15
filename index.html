@@ -742,7 +742,7 @@ renderSeries(null);
   // Solo se aceptan páginas de esta misma web.
   var NEXT = (function () {
     var n = new URLSearchParams(location.search).get("next") || "";
-    return /^[\w-]+\.html(\?g=[A-Z0-9]{1,6})?$/.test(n) || /^serie\.html\?id=[a-z0-9-]{1,40}(&g=[A-Z0-9]{1,6})?$/.test(n) ? n : "";
+    return /^[\w-]+\.html(\?g=[A-Z0-9]{1,6})?$/.test(n) || /^serie\.html\?id=[a-z0-9-]{1,40}(&g=[A-Z0-9]{1,6})?$/.test(n) || /^ranking\.html\?u=[a-z0-9_]{3,20}$/.test(n) ? n : "";
   })();
 
   function isRealUser(u) { return !!(u && !u.is_anonymous && u.email); }
