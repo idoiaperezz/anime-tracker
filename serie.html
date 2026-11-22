@@ -1015,6 +1015,14 @@ function iniciarSerie(D) {
       o.cnt.textContent = Math.max(0, Math.min(total, c - a2[1] + 1)) + "/" + total;
       o.sec.className = "arc" + (a && a === a2 ? " active" : "");
     });
+    // Relleno suelto dentro de arcos canon: también se oculta (salvo el capítulo actual)
+    FILLER_EPS.forEach(function (n) {
+      var b = epBtns[n]; if (!b) return;
+      var arcoOculto = b.closest(".arc") && b.closest(".arc").hidden;
+      var ocultar = isA && state.hideFiller && n !== c && !arcoOculto;
+      b.hidden = ocultar;
+      if (ocultar) hiddenCount++;
+    });
     $("skipnote").hidden = !hiddenCount;
     $("skipnote").textContent = hiddenCount ? "Relleno oculto: " + hiddenCount + " capítulos que no cuentan para tu progreso." : "";
 
