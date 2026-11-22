@@ -7,8 +7,8 @@ registrarSerie({
     ["Sociedad de Almas: La entrada furtiva", 21, 41, 0, 71, 117],
     ["Sociedad de Almas: El rescate", 42, 63, 0, 118, 182],
     ["Bount", 64, 91, 1],
-    ["Bount: La invasión a la Sociedad de Almas", 92, 109, 1],
-    ["Arrancar: La llegada", 110, 131, 0, 183, 229],
+    ["Bount: La invasión a la Sociedad de Almas", 92, 108, 1],
+    ["Arrancar: La llegada", 109, 131, 0, 183, 229],
     ["Arrancar: Infiltración a Hueco Mundo", 132, 151, 0, 230, 251],
     ["Arrancar: Fieras batallas", 152, 167, 0, 252, 286],
     ["El nuevo capitán Shusuke Amagai", 168, 189, 1],
@@ -17,13 +17,15 @@ registrarSerie({
     ["Arrancar: Batalla Decisiva de Karakura", 213, 229, 0, 316, 340],
     ["La historia alterna de las zanpakuto", 230, 265, 1],
     ["Arrancar: La caída", 266, 316, 0, 341, 423],
-    ["Invasión Armada al Gotei 13", 317, 342, 1],
-    ["Agente Perdido", 343, 366, 0, 424, 479],
+    ["Invasión Armada al Gotei 13", 317, 341, 1],
+    ["Agente Perdido", 342, 366, 0, 424, 479],
     ["La guerra sangrienta de los mil años – Parte 1: The Blood Warfare", 367, 379, 0, 480, 542],
     ["La guerra sangrienta de los mil años – Parte 2: The Separation", 380, 392, 0, 543, 609],
     ["La guerra sangrienta de los mil años – Parte 3: The Conflict", 393, 406, 0, 610, 661],
     ["La guerra sangrienta de los mil años – Parte 4: The Calamity", 407, 416, 0, 662, 686]
   ],
+  // Episodios de relleno sueltos (Anime Filler List, contrastado con JustWatch y animedatos)
+  relleno: [33, 50, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 147, 148, 149, 204, 205, 213, 214, 228, 229, 266, 287, 298, 299, 303, 304, 305, 311, 312, 313, 314, 315, 316, 355],
   // Texto para los arcos del anime que en el manga son un flashback con numeración propia
   notaFlashback: "En el manga este arco es un flashback con numeración propia (Turn Back the Pendulum). Después sigue en el cap. ≈ 316.",
   // Progreso guardado por la primera versión del rastreador (formato { current, hideFiller })
@@ -35,5 +37,5 @@ registrarSerie({
     { titulo: "Bleach: Fade to Black", anio: 2008, despues: 137, tipo: "no-canon", nota: "Rukia pierde la memoria. Se ve justo después de la segunda película; momento aproximado: algunas guías la ponen tras el cap. 167 o 198." },
     { titulo: "Bleach: Hell Verse", anio: 2010, despues: 299, tipo: "no-canon", nota: "El cap. 299 es su prólogo; se estrenó entre el 299 y el 300." }
   ],
-  nota: "El arco «Pasado: El Evento Visored» del anime adapta el flashback Turn Back the Pendulum, que en el manga tiene numeración propia (−108 a −96) y no aparece en la rejilla del manga. Incluye el anime completo (416 capítulos, hasta La guerra sangrienta de los mil años – Parte 4: The Calamity) y el manga completo (686 capítulos). Las equivalencias entre anime y manga son aproximadas (unos 2 capítulos de margen): salen de los rangos por arco de OtakusNotes y Beebom, repartidos de forma uniforme dentro de cada arco."
+  nota: "El arco «Pasado: El Evento Visored» del anime adapta el flashback Turn Back the Pendulum, que en el manga tiene numeración propia (−108 a −96) y no aparece en la rejilla del manga. Incluye el anime completo (416 capítulos, hasta La guerra sangrienta de los mil años – Parte 4: The Calamity) y el manga completo (686 capítulos). Las equivalencias entre anime y manga son aproximadas (unos 2 capítulos de margen): salen de los rangos por arco de OtakusNotes y Beebom, repartidos de forma uniforme dentro de cada arco. Los episodios de relleno (163) salen de Anime Filler List, contrastados con JustWatch y animedatos; los capítulos 109 y 342 son mixtos (canon y relleno) y cuentan como canon."
 });
