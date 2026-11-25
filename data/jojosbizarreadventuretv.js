@@ -12,7 +12,7 @@ registrarSerie({
   animeTotal: 199,   // 190 (partes 1–6) + 1 (1st Stage) + 8 del 2nd Stage (en emisión, a 13-11-2026); la web lo amplía sola con «emision»
   // En emisión: Steel Ball Run 2nd & 3rd Stage (su capítulo 1 es aquí el 192). La web pregunta a AniList cuántos van
   emision: [{ anilistId: 210482, desde: 192 }],
-  mangaTotal: 998,   // numeración continua: partes 1–6 = 1–752, SBR = 753–847, JoJolion = 848–957, The JOJOLands = 958–998 (en publicación)
+  mangaTotal: 999,   // numeración continua: partes 1–6 = 1–752, SBR = 753–847, JoJolion = 848–957, The JOJOLands = 958–999 (cap. 42, Ultra Jump 19-11-2026) (en publicación)
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]
   arcos: [
     ["Parte 1: Phantom Blood", 1, 9, 0, 1, 44],
@@ -28,7 +28,7 @@ registrarSerie({
   soloManga: [
     ["Parte 7: Steel Ball Run (resto)", null, null, 0, 781, 847],
     ["Parte 8: JoJolion", null, null, 0, 848, 957],
-    ["Parte 9: The JOJOLands (en publicación)", null, null, 0, 958, 998]
+    ["Parte 9: The JOJOLands (en publicación)", null, null, 0, 958, 999]
   ],
   relleno: [],
   // Películas en orden de visionado: despues = capítulo del anime tras el que conviene verla (0 = antes del 1)

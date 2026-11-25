@@ -46,7 +46,7 @@
     "titulo": "One Piece",
     "descripcion": "Luffy y los Piratas del Sombrero de Paja en busca del One Piece, del arco «Romance Dawn» hasta «Elbaph».",
     "animeTotal": 1180,
-    "mangaTotal": 1197,
+    "mangaTotal": 1199,
     "enEmision": true,
     "temporadas": 1,
     "anilistId": 21,
@@ -1366,7 +1366,7 @@
     "titulo": "JoJo's Bizarre Adventure",
     "descripcion": "La saga de la familia Joestar a lo largo de las generaciones, de Phantom Blood hasta Steel Ball Run.",
     "animeTotal": 199,
-    "mangaTotal": 998,
+    "mangaTotal": 999,
     "temporadas": 1,
     "anilistId": 14719,
     "tema": {
