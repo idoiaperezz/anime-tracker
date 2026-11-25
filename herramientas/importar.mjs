@@ -20,10 +20,8 @@
 //    --iconos-pendientes   crea con Gemini el icono de la pestaña (iconos/<id>.png) de cada serie
 //    --solo <id>           limita --banners/--tarjetas/--iconos-pendientes a esa serie
 //
-//  Clave de Gemini (https://aistudio.google.com/apikey), en PowerShell:
-//    $env:GEMINI_API_KEY = "tu-clave"
-//  Modelo de imagen (opcional): $env:GEMINI_IMAGE_MODEL
-//  Gemini se usa SOLO para generar los banners, para nada más.
+//  Gemini está DESACTIVADO: no se generan más imágenes (banners, tarjetas ni iconos).
+//  Las opciones de Gemini terminan con un aviso; usa --banners ninguno.
 //
 //  Lo que pongas a mano en data/catalogo.js siempre manda: las series que
 //  ya estén allí (Bleach, Black Clover…) no se tocan.
@@ -39,7 +37,10 @@ const MANUAL_FILE = path.join(ROOT, "data", "catalogo.js");
 const BANNER_DIR = path.join(ROOT, "banners");
 const CACHE_FILE = path.join(ROOT, "herramientas", ".cache-anilist.json");
 
-const GEMINI_KEY = process.env.GEMINI_API_KEY || "";
+// Gemini DESACTIVADO (25-11-2026): la usuaria no quiere generar más imágenes. No se lee ninguna clave,
+// así que el script nunca llama a la API de Gemini. Las series nuevas van con --banners ninguno.
+const GEMINI_KEY = "";
+const GEMINI_OFF = "La generación de imágenes con Gemini está desactivada: ya no se generan más imágenes. Usa --banners ninguno (o anilist).";
 // Modelos en orden de preferencia: si uno ya no existe (Google los retira), se prueba el siguiente
 const IMAGE_MODELS = (process.env.GEMINI_IMAGE_MODEL || "gemini-3.1-flash-image,gemini-3-pro-image,gemini-2.5-flash-image").split(",");
 
@@ -100,7 +101,7 @@ if (!top && !searches.length && !nuevas && !pendingBanners && !pendingCards && !
   process.exit(1);
 }
 if (!["gemini", "anilist", "ninguno"].includes(bannerMode)) { console.error("--banners tiene que ser gemini, anilist o ninguno"); process.exit(1); }
-if (bannerMode === "gemini" && !GEMINI_KEY && !VER_PROMPT) { console.error('Para los banners de Gemini falta la clave: $env:GEMINI_API_KEY = "tu-clave"'); process.exit(1); }
+if (bannerMode === "gemini" && !VER_PROMPT) { console.error(GEMINI_OFF); process.exit(1); }
 
 // ---------- AniList (con caché y respetando su límite de peticiones) ----------
 let cache = {};
@@ -867,7 +868,7 @@ async function main() {
 
   // --iconos-pendientes: crea con Gemini el icono de la pestaña de las series que no lo tengan
   if (pendingIcons) {
-    if (!GEMINI_KEY && !VER_PROMPT) { console.error('Falta la clave: $env:GEMINI_API_KEY = "tu-clave"'); process.exit(1); }
+    if (!VER_PROMPT) { console.error(GEMINI_OFF); process.exit(1); }
     let made = 0;
     for (const s of readManual().concat(auto)) {
       if (onlyIds.length && !onlyIds.includes(s.id)) continue;
@@ -883,7 +884,7 @@ async function main() {
 
   // --tarjetas-pendientes: crea con Gemini la imagen 16:9 de la portada de las series que tengan banner y no tarjeta
   if (pendingCards) {
-    if (!GEMINI_KEY && !VER_PROMPT) { console.error('Falta la clave: $env:GEMINI_API_KEY = "tu-clave"'); process.exit(1); }
+    if (!VER_PROMPT) { console.error(GEMINI_OFF); process.exit(1); }
     const all = readManual().concat(auto);
     let made = 0;
     for (const s of all) {
