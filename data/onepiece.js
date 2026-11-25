@@ -9,7 +9,7 @@ registrarSerie({
   animeTotal: 1180,  // último capítulo emitido: 1180 (27-09-2026); el anime vuelve en 2027
   // En emisión (vuelve en 2027): la web pregunta a AniList cuántos capítulos van
   emision: [{ anilistId: 21, desde: 1 }],
-  mangaTotal: 1197,  // último capítulo publicado: 1197 (1-11-2026)
+  mangaTotal: 1199,  // último capítulo publicado: 1199 (22-11-2026; el 1198 salió el 8-11-2026)
   // [nombre, desde, hasta, relleno (0/1), manga desde, manga hasta, (fin en la rejilla del manga si no hay equivalencia)]
   arcos: [
     // Saga del East Blue
@@ -78,7 +78,7 @@ registrarSerie({
   ],
   // Capítulos del manga que el anime aún no ha adaptado
   soloManga: [
-    ["Saga final: Arco de Elbaph (continuación, aún sin anime)", null, null, 0, 1151, 1197]
+    ["Saga final: Arco de Elbaph (continuación, aún sin anime)", null, null, 0, 1151, 1199]
   ],
   // Capítulos de relleno sueltos dentro de arcos canon (Anime Filler List)
   relleno: [98, 99, 102, 279, 280, 281, 282, 283, 291, 292, 303, 317, 318, 319, 457, 458, 492, 542, 590, 907, 1029, 1030],
@@ -100,5 +100,5 @@ registrarSerie({
     { titulo: "One Piece: Estampida", anio: 2019, despues: 896, tipo: "no-canon", nota: "Tras el Reverie y el arco del Gremio Cidre (895–896), que hace de precuela (otras guías, tras el 889)." },
     { titulo: "One Piece Film: Red", anio: 2022, despues: 1030, tipo: "no-canon", nota: "Uta, la hija de Shanks; los capítulos 1029–1030 hacen de precuela." }
   ],
-  nota: "Incluye el anime hasta el capítulo 1180 (27 de septiembre de 2026; desde el arco de Elbaph se emiten como máximo 26 capítulos al año y el anime vuelve en 2027) y el manga hasta el capítulo 1197 (1 de noviembre de 2026), ambos aún en publicación. El capítulo 1180 del anime adapta el 1150 del manga (Otaku Orbit, Skip the Filler; Anime Filler Guide añade unas páginas del 1151), así que la parte solo de manga empieza en el 1151. Los capítulos 1169–1180 son canon (un capítulo del manga por episodio, según Otaku Orbit y Skip the Filler). El Acto 3 de Wano empieza en el capítulo 959 del anime («¡Comienza el tercer acto!», según AniDB y ListFist). Los nombres de arco van en español según el uso habitual (Wikipedia en español y doblaje), salvo los que se suelen dejar en su forma original (Romance Dawn, Loguetown, Whole Cake Island, Egghead…). Los capítulos de relleno salen de Anime Filler List (94 en total); los «mixed canon/filler» y los «anime canon» (como los capítulos de las aventuras de Buggy, 45–47, o de Koby y Helmeppo, 68–69) cuentan como canon y van dentro del arco más cercano. Los rangos por arco salen de One Piece Wiki (Fandom) y Wikipedia; los cortes dentro de Impel Down (528/529) y del Acto 1 de Wano (911/912) cuadran con la tabla de ListFist, pero solo con esa fuente: son aproximados. Las equivalencias entre anime y manga son aproximadas: se reparten de forma uniforme dentro de cada arco, sin contar el relleno."
+  nota: "Incluye el anime hasta el capítulo 1180 (27 de septiembre de 2026; desde el arco de Elbaph se emiten como máximo 26 capítulos al año y el anime vuelve en 2027) y el manga hasta el capítulo 1199 (22 de noviembre de 2026), ambos aún en publicación. El capítulo 1180 del anime adapta el 1150 del manga (Otaku Orbit, Skip the Filler; Anime Filler Guide añade unas páginas del 1151), así que la parte solo de manga empieza en el 1151. Los capítulos 1169–1180 son canon (un capítulo del manga por episodio, según Otaku Orbit y Skip the Filler). El Acto 3 de Wano empieza en el capítulo 959 del anime («¡Comienza el tercer acto!», según AniDB y ListFist). Los nombres de arco van en español según el uso habitual (Wikipedia en español y doblaje), salvo los que se suelen dejar en su forma original (Romance Dawn, Loguetown, Whole Cake Island, Egghead…). Los capítulos de relleno salen de Anime Filler List (94 en total); los «mixed canon/filler» y los «anime canon» (como los capítulos de las aventuras de Buggy, 45–47, o de Koby y Helmeppo, 68–69) cuentan como canon y van dentro del arco más cercano. Los rangos por arco salen de One Piece Wiki (Fandom) y Wikipedia; los cortes dentro de Impel Down (528/529) y del Acto 1 de Wano (911/912) cuadran con la tabla de ListFist, pero solo con esa fuente: son aproximados. Las equivalencias entre anime y manga son aproximadas: se reparten de forma uniforme dentro de cada arco, sin contar el relleno."
 });
