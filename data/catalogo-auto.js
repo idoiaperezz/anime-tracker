@@ -1365,7 +1365,7 @@
     "id": "jojosbizarreadventuretv",
     "titulo": "JoJo's Bizarre Adventure",
     "descripcion": "La saga de la familia Joestar a lo largo de las generaciones, de Phantom Blood hasta Steel Ball Run.",
-    "animeTotal": 199,
+    "animeTotal": 201,
     "mangaTotal": 999,
     "temporadas": 1,
     "anilistId": 14719,
